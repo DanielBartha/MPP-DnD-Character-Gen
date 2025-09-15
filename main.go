@@ -75,7 +75,7 @@ func main() {
 			},
 		}
 
-		fmt.Printf("Created character: %+v\n", characterCreate)
+		fmt.Printf("Created character: %+v\n", characterCreate.Name)
 
 	case "view":
 
