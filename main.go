@@ -4,11 +4,13 @@ import (
 	"flag"
 	"fmt"
 	"os"
+
+	"github.com/DanielBartha/MPP-DnD-Character-Gen/characterBase"
 )
 
 func usage() {
 	fmt.Printf(`Usage:
-  %s create -name CHARACTER_NAME -race RACE -class CLASS -level N -str N -dex N -con N -int N -wis N -cha N
+  %s create -name CHARACTER_NAME -race RACE -class CLASS -level N -str N -dex N -con N -intel N -wis N -cha N
   %s view -name CHARACTER_NAME
   %s list
   %s delete -name CHARACTER_NAME
@@ -32,13 +34,48 @@ func main() {
 		// You could use the Flag package like this
 		// But feel free to do it differently!
 		createCmd := flag.NewFlagSet("create", flag.ExitOnError)
+
 		name := createCmd.String("name", "", "character name (required)")
+		race := createCmd.String("race", "", "character race (required)")
+		class := createCmd.String("class", "", "character class (required)")
+		level := createCmd.Int("level", 1, "character level (required)")
+
+		str := createCmd.Int("str", 10, "strength is required")
+		dex := createCmd.Int("dex", 10, "dexterity is required")
+		con := createCmd.Int("con", 10, "constitution is required")
+		intel := createCmd.Int("int", 10, "intelligence is required")
+		wis := createCmd.Int("wis", 10, "wisdom is required")
+		cha := createCmd.Int("cha", 10, "charisma is required")
+
 		err := createCmd.Parse(os.Args[2:])
-		if *name == "" || err != nil {
-			fmt.Println("name is required")
+		if err != nil {
+			fmt.Println("error parsing flags")
 			createCmd.Usage()
 			os.Exit(2)
 		}
+
+		if *name == "" || *race == "" || *class == "" {
+			fmt.Println("name, race, class and level are required")
+			createCmd.Usage()
+			os.Exit(2)
+		}
+
+		characterCreate := characterBase.Character{
+			Name:  *name,
+			Race:  *race,
+			Class: *class,
+			Level: *level,
+			Skills: characterBase.Stats{
+				Str:   *str,
+				Dex:   *dex,
+				Con:   *con,
+				Intel: *intel,
+				Wis:   *wis,
+				Cha:   *cha,
+			},
+		}
+
+		fmt.Printf("Created character: %+v\n", characterCreate)
 
 	case "view":
 
