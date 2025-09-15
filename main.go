@@ -37,6 +37,7 @@ func main() {
 
 		name := createCmd.String("name", "", "character name (required)")
 		race := createCmd.String("race", "", "character race (required)")
+		background := createCmd.String("background", "", "character background (required)")
 		class := createCmd.String("class", "", "character class (required)")
 		level := createCmd.Int("level", 1, "character level (required)")
 
@@ -61,11 +62,12 @@ func main() {
 		}
 
 		characterCreate := characterBase.Character{
-			Name:  *name,
-			Race:  *race,
-			Class: *class,
-			Level: *level,
-			Skills: characterBase.Stats{
+			Name:       *name,
+			Race:       *race,
+			Background: *background,
+			Class:      *class,
+			Level:      *level,
+			Stats: characterBase.Stats{
 				Str:   *str,
 				Dex:   *dex,
 				Con:   *con,
@@ -75,7 +77,7 @@ func main() {
 			},
 		}
 
-		fmt.Printf("saved character %+v\n", characterCreate.Name)
+		fmt.Printf("saved character %+v\n", characterCreate)
 
 	case "view":
 

@@ -1,11 +1,13 @@
 package characterBase
 
 type Character struct {
-	Name   string
-	Race   string
-	Class  string
-	Level  int
-	Skills Stats
+	Name        string
+	Race        string
+	Background  string
+	Class       string
+	Level       int
+	Proficiency int
+	Stats       Stats
 	// Equipment Equipment
 }
 
