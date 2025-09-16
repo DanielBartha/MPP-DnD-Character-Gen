@@ -77,6 +77,8 @@ func main() {
 				Cha:   *cha,
 			},
 		}
+		// TODO: change this, it should be somehow part of characterCreate
+		fmt.Println("Proficiency bonus:", characterCreate.ProficiencyBonus())
 
 		fmt.Printf("saved character %+v\n", characterCreate)
 

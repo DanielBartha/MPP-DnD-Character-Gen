@@ -1,5 +1,20 @@
 package characterBase
 
+func (c Character) ProficiencyBonus() int {
+	switch {
+	case c.Level >= 17:
+		return 6
+	case c.Level >= 13:
+		return 5
+	case c.Level >= 9:
+		return 4
+	case c.Level >= 5:
+		return 3
+	default:
+		return 2
+	}
+}
+
 type Character struct {
 	Name        string
 	Race        string
