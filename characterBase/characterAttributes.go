@@ -1,18 +1,30 @@
 package characterBase
 
-func (c Character) ProficiencyBonus() int {
+func abilityModifier(score int) int {
+	return (score - 10) / 2
+}
+
+func (c *Character) UpdateProficiency() {
 	switch {
 	case c.Level >= 17:
-		return 6
+		c.Proficiency = 6
 	case c.Level >= 13:
-		return 5
+		c.Proficiency = 5
 	case c.Level >= 9:
-		return 4
+		c.Proficiency = 4
 	case c.Level >= 5:
-		return 3
+		c.Proficiency = 3
 	default:
-		return 2
+		c.Proficiency = 2
 	}
+
+	// ability modifiers
+	c.Stats.StrMod = abilityModifier(c.Stats.Str)
+	c.Stats.DexMod = abilityModifier(c.Stats.Dex)
+	c.Stats.ConMod = abilityModifier(c.Stats.Con)
+	c.Stats.IntelMod = abilityModifier(c.Stats.Intel)
+	c.Stats.WisMod = abilityModifier(c.Stats.Wis)
+	c.Stats.ChaMod = abilityModifier(c.Stats.Cha)
 }
 
 type Character struct {
@@ -27,12 +39,23 @@ type Character struct {
 }
 
 type Stats struct {
-	Str   int
-	Dex   int
-	Con   int
-	Intel int
-	Wis   int
-	Cha   int
+	Str    int
+	StrMod int
+
+	Dex    int
+	DexMod int
+
+	Con    int
+	ConMod int
+
+	Intel    int
+	IntelMod int
+
+	Wis    int
+	WisMod int
+
+	Cha    int
+	ChaMod int
 }
 
 // type Equipment struct {

@@ -36,7 +36,7 @@ func main() {
 
 		name := createCmd.String("name", "", "character name (required)")
 		race := createCmd.String("race", "", "character race (required)")
-		// I passed "acolyte" here as default value
+		// "acolyte" here as default value
 		background := createCmd.String("background", "acolyte", "character background (required)")
 		class := createCmd.String("class", "", "character class (required)")
 		level := createCmd.Int("level", 1, "character level (required)")
@@ -77,8 +77,8 @@ func main() {
 				Cha:   *cha,
 			},
 		}
-		// TODO: change this, it should be somehow part of characterCreate
-		fmt.Println("Proficiency bonus:", characterCreate.ProficiencyBonus())
+
+		characterCreate.UpdateProficiency()
 
 		fmt.Printf("saved character %+v\n", characterCreate)
 
