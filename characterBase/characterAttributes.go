@@ -1,5 +1,7 @@
 package characterBase
 
+import characterClasses "github.com/DanielBartha/MPP-DnD-Character-Gen/characteerClasses"
+
 func abilityModifier(score int) int {
 	return (score - 10) / 2
 }
@@ -27,6 +29,10 @@ func (c *Character) UpdateProficiency() {
 	c.Stats.ChaMod = abilityModifier(c.Stats.Cha)
 }
 
+func (c *Character) checkClass() {
+
+}
+
 type Character struct {
 	Name        string
 	Race        string
@@ -35,6 +41,7 @@ type Character struct {
 	Level       int
 	Proficiency int
 	Stats       Stats
+	Skills      characterClasses.ClassSkills
 	// Equipment Equipment
 }
 

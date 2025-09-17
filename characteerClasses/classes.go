@@ -1,4 +1,4 @@
-package characteerclasses
+package characterClasses
 
 type ClassSkills struct {
 	MaxAllowed int

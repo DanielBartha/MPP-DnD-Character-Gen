@@ -76,6 +76,7 @@ func main() {
 				Wis:   *wis,
 				Cha:   *cha,
 			},
+			// Skills: characterBase.ClassSkills,
 		}
 
 		characterCreate.UpdateProficiency()
