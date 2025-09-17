@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/DanielBartha/MPP-DnD-Character-Gen/characterBase"
+	"github.com/DanielBartha/MPP-DnD-Character-Gen/jsonSettings"
 )
 
 func usage() {
@@ -31,15 +32,16 @@ func main() {
 
 	switch cmd {
 	case "create":
-		// You could use the Flag package like this
-		// But feel free to do it differently!
 		createCmd := flag.NewFlagSet("create", flag.ExitOnError)
 
 		name := createCmd.String("name", "", "character name (required)")
 		race := createCmd.String("race", "", "character race (required)")
+		// I passed "acolyte" here as default value
+		background := createCmd.String("background", "acolyte", "character background (required)")
 		class := createCmd.String("class", "", "character class (required)")
 		level := createCmd.Int("level", 1, "character level (required)")
 
+		// Stats
 		str := createCmd.Int("str", 10, "strength is required")
 		dex := createCmd.Int("dex", 10, "dexterity is required")
 		con := createCmd.Int("con", 10, "constitution is required")
@@ -61,11 +63,12 @@ func main() {
 		}
 
 		characterCreate := characterBase.Character{
-			Name:  *name,
-			Race:  *race,
-			Class: *class,
-			Level: *level,
-			Skills: characterBase.Stats{
+			Name:       *name,
+			Race:       *race,
+			Background: *background,
+			Class:      *class,
+			Level:      *level,
+			Stats: characterBase.Stats{
 				Str:   *str,
 				Dex:   *dex,
 				Con:   *con,
@@ -74,10 +77,21 @@ func main() {
 				Cha:   *cha,
 			},
 		}
+		// TODO: change this, it should be somehow part of characterCreate
+		fmt.Println("Proficiency bonus:", characterCreate.ProficiencyBonus())
 
-		fmt.Printf("saved character %+v\n", characterCreate.Name)
+		fmt.Printf("saved character %+v\n", characterCreate)
+
+		// saving character here
+		jsonSettings.SaveCharacter(&jsonSettings.Settings{
+			Character: characterCreate,
+		})
 
 	case "view":
+		// loading character data here
+		var loaded jsonSettings.Settings
+		jsonSettings.LoadCharacter(&loaded)
+		fmt.Println("Character is loaded: ", loaded.Character)
 
 	case "list":
 
