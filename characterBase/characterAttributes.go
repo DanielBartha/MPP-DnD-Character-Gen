@@ -1,6 +1,10 @@
 package characterBase
 
-import characterClasses "github.com/DanielBartha/MPP-DnD-Character-Gen/characteerClasses"
+import (
+	"strings"
+
+	"github.com/DanielBartha/MPP-DnD-Character-Gen/characterClasses"
+)
 
 func abilityModifier(score int) int {
 	return (score - 10) / 2
@@ -29,8 +33,34 @@ func (c *Character) UpdateProficiency() {
 	c.Stats.ChaMod = abilityModifier(c.Stats.Cha)
 }
 
-func (c *Character) checkClass() {
+func (c *Character) AssignClassSkills() {
+	// match uppercase and lowercase inputs
+	classKey := strings.ToLower(strings.TrimSpace(c.Class))
 
+	// "ok" is some go voodoo that checks if value exists in the map
+	classSkills, ok := characterClasses.Classes[classKey]
+	if !ok {
+		// just in case no value is found
+		c.Skills = characterClasses.ClassSkills{
+			MaxAllowed: 0,
+			Skills:     []string{},
+		}
+		c.Skills.Skills = append(c.Skills.Skills, "Insight", "Religion")
+		return
+	}
+
+	// copying value to not change the global map accidentally
+	src := classSkills.Skills
+	localSlice := make([]string, len(src))
+	copy(localSlice, src)
+
+	local := characterClasses.ClassSkills{
+		MaxAllowed: classSkills.MaxAllowed,
+		Skills:     localSlice,
+	}
+	local.Skills = append(local.Skills, "insight", "religion")
+
+	c.Skills = local
 }
 
 type Character struct {

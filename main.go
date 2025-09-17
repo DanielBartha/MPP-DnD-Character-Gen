@@ -76,9 +76,9 @@ func main() {
 				Wis:   *wis,
 				Cha:   *cha,
 			},
-			// Skills: characterBase.ClassSkills,
 		}
 
+		characterCreate.AssignClassSkills()
 		characterCreate.UpdateProficiency()
 
 		fmt.Printf("saved character %+v\n", characterCreate)
