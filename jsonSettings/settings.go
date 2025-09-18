@@ -39,7 +39,6 @@ import (
 Accurate representation of me coding this
 */
 
-// this is where character data gets passed
 type Settings struct {
 	Character characterBase.Character
 }

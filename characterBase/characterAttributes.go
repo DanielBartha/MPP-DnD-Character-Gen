@@ -24,7 +24,6 @@ func (c *Character) UpdateProficiency() {
 		c.Proficiency = 2
 	}
 
-	// ability modifiers
 	c.Stats.StrMod = abilityModifier(c.Stats.Str)
 	c.Stats.DexMod = abilityModifier(c.Stats.Dex)
 	c.Stats.ConMod = abilityModifier(c.Stats.Con)
@@ -40,7 +39,7 @@ func (c *Character) AssignClassSkills() {
 	// "ok" is some go voodoo that checks if value exists in the map
 	classSkills, ok := characterClasses.Classes[classKey]
 	if !ok {
-		// just in case no value is found
+		// fallback just in case no value is found
 		c.Skills = characterClasses.ClassSkills{
 			MaxAllowed: 0,
 			Skills:     []string{},
