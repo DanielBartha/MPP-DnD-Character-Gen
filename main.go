@@ -90,7 +90,7 @@ func main() {
 			os.Exit(2)
 		}
 
-		fmt.Printf("saved character %+v\n", characterCreate)
+		fmt.Printf("saved character %+v\n", characterCreate.Name)
 
 	case "view":
 		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
