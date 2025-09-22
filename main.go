@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strings"
 
 	"path/filepath"
 
@@ -103,7 +104,34 @@ func main() {
 			fmt.Println("error loading:", err)
 			os.Exit(2)
 		}
-		fmt.Printf("Character is loaded: %+v\n", character)
+		fmt.Printf(
+			"Name: %s\n"+
+				"Class: %s\n"+
+				"Race: %s\n"+
+				"Background: %s\n"+
+				"Level: %d\n"+
+				"Ability scores:\n"+
+				"  STR: %d (%+d)\n"+
+				"  DEX: %d (%+d)\n"+
+				"  CON: %d (%+d)\n"+
+				"  INT: %d (%+d)\n"+
+				"  WIS: %d (%+d)\n"+
+				"  CHA: %d (%+d)\n"+
+				"Proficiency bonus: +%d\n"+
+				"Skill proficiencies: %s\n",
+			character.Name,
+			character.Class,
+			character.Race,
+			character.Background,
+			character.Level,
+			character.Stats.Str, character.Stats.StrMod,
+			character.Stats.Dex, character.Stats.DexMod,
+			character.Stats.Con, character.Stats.ConMod,
+			character.Stats.Intel, character.Stats.IntelMod,
+			character.Stats.Wis, character.Stats.WisMod,
+			character.Stats.Cha, character.Stats.ChaMod,
+			character.Proficiency,
+			strings.Join(character.Skills.Skills, ", "))
 
 	case "list":
 
