@@ -5,8 +5,11 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/DanielBartha/MPP-DnD-Character-Gen/characterBase"
-	"github.com/DanielBartha/MPP-DnD-Character-Gen/jsonSettings"
+	"path/filepath"
+
+	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
+	"github.com/DanielBartha/MPP-DnD-Character-Gen/repository"
+	"github.com/DanielBartha/MPP-DnD-Character-Gen/service"
 )
 
 func usage() {
@@ -61,13 +64,13 @@ func main() {
 			os.Exit(2)
 		}
 
-		characterCreate := characterBase.Character{
+		characterCreate := domain.Character{
 			Name:       *name,
 			Race:       *race,
 			Background: *background,
 			Class:      *class,
 			Level:      *level,
-			Stats: characterBase.Stats{
+			Stats: domain.Stats{
 				Str:   *str,
 				Dex:   *dex,
 				Con:   *con,
@@ -77,19 +80,30 @@ func main() {
 			},
 		}
 
-		characterCreate.AssignClassSkills()
-		characterCreate.UpdateProficiency()
+		svc := service.NewCharacterService()
+		svc.AssignClassSkills(&characterCreate)
+		svc.UpdateProficiency(&characterCreate)
+
+		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
+		if err := repo.Save(&characterCreate); err != nil {
+			fmt.Println("error saving character:", err)
+			os.Exit(2)
+		}
 
 		fmt.Printf("saved character %+v\n", characterCreate)
 
-		jsonSettings.SaveCharacter(&jsonSettings.Settings{
-			Character: characterCreate,
-		})
-
 	case "view":
-		var loaded jsonSettings.Settings
-		jsonSettings.LoadCharacter(&loaded)
-		fmt.Println("Character is loaded: ", loaded.Character)
+		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
+
+		viewCmd := flag.NewFlagSet("view", flag.ExitOnError)
+		name := viewCmd.String("name", "", "character name (required)")
+		_ = viewCmd.Parse(os.Args[2:])
+		character, err := repo.Load(*name)
+		if err != nil {
+			fmt.Println("error loading:", err)
+			os.Exit(2)
+		}
+		fmt.Printf("Character is loaded: %+v\n", character)
 
 	case "list":
 

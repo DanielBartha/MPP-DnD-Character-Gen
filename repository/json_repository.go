@@ -1,4 +1,4 @@
-package jsonSettings
+package repository
 
 import (
 	"encoding/json"
@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/DanielBartha/MPP-DnD-Character-Gen/characterBase"
+	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
 )
 
 /*
@@ -39,32 +39,47 @@ import (
 Accurate representation of me coding this
 */
 
-type Settings struct {
-	Character characterBase.Character
+type JsonRepository struct {
+	filePath string
 }
 
-func LoadCharacter(s *Settings) {
-	data, err := os.ReadFile(filepath.Join("jsonSettings", "settings.json"))
-	if err != nil {
-		fmt.Println("No character loaded ...")
-		return
-	}
-
-	err = json.Unmarshal(data, s)
-	if err != nil {
-		panic(err)
-	}
+func NewJsonRepository(filePath string) *JsonRepository {
+	dir := filepath.Dir(filePath)
+	_ = os.MkdirAll(dir, 0755)
+	return &JsonRepository{filePath: filePath}
 }
 
-func SaveCharacter(s *Settings) {
-	data, err := json.MarshalIndent(s, "", " ")
-	if err != nil {
-		panic(err)
+func (repo *JsonRepository) Save(character *domain.Character) error {
+	if character == nil {
+		return fmt.Errorf("nil character")
 	}
+	data, err := json.MarshalIndent(character, "", " ")
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(repo.filePath, data, 0644)
+}
 
-	// 0666 is permission for "os" to read/write everything cuz fuck security
-	err = os.WriteFile(filepath.Join("jsonSettings", "settings.json"), data, 0666)
+func (repo *JsonRepository) Load(_ string) (*domain.Character, error) {
+	data, err := os.ReadFile(repo.filePath)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
+	var character domain.Character
+	if err := json.Unmarshal(data, &character); err != nil {
+		return nil, err
+	}
+	return &character, nil
+}
+
+func (repo *JsonRepository) List() ([]*domain.Character, error) {
+	c, err := repo.Load("")
+	if err != nil {
+		return nil, err
+	}
+	return []*domain.Character{c}, nil
+}
+
+func (repo *JsonRepository) Delete(_ string) error {
+	return os.Remove(repo.filePath)
 }

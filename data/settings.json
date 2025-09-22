@@ -1,0 +1,35 @@
+{
+ "Name": "Durin",
+ "Race": "dwarf",
+ "Background": "urchin",
+ "Class": "paladin",
+ "Level": 13,
+ "Proficiency": 5,
+ "Stats": {
+  "Str": 16,
+  "StrMod": 3,
+  "Dex": 10,
+  "DexMod": 0,
+  "Con": 13,
+  "ConMod": 1,
+  "Intel": 8,
+  "IntelMod": -1,
+  "Wis": 12,
+  "WisMod": 1,
+  "Cha": 14,
+  "ChaMod": 2
+ },
+ "Skills": {
+  "MaxAllowed": 2,
+  "Skills": [
+   "athletics",
+   "insight",
+   "intimidation",
+   "medicine",
+   "persuasion",
+   "religion",
+   "insight",
+   "religion"
+  ]
+ }
+}
