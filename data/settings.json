@@ -1,7 +1,7 @@
 {
  "Name": "Kaelthar Stormcloud",
  "Race": "dwarf",
- "Background": "urchin",
+ "Background": "acolyte",
  "Class": "fighter",
  "Level": 3,
  "Proficiency": 2,
@@ -10,8 +10,8 @@
   "StrMod": 3,
   "Dex": 10,
   "DexMod": 0,
-  "Con": 13,
-  "ConMod": 1,
+  "Con": 15,
+  "ConMod": 2,
   "Intel": 8,
   "IntelMod": -1,
   "Wis": 12,
@@ -24,12 +24,6 @@
   "Skills": [
    "acrobatics",
    "animal handling",
-   "athletics",
-   "history",
-   "insight",
-   "intimidation",
-   "perception",
-   "survival",
    "insight",
    "religion"
   ]
