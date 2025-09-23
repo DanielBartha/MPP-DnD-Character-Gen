@@ -75,3 +75,52 @@ func (s *CharacterService) AssignClassSkills(character *domain.Character) {
 		Skills:     selected,
 	}
 }
+
+func (s *CharacterService) ApplyRacialBonuses(character *domain.Character) {
+	switch strings.ToLower(character.Race) {
+	case "dwarf":
+		character.Stats.Con += 2
+
+	case "elf":
+		character.Stats.Dex += 2
+
+	case "halfling":
+		character.Stats.Dex += 2
+
+	case "human":
+		character.Stats.Str++
+		character.Stats.Dex++
+		character.Stats.Con++
+		character.Stats.Intel++
+		character.Stats.Wis++
+		character.Stats.Cha++
+
+	case "dragonborn":
+		character.Stats.Str += 2
+		character.Stats.Cha++
+
+	case "gnome":
+		character.Stats.Intel += 2
+
+	// TODO: half-eelves get to choose which stats to increase besides the rizz, for now dex and wis as defaults
+	case "half-elf":
+		character.Stats.Cha += 2
+		character.Stats.Dex++
+		character.Stats.Wis++
+
+	case "half-orc":
+		character.Stats.Str += 2
+		character.Stats.Con++
+
+	case "tiefling":
+		character.Stats.Cha += 2
+		character.Stats.Intel++
+	}
+
+	character.Stats.StrMod = (character.Stats.Str - 10) / 2
+	character.Stats.DexMod = (character.Stats.Dex - 10) / 2
+	character.Stats.ConMod = (character.Stats.Con - 10) / 2
+	character.Stats.IntelMod = (character.Stats.Intel - 10) / 2
+	character.Stats.WisMod = (character.Stats.Wis - 10) / 2
+	character.Stats.ChaMod = (character.Stats.Cha - 10) / 2
+}

@@ -83,6 +83,7 @@ func main() {
 
 		svc := service.NewCharacterService()
 		svc.AssignClassSkills(&characterCreate)
+		svc.ApplyRacialBonuses(&characterCreate)
 		svc.UpdateProficiency(&characterCreate)
 
 		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
