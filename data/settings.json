@@ -1,10 +1,10 @@
 {
- "Name": "Durin",
+ "Name": "Kaelthar Stormcloud",
  "Race": "dwarf",
  "Background": "urchin",
- "Class": "paladin",
- "Level": 13,
- "Proficiency": 5,
+ "Class": "fighter",
+ "Level": 3,
+ "Proficiency": 2,
  "Stats": {
   "Str": 16,
   "StrMod": 3,
@@ -22,12 +22,14 @@
  "Skills": {
   "MaxAllowed": 2,
   "Skills": [
+   "acrobatics",
+   "animal handling",
    "athletics",
+   "history",
    "insight",
    "intimidation",
-   "medicine",
-   "persuasion",
-   "religion",
+   "perception",
+   "survival",
    "insight",
    "religion"
   ]

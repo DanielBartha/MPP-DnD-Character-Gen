@@ -49,12 +49,12 @@ func (s *CharacterService) AssignClassSkills(character *domain.Character) {
 	if !ok {
 		character.Skills = characterClasses.ClassSkills{
 			MaxAllowed: 0,
-			Skills:     []string{"Insight", "Religion"},
+			Skills:     []string{"insight", "religion"},
 		}
 		return
 	}
 
-	// copying value to not change the global map accidentally
+	// copying value to not change the global map for skills accidentally
 	src := classSkills.Skills
 	localSlice := make([]string, len(src))
 	copy(localSlice, src)
