@@ -17,7 +17,11 @@ func NewCharacterService() *CharacterService {
 }
 
 func abilityModifier(score int) int {
-	return (score - 10) / 2
+	result := (score - 10) / 2
+	if (score-10)%2 < 0 {
+		result--
+	}
+	return result
 }
 
 func (s *CharacterService) UpdateProficiency(character *domain.Character) {

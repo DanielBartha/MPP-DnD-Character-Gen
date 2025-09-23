@@ -1,29 +1,29 @@
 {
- "Name": "Kaelthar Stormcloud",
- "Race": "dwarf",
+ "Name": "Raven Nostrength",
+ "Race": "human",
  "Background": "acolyte",
- "Class": "fighter",
- "Level": 3,
+ "Class": "barbarian",
+ "Level": 1,
  "Proficiency": 2,
  "Stats": {
-  "Str": 16,
-  "StrMod": 3,
-  "Dex": 10,
+  "Str": 11,
+  "StrMod": 0,
+  "Dex": 11,
   "DexMod": 0,
-  "Con": 15,
+  "Con": 14,
   "ConMod": 2,
-  "Intel": 8,
+  "Intel": 9,
   "IntelMod": -1,
-  "Wis": 12,
+  "Wis": 13,
   "WisMod": 1,
-  "Cha": 14,
+  "Cha": 15,
   "ChaMod": 2
  },
  "Skills": {
   "MaxAllowed": 2,
   "Skills": [
-   "acrobatics",
    "animal handling",
+   "athletics",
    "insight",
    "religion"
   ]
