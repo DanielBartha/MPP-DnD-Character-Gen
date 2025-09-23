@@ -95,11 +95,7 @@ func main() {
 
 	case "view":
 		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
-
-		viewCmd := flag.NewFlagSet("view", flag.ExitOnError)
-		name := viewCmd.String("name", "", "character name (required)")
-		_ = viewCmd.Parse(os.Args[2:])
-		character, err := repo.Load(*name)
+		character, err := repo.Load("")
 		if err != nil {
 			fmt.Println("error loading:", err)
 			os.Exit(2)
@@ -131,7 +127,8 @@ func main() {
 			character.Stats.Wis, character.Stats.WisMod,
 			character.Stats.Cha, character.Stats.ChaMod,
 			character.Proficiency,
-			strings.Join(character.Skills.Skills, ", "))
+			strings.Join(character.Skills.Skills, ", "),
+		)
 
 	case "list":
 

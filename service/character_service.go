@@ -54,16 +54,24 @@ func (s *CharacterService) AssignClassSkills(character *domain.Character) {
 		return
 	}
 
-	// copying value to not change the global map for skills accidentally
+	// local copy of skills to not modify global map on accident
 	src := classSkills.Skills
 	localSlice := make([]string, len(src))
 	copy(localSlice, src)
 
-	local := characterClasses.ClassSkills{
-		MaxAllowed: classSkills.MaxAllowed,
-		Skills:     localSlice,
+	selected := []string{}
+	if classSkills.MaxAllowed > 0 && len(localSlice) > 0 {
+		limit := classSkills.MaxAllowed
+		if limit > len(localSlice) {
+			limit = len(localSlice)
+		}
+		selected = localSlice[:limit]
 	}
-	local.Skills = append(local.Skills, "insight", "religion")
 
-	character.Skills = local
+	selected = append(selected, "insight", "religion")
+
+	character.Skills = characterClasses.ClassSkills{
+		MaxAllowed: classSkills.MaxAllowed,
+		Skills:     selected,
+	}
 }
