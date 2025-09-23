@@ -59,9 +59,20 @@ func main() {
 			os.Exit(2)
 		}
 
-		if *name == "" || *race == "" || *class == "" {
-			fmt.Println("name, race, class and level are required")
-			createCmd.Usage()
+		if *name == "" {
+			fmt.Println("name is required")
+			os.Exit(2)
+		}
+		if *race == "" {
+			fmt.Println("race is required")
+			os.Exit(2)
+		}
+		if *class == "" {
+			fmt.Println("class is required")
+			os.Exit(2)
+		}
+		if *level <= 0 {
+			fmt.Println("level is required")
 			os.Exit(2)
 		}
 
