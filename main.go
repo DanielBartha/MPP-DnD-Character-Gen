@@ -118,7 +118,7 @@ func main() {
 		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
 		character, err := repo.Load(*name)
 		if err != nil {
-			fmt.Println(err)
+			fmt.Printf("character %q not found\n", *name)
 			os.Exit(2)
 		}
 
@@ -138,8 +138,8 @@ func main() {
 				"Proficiency bonus: +%d\n"+
 				"Skill proficiencies: %s\n",
 			character.Name,
-			character.Class,
-			character.Race,
+			strings.ToLower(character.Class),
+			strings.ToLower(character.Race),
 			character.Background,
 			character.Level,
 			character.Stats.Str, character.Stats.StrMod,
