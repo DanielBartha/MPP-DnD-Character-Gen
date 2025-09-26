@@ -50,36 +50,77 @@ func NewJsonRepository(filePath string) *JsonRepository {
 }
 
 func (repo *JsonRepository) Save(character *domain.Character) error {
-	if character == nil {
-		return fmt.Errorf("nil character")
+	characters, _ := repo.List()
+
+	updated := false
+	for i, c := range characters {
+		if c.Name == character.Name {
+			characters[i] = character
+			updated = true
+			break
+		}
 	}
-	data, err := json.MarshalIndent(character, "", " ")
+	if !updated {
+		characters = append(characters, character)
+	}
+
+	data, err := json.MarshalIndent(characters, "", "  ")
 	if err != nil {
 		return err
 	}
-	return os.WriteFile(repo.filePath, data, 0644)
+	return os.WriteFile(repo.filePath, data, 0666)
 }
 
-func (repo *JsonRepository) Load(_ string) (*domain.Character, error) {
-	data, err := os.ReadFile(repo.filePath)
+func (repo *JsonRepository) Load(name string) (*domain.Character, error) {
+	characters, err := repo.List()
 	if err != nil {
 		return nil, err
 	}
-	var character domain.Character
-	if err := json.Unmarshal(data, &character); err != nil {
-		return nil, err
+
+	for _, c := range characters {
+		if c.Name == name {
+			return c, nil
+		}
 	}
-	return &character, nil
+	return nil, fmt.Errorf("character %s not found", name)
 }
 
 func (repo *JsonRepository) List() ([]*domain.Character, error) {
-	c, err := repo.Load("")
+	data, err := os.ReadFile(repo.filePath)
 	if err != nil {
+		if os.IsNotExist(err) {
+			return []*domain.Character{}, nil
+		}
 		return nil, err
 	}
-	return []*domain.Character{c}, nil
+
+	var characters []*domain.Character
+	if len(data) == 0 {
+		return []*domain.Character{}, nil
+	}
+
+	if err := json.Unmarshal(data, &characters); err != nil {
+		return nil, err
+	}
+	return characters, nil
 }
 
-func (repo *JsonRepository) Delete(_ string) error {
-	return os.Remove(repo.filePath)
+func (repo *JsonRepository) Delete(name string) error {
+	characters, err := repo.List()
+	if err != nil {
+		return err
+	}
+
+	newList := make([]*domain.Character, 0)
+	for _, c := range characters {
+		if c.Name != name {
+			newList = append(newList, c)
+		}
+	}
+
+	data, err := json.MarshalIndent(newList, "", "  ")
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(repo.filePath, data, 0666)
 }
