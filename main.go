@@ -118,8 +118,8 @@ func main() {
 		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
 		character, err := repo.Load(*name)
 		if err != nil {
-			fmt.Println(err)
-			os.Exit(2)
+			fmt.Printf("character %q not found\n", *name)
+			return
 		}
 
 		fmt.Printf(
