@@ -118,7 +118,7 @@ func main() {
 		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
 		character, err := repo.Load(*name)
 		if err != nil {
-			fmt.Println("error loading:", err)
+			fmt.Println(err)
 			os.Exit(2)
 		}
 
@@ -182,7 +182,7 @@ func main() {
 			fmt.Println("error deleting character:", err)
 			os.Exit(2)
 		}
-		fmt.Printf("Character %s deleted.\n", *name)
+		fmt.Printf("deleted %s\n", *name)
 
 	case "equip":
 

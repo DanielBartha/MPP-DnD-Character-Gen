@@ -82,7 +82,7 @@ func (repo *JsonRepository) Load(name string) (*domain.Character, error) {
 			return c, nil
 		}
 	}
-	return nil, fmt.Errorf("character %s not found", name)
+	return nil, fmt.Errorf("character %q not found", name)
 }
 
 func (repo *JsonRepository) List() ([]*domain.Character, error) {
