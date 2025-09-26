@@ -40,7 +40,7 @@ func main() {
 
 		name := createCmd.String("name", "", "character name (required)")
 		race := createCmd.String("race", "", "character race (required)")
-		// "acolyte" here as default value
+		// "acolyte" as default value
 		background := createCmd.String("background", "acolyte", "character background (required)")
 		class := createCmd.String("class", "", "character class (required)")
 		level := createCmd.Int("level", 1, "character level (required)")
@@ -106,12 +106,22 @@ func main() {
 		fmt.Printf("saved character %+v\n", characterCreate.Name)
 
 	case "view":
+		viewCmd := flag.NewFlagSet("view", flag.ExitOnError)
+		name := viewCmd.String("name", "", "character name (required)")
+		_ = viewCmd.Parse(os.Args[2:])
+
+		if *name == "" {
+			fmt.Println("name is required")
+			os.Exit(2)
+		}
+
 		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
-		character, err := repo.Load("")
+		character, err := repo.Load(*name)
 		if err != nil {
 			fmt.Println("error loading:", err)
 			os.Exit(2)
 		}
+
 		fmt.Printf(
 			"Name: %s\n"+
 				"Class: %s\n"+
@@ -143,8 +153,36 @@ func main() {
 		)
 
 	case "list":
+		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
+		characters, err := repo.List()
+		if err != nil {
+			fmt.Println("error listing characters:", err)
+			os.Exit(2)
+		}
+		if len(characters) == 0 {
+			fmt.Println("no characters found")
+			return
+		}
+		for _, c := range characters {
+			fmt.Printf("- %s (%s %s)\n", c.Name, c.Race, c.Class)
+		}
 
 	case "delete":
+		deleteCmd := flag.NewFlagSet("delete", flag.ExitOnError)
+		name := deleteCmd.String("name", "", "character name (required)")
+		_ = deleteCmd.Parse(os.Args[2:])
+
+		if *name == "" {
+			fmt.Println("name is required")
+			os.Exit(2)
+		}
+
+		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
+		if err := repo.Delete(*name); err != nil {
+			fmt.Println("error deleting character:", err)
+			os.Exit(2)
+		}
+		fmt.Printf("Character %s deleted.\n", *name)
 
 	case "equip":
 
