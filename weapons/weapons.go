@@ -20,7 +20,7 @@ var SimpleMelee = []Weapon{
 }
 
 var SimpleRanged = []Weapon{
-	{Name: "crossbow, light", TwoHanded: true},
+	{Name: "light crossbow", TwoHanded: true},
 	{Name: "dart", TwoHanded: false},
 	{Name: "shortbow", TwoHanded: true},
 	{Name: "sling", TwoHanded: true},
@@ -49,8 +49,8 @@ var MartialMelee = []Weapon{
 
 var MartialRanged = []Weapon{
 	{Name: "blowgun", TwoHanded: true},
-	{Name: "crossbow, hand", TwoHanded: false},
-	{Name: "crossbow, heavy", TwoHanded: true},
+	{Name: "hand crossbow", TwoHanded: false},
+	{Name: "heavy crossbow", TwoHanded: true},
 	{Name: "longbow", TwoHanded: true},
 	{Name: "net", TwoHanded: false},
 }
@@ -60,4 +60,26 @@ var AllWeapons = map[string][]Weapon{
 	"simple ranged":  SimpleRanged,
 	"martial melee":  MartialMelee,
 	"martial ranged": MartialRanged,
+}
+
+func GetAllWeapons() []Weapon {
+	all := []Weapon{}
+	for _, group := range AllWeapons {
+		all = append(all, group...)
+	}
+	return all
+}
+
+func GetSimpleWeapons() []Weapon {
+	all := []Weapon{}
+	all = append(all, SimpleMelee...)
+	all = append(all, SimpleRanged...)
+	return all
+}
+
+func GetMartialWeapons() []Weapon {
+	all := []Weapon{}
+	all = append(all, MartialMelee...)
+	all = append(all, MartialRanged...)
+	return all
 }

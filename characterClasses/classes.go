@@ -1,13 +1,15 @@
 package characterClasses
 
+import "github.com/DanielBartha/MPP-DnD-Character-Gen/weapons"
+
 type ClassSkills struct {
 	MaxAllowed int
 	Skills     []string
 	Armor      []string
 	Shields    string
-	// weapons
-	MainHand string
-	OffHand  string
+	Weapons    []weapons.Weapon
+	MainHand   string
+	OffHand    string
 }
 
 var Classes = map[string]ClassSkills{
@@ -20,6 +22,7 @@ var Classes = map[string]ClassSkills{
 			"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate",
 		},
 		Shields:  "shield",
+		Weapons:  weapons.GetAllWeapons(),
 		MainHand: "main hand",
 		OffHand:  "off hand",
 	},
@@ -33,6 +36,16 @@ var Classes = map[string]ClassSkills{
 		Armor: []string{
 			"padded", "leather", "studded leather",
 		},
+		Weapons: append(
+			append([]weapons.Weapon{}, weapons.SimpleMelee...),
+			append(
+				weapons.SimpleRanged,
+				weapons.Weapon{Name: "hand crossbow", TwoHanded: false},
+				weapons.Weapon{Name: "longsword", TwoHanded: false},
+				weapons.Weapon{Name: "rapier", TwoHanded: false},
+				weapons.Weapon{Name: "shortsword", TwoHanded: false},
+			)...,
+		),
 		MainHand: "main hand",
 		OffHand:  "off hand",
 	},
@@ -45,6 +58,7 @@ var Classes = map[string]ClassSkills{
 			"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate",
 		},
 		Shields:  "shield",
+		Weapons:  weapons.GetSimpleWeapons(),
 		MainHand: "main hand",
 		OffHand:  "off hand",
 	},
@@ -57,7 +71,21 @@ var Classes = map[string]ClassSkills{
 		Armor: []string{
 			"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate",
 		},
-		Shields:  "shield",
+		Shields: "shield",
+		Weapons: append(
+			weapons.SimpleRanged,
+			weapons.Weapon{Name: "club", TwoHanded: false},
+			weapons.Weapon{Name: "greatclub", TwoHanded: true},
+			weapons.Weapon{Name: "dagger", TwoHanded: false},
+			weapons.Weapon{Name: "dart", TwoHanded: false},
+			weapons.Weapon{Name: "javelins", TwoHanded: false},
+			weapons.Weapon{Name: "maces", TwoHanded: false},
+			weapons.Weapon{Name: "quarterstaff", TwoHanded: false},
+			weapons.Weapon{Name: "scimitar", TwoHanded: false},
+			weapons.Weapon{Name: "sickle", TwoHanded: false},
+			weapons.Weapon{Name: "sling", TwoHanded: true},
+			weapons.Weapon{Name: "spear", TwoHanded: false},
+		),
 		MainHand: "main hand",
 		OffHand:  "off hand",
 	},
@@ -70,6 +98,7 @@ var Classes = map[string]ClassSkills{
 			"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate", "ring mail", "chain mail", "splint", "plate",
 		},
 		Shields:  "shield",
+		Weapons:  weapons.GetAllWeapons(),
 		MainHand: "main hand",
 		OffHand:  "off hand",
 	},
@@ -79,6 +108,9 @@ var Classes = map[string]ClassSkills{
 			"acrobatics", "athletics", "history", "insight", "religion", "stealth",
 		},
 		// NO ARMOR
+		Weapons: append(weapons.GetSimpleWeapons(),
+			weapons.Weapon{Name: "shortsword", TwoHanded: false},
+		),
 		MainHand: "main hand",
 		OffHand:  "off hand",
 	},
@@ -91,6 +123,7 @@ var Classes = map[string]ClassSkills{
 			"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate", "ring mail", "chain mail", "splint", "plate",
 		},
 		Shields:  "shield",
+		Weapons:  weapons.GetAllWeapons(),
 		MainHand: "main hand",
 		OffHand:  "off hand",
 	},
@@ -103,6 +136,7 @@ var Classes = map[string]ClassSkills{
 			"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate",
 		},
 		Shields:  "shield",
+		Weapons:  weapons.GetAllWeapons(),
 		MainHand: "main hand",
 		OffHand:  "off hand",
 	},
@@ -114,6 +148,12 @@ var Classes = map[string]ClassSkills{
 		Armor: []string{
 			"padded", "leather", "studded leather",
 		},
+		Weapons: append(weapons.GetSimpleWeapons(),
+			weapons.Weapon{Name: "hand crossbow", TwoHanded: false},
+			weapons.Weapon{Name: "longsword", TwoHanded: false},
+			weapons.Weapon{Name: "rapier", TwoHanded: false},
+			weapons.Weapon{Name: "shortsword", TwoHanded: false},
+		),
 		MainHand: "main hand",
 		OffHand:  "off hand",
 	},
@@ -123,6 +163,13 @@ var Classes = map[string]ClassSkills{
 			"arcana", "deception", "insight", "intimidation", "persuasion", "religion",
 		},
 		// NO ARMOR
+		Weapons: []weapons.Weapon{
+			{Name: "dagger", TwoHanded: false},
+			{Name: "dart", TwoHanded: false},
+			{Name: "sling", TwoHanded: true},
+			{Name: "quarterstaff", TwoHanded: false},
+			{Name: "light crossbow", TwoHanded: true},
+		},
 		MainHand: "main hand",
 		OffHand:  "off hand",
 	},
@@ -134,6 +181,7 @@ var Classes = map[string]ClassSkills{
 		Armor: []string{
 			"padded", "leather", "studded leather",
 		},
+		Weapons:  weapons.GetSimpleWeapons(),
 		MainHand: "main hand",
 		OffHand:  "off hand",
 	},
@@ -143,6 +191,13 @@ var Classes = map[string]ClassSkills{
 			"arcana", "history", "insight", "investigation", "medicine", "religion",
 		},
 		// NO ARMOR
+		Weapons: []weapons.Weapon{
+			{Name: "dagger", TwoHanded: false},
+			{Name: "dart", TwoHanded: false},
+			{Name: "sling", TwoHanded: true},
+			{Name: "quarterstaff", TwoHanded: false},
+			{Name: "light crossbow", TwoHanded: true},
+		},
 		MainHand: "main hand",
 		OffHand:  "off hand",
 	},
