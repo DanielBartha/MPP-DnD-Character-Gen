@@ -88,8 +88,11 @@ func (s *CharacterService) ApplyRacialBonuses(character *domain.Character) {
 	case "elf":
 		character.Stats.Dex += 2
 
-	case "halfling", "lightfoot halfling", "stout halfling":
+	case "halfling", "stout halfling":
 		character.Stats.Dex += 2
+
+	case "lightfoot halfling":
+		character.Stats.Cha++
 
 	case "human":
 		character.Stats.Str++
