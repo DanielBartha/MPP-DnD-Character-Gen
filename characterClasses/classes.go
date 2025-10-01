@@ -143,7 +143,7 @@ var Classes = map[string]ClassSkills{
 	"rogue": {
 		MaxAllowed: 4,
 		Skills: []string{
-			"acrobatics", "athletcis", "deception", "insight", "intimidation", "investigation", "perception", "performance", "persuasion", "sleight of hand", "stealth",
+			"acrobatics", "athletics", "deception", "insight", "intimidation", "investigation", "perception", "performance", "persuasion", "sleight of hand", "stealth",
 		},
 		Armor: []string{
 			"padded", "leather", "studded leather",

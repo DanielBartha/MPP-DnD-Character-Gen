@@ -152,11 +152,11 @@ func main() {
 			strings.Join(character.Skills.Skills, ", "),
 		)
 
-		if character.Equipment.Weapon != nil {
-			for slot, weapon := range character.Equipment.Weapon {
-				// title is deprecated but fuck it, can't be bothered rn
-				fmt.Printf("%s: %s\n", strings.Title(slot), weapon)
-			}
+		if weapon, ok := character.Equipment.Weapon["main hand"]; ok {
+			fmt.Printf("Main hand: %s\n", weapon)
+		}
+		if weapon, ok := character.Equipment.Weapon["off hand"]; ok {
+			fmt.Printf("Off hand: %s\n", weapon)
 		}
 
 		if character.Equipment.Armor != "" {
