@@ -5,7 +5,7 @@ type Weapon struct {
 	TwoHanded bool
 }
 
-// defaulting all special weapons to be one hand
+// defaulting all special weapons to be one hand, for now ig
 var SimpleMelee = []Weapon{
 	{Name: "club", TwoHanded: false},
 	{Name: "dagger", TwoHanded: false},

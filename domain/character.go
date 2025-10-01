@@ -11,7 +11,7 @@ type Character struct {
 	Proficiency int
 	Stats       Stats
 	Skills      characterClasses.ClassSkills
-	// Equipment Equipment
+	Equipment   Equipment
 }
 
 type Stats struct {
@@ -32,4 +32,10 @@ type Stats struct {
 
 	Cha    int
 	ChaMod int
+}
+
+type Equipment struct {
+	Weapon map[string]string
+	Armor  string
+	Shield string
 }
