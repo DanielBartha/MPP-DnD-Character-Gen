@@ -152,6 +152,21 @@ func main() {
 			strings.Join(character.Skills.Skills, ", "),
 		)
 
+		if character.Equipment.Weapon != nil {
+			for slot, weapon := range character.Equipment.Weapon {
+				// title is deprecated but fuck it, can't be bothered rn
+				fmt.Printf("%s: %s\n", strings.Title(slot), weapon)
+			}
+		}
+
+		if character.Equipment.Armor != "" {
+			fmt.Printf("Armor: %s\n", character.Equipment.Armor)
+		}
+
+		if character.Equipment.Shield != "" {
+			fmt.Printf("Shield: %s\n", character.Equipment.Shield)
+		}
+
 	case "list":
 		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
 		characters, err := repo.List()
@@ -185,6 +200,66 @@ func main() {
 		fmt.Printf("deleted %s\n", *name)
 
 	case "equip":
+		equipCmd := flag.NewFlagSet("equip", flag.ExitOnError)
+		name := equipCmd.String("name", "", "character name (required)")
+		weapon := equipCmd.String("weapon", "", "weapon to equip")
+		slot := equipCmd.String("slot", "", "slot to equip weapon to")
+		armor := equipCmd.String("armor", "", "armor to equip")
+		shield := equipCmd.String("shield", "", "shield to equip")
+		_ = equipCmd.Parse(os.Args[2:])
+
+		if *name == "" {
+			fmt.Println("name is required")
+			os.Exit(2)
+		}
+
+		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
+		character, err := repo.Load(*name)
+		if err != nil {
+			fmt.Printf("character %q not found\n", *name)
+			return
+		}
+
+		if *weapon != "" && *slot != "" {
+			if character.Equipment.Weapon == nil {
+				character.Equipment.Weapon = make(map[string]string)
+			}
+
+			if existing, ok := character.Equipment.Weapon[*slot]; ok && existing != "" {
+				fmt.Printf("%s already occupied\n", *slot)
+				return
+			}
+
+			character.Equipment.Weapon[*slot] = *weapon
+			if err := repo.Save(character); err != nil {
+				fmt.Printf("error saving character: %v\n", err)
+				os.Exit(2)
+			}
+			fmt.Printf("Equipped weapon %s to %s\n", *weapon, *slot)
+			return
+		}
+
+		if *armor != "" {
+			character.Equipment.Armor = *armor
+			if err := repo.Save(character); err != nil {
+				fmt.Println("error saving character:", *armor)
+				os.Exit(2)
+			}
+			fmt.Printf("Equipped armor %s\n", *armor)
+			return
+		}
+
+		if *shield != "" {
+			character.Equipment.Shield = *shield
+			if err := repo.Save(character); err != nil {
+				fmt.Println("error saving character:", err)
+				os.Exit(2)
+			}
+			fmt.Printf("Equipped shield %s\n", *shield)
+			return
+		}
+
+		fmt.Println("no equipment provided")
 
 	case "learn-spell":
 
