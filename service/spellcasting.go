@@ -8,55 +8,111 @@ import (
 )
 
 var fullCasterSlots = map[int]map[int]int{
-	// need to extend
-	1: {1: 4},
-	2: {1: 3, 2: 2},
-	3: {1: 4, 2: 2},
+	// 1(character level): {1(spell level): 2(spell slots)}
+	1:  {1: 2},
+	2:  {1: 3, 2: 0},
+	3:  {1: 4, 2: 2},
+	4:  {1: 4, 2: 3},
+	5:  {1: 4, 2: 3, 3: 2},
+	6:  {1: 4, 2: 3, 3: 3},
+	7:  {1: 4, 2: 3, 3: 3, 4: 1},
+	8:  {1: 4, 2: 3, 3: 3, 4: 2},
+	9:  {1: 4, 2: 3, 3: 3, 4: 3, 5: 1},
+	10: {1: 4, 2: 3, 3: 3, 4: 3, 5: 2},
+	11: {1: 4, 2: 3, 3: 3, 4: 3, 5: 2, 6: 1},
+	12: {1: 4, 2: 3, 3: 3, 4: 3, 5: 2, 6: 1},
+	13: {1: 4, 2: 3, 3: 3, 4: 3, 5: 2, 6: 1, 7: 1},
+	14: {1: 4, 2: 3, 3: 3, 4: 3, 5: 2, 6: 1, 7: 1},
+	15: {1: 4, 2: 3, 3: 3, 4: 3, 5: 2, 6: 1, 7: 1, 8: 1},
+	16: {1: 4, 2: 3, 3: 3, 4: 3, 5: 2, 6: 1, 7: 1, 8: 1},
+	17: {1: 4, 2: 3, 3: 3, 4: 3, 5: 2, 6: 1, 7: 1, 8: 1, 9: 1},
+	18: {1: 4, 2: 3, 3: 3, 4: 3, 5: 3, 6: 1, 7: 1, 8: 1, 9: 1},
+	19: {1: 4, 2: 3, 3: 3, 4: 3, 5: 3, 6: 2, 7: 1, 8: 1, 9: 1},
+	20: {1: 4, 2: 3, 3: 3, 4: 3, 5: 3, 6: 2, 7: 2, 8: 1, 9: 1},
 }
 
 var halfCasterSlots = map[int]map[int]int{
-	1: {},
-	2: {1: 2},
+	1:  {},
+	2:  {1: 2},
+	3:  {1: 3},
+	4:  {1: 3},
+	5:  {1: 4, 2: 2},
+	6:  {1: 4, 2: 2},
+	7:  {1: 4, 2: 3},
+	8:  {1: 4, 2: 3},
+	9:  {1: 4, 2: 3, 3: 2},
+	10: {1: 4, 2: 3, 3: 2},
+	11: {1: 4, 2: 3, 3: 3},
+	12: {1: 4, 2: 3, 3: 3},
+	13: {1: 4, 2: 3, 3: 3, 4: 1},
+	14: {1: 4, 2: 3, 3: 3, 4: 1},
+	15: {1: 4, 2: 3, 3: 3, 4: 2},
+	16: {1: 4, 2: 3, 3: 3, 4: 2},
+	17: {1: 4, 2: 3, 3: 3, 4: 3, 5: 1},
+	18: {1: 4, 2: 3, 3: 3, 4: 3, 5: 1},
+	19: {1: 4, 2: 3, 3: 3, 4: 3, 5: 2},
+	20: {1: 4, 2: 3, 3: 3, 4: 3, 5: 2},
 }
 
 var pactCasterSlots = map[int]map[int]int{
-	1: {1: 1},
-	2: {1: 2},
+	1:  {1: 1},
+	2:  {1: 2},
+	3:  {2: 2},
+	4:  {2: 2},
+	5:  {3: 2},
+	6:  {3: 2},
+	7:  {4: 2},
+	8:  {4: 2},
+	9:  {5: 2},
+	10: {5: 2},
+	11: {5: 3},
+	12: {5: 3},
+	13: {5: 3},
+	14: {5: 3},
+	15: {5: 3},
+	16: {5: 3},
+	17: {5: 4},
+	18: {5: 4},
+	19: {5: 4},
+	20: {5: 4},
 }
 
-func GetSlotsForClassLevel(class string, level int) (map[int]int, error) {
+func GetSlotsForClassLevel(class string, level int) (map[int]int, string, error) {
 	classKey := strings.ToLower(strings.TrimSpace(class))
-	casterType, _ := domain.SpellcastingType[classKey]
+	casterType, ok := domain.SpellcastingType[classKey]
+	if !ok {
+		return nil, "", fmt.Errorf("class %s is not a spellcaster", class)
+	}
+
 	switch casterType {
 	case "full":
 		if m, ok := fullCasterSlots[level]; ok {
-			return copyIntMap(m), nil
+			return copyIntMap(m), "full", nil
 		}
-		return map[int]int{}, fmt.Errorf("no slot table for full caster level %d", level)
 	case "half":
 		if m, ok := halfCasterSlots[level]; ok {
-			return copyIntMap(m), nil
+			return copyIntMap(m), "half", nil
 		}
-		return map[int]int{}, fmt.Errorf("no slot table for half caster level %d", level)
 	case "pact":
 		if m, ok := pactCasterSlots[level]; ok {
-			return copyIntMap(m), nil
+			return copyIntMap(m), "pact", nil
 		}
-		return map[int]int{}, fmt.Errorf("no pact table for level %d", level)
+	//default ain't a spellcaster, aka not listed in SpellcastingType
 	default:
-		return map[int]int{}, nil // not a spellcaster
+		return nil, "", fmt.Errorf("no slot table for class %s", class)
 	}
+
+	return nil, casterType, fmt.Errorf("no slot table for %s level %d", class, level)
 }
 
 func copyIntMap(in map[int]int) map[int]int {
-	out := make(map[int]int, len(in))
+	mapCopy := make(map[int]int, len(in))
 	for k, v := range in {
-		out[k] = v
+		mapCopy[k] = v
 	}
-	return out
+	return mapCopy
 }
 
-// to call during create
 func (s *CharacterService) InitSpellcasting(c *domain.Character) {
 	if c.Spellcasting == nil {
 		c.Spellcasting = &domain.Spellcasting{
@@ -64,11 +120,13 @@ func (s *CharacterService) InitSpellcasting(c *domain.Character) {
 			PreparedSpells: []string{},
 			Slots:          map[int]int{},
 			MaxSlots:       map[int]int{},
+			CanCast:        false,
 		}
 	}
 
-	slots, err := GetSlotsForClassLevel(c.Class, c.Level)
+	slots, casterType, err := GetSlotsForClassLevel(c.Class, c.Level)
 	if err != nil {
+		c.Spellcasting.CanCast = false
 		return
 	}
 
@@ -76,4 +134,7 @@ func (s *CharacterService) InitSpellcasting(c *domain.Character) {
 		c.Spellcasting.Slots[lvl] = count
 		c.Spellcasting.MaxSlots[lvl] = count
 	}
+
+	c.Spellcasting.CanCast = true
+	c.Spellcasting.CasterType = casterType
 }

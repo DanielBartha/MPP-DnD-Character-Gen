@@ -96,6 +96,7 @@ func main() {
 		svc.AssignClassSkills(&characterCreate)
 		svc.ApplyRacialBonuses(&characterCreate)
 		svc.UpdateProficiency(&characterCreate)
+		svc.InitSpellcasting(&characterCreate)
 
 		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
 		if err := repo.Save(&characterCreate); err != nil {
@@ -262,8 +263,95 @@ func main() {
 		fmt.Println("no equipment provided")
 
 	case "learn-spell":
+		prepareCmd := flag.NewFlagSet("learn-spell", flag.ExitOnError)
+		name := prepareCmd.String("name", "", "character name (required)")
+		spell := prepareCmd.String("spell", "", "spell name (required)")
+		_ = prepareCmd.Parse(os.Args[2:])
+
+		if *name == "" || *spell == "" {
+			fmt.Println("usage: prepare-spell -name <name> -spell <spell>")
+			os.Exit(2)
+		}
+
+		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
+		character, err := repo.Load(*name)
+		if err != nil {
+			fmt.Printf("character %q not found\n", *name)
+			return
+		}
+
+		if character.Spellcasting == nil || !character.Spellcasting.CanCast {
+			fmt.Printf("this class can't cast spells")
+			return
+		}
+
+		for _, s := range character.Spellcasting.LearnedSpells {
+			if strings.EqualFold(s, *spell) {
+				fmt.Printf("%s already learned\n", *spell)
+				return
+			}
+		}
+		if character.Spellcasting.PreparedMode {
+			fmt.Printf("this class prepares spells and can't learn them\n")
+			return
+		}
+
+		character.Spellcasting.LearnedMode = true
+
+		character.Spellcasting.LearnedSpells = append(character.Spellcasting.LearnedSpells, *spell)
+
+		if err := repo.Save(character); err != nil {
+			fmt.Println("error saving character:", err)
+			os.Exit(2)
+		}
+
+		fmt.Printf("Learned spell %s\n", *spell)
 
 	case "prepare-spell":
+		prepareCmd := flag.NewFlagSet("prepare-spell", flag.ExitOnError)
+		name := prepareCmd.String("name", "", "character name (required)")
+		spell := prepareCmd.String("spell", "", "spell name (required)")
+		_ = prepareCmd.Parse(os.Args[2:])
+
+		if *name == "" || *spell == "" {
+			fmt.Println("usage: prepare-spell -name <name> -spell <spell>")
+			os.Exit(2)
+		}
+
+		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
+		character, err := repo.Load(*name)
+		if err != nil {
+			fmt.Printf("character %q not found\n", *name)
+			return
+		}
+
+		if character.Spellcasting == nil || !character.Spellcasting.CanCast {
+			fmt.Printf("this class can't cast spells")
+			return
+		}
+
+		for _, s := range character.Spellcasting.PreparedSpells {
+			if strings.EqualFold(s, *spell) {
+				fmt.Printf("%s already prepared\n", *spell)
+				return
+			}
+		}
+
+		if character.Spellcasting.LearnedMode {
+			fmt.Printf("this class learns spells and can't prepare them\n")
+			return
+		}
+
+		character.Spellcasting.PreparedMode = true
+
+		character.Spellcasting.PreparedSpells = append(character.Spellcasting.PreparedSpells, *spell)
+
+		if err := repo.Save(character); err != nil {
+			fmt.Println("error saving character:", err)
+			os.Exit(2)
+		}
+
+		fmt.Printf("Prepared spell %s\n", *spell)
 
 	default:
 		usage()

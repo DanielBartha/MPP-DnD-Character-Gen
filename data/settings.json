@@ -40,7 +40,8 @@
       },
       "Armor": "chain shirt",
       "Shield": "shield"
-    }
+    },
+    "Spellcasting": null
   },
   {
     "Name": "Pippin Took",
@@ -83,6 +84,212 @@
       },
       "Armor": "",
       "Shield": ""
+    },
+    "Spellcasting": null
+  },
+  {
+    "Name": "Gandalf",
+    "Race": "human",
+    "Background": "acolyte",
+    "Class": "wizard",
+    "Level": 20,
+    "Proficiency": 6,
+    "Stats": {
+      "Str": 9,
+      "StrMod": -1,
+      "Dex": 11,
+      "DexMod": 0,
+      "Con": 13,
+      "ConMod": 1,
+      "Intel": 15,
+      "IntelMod": 2,
+      "Wis": 16,
+      "WisMod": 3,
+      "Cha": 14,
+      "ChaMod": 2
+    },
+    "Skills": {
+      "MaxAllowed": 2,
+      "Skills": [
+        "arcana",
+        "history",
+        "insight",
+        "religion"
+      ],
+      "Armor": null,
+      "Shields": "",
+      "Weapons": null,
+      "MainHand": "",
+      "OffHand": ""
+    },
+    "Equipment": {
+      "Weapon": null,
+      "Armor": "",
+      "Shield": ""
+    },
+    "Spellcasting": {
+      "CantripsKnown": 0,
+      "SpellsKnown": 0,
+      "CanCast": true,
+      "CasterType": "full",
+      "learned_spells": [
+        "acid arrow"
+      ],
+      "prepared_spells": [
+        "burning hands"
+      ],
+      "slots": {
+        "1": 4,
+        "2": 3,
+        "3": 3,
+        "4": 3,
+        "5": 3,
+        "6": 2,
+        "7": 2,
+        "8": 1,
+        "9": 1
+      },
+      "maxslots": {
+        "1": 4,
+        "2": 3,
+        "3": 3,
+        "4": 3,
+        "5": 3,
+        "6": 2,
+        "7": 2,
+        "8": 1,
+        "9": 1
+      },
+      "PreparedMode": false,
+      "LearnedMode": false
+    }
+  },
+  {
+    "Name": "Kaelthar Stormcloud",
+    "Race": "dwarf",
+    "Background": "acolyte",
+    "Class": "fighter",
+    "Level": 3,
+    "Proficiency": 2,
+    "Stats": {
+      "Str": 16,
+      "StrMod": 3,
+      "Dex": 10,
+      "DexMod": 0,
+      "Con": 15,
+      "ConMod": 2,
+      "Intel": 8,
+      "IntelMod": -1,
+      "Wis": 12,
+      "WisMod": 1,
+      "Cha": 14,
+      "ChaMod": 2
+    },
+    "Skills": {
+      "MaxAllowed": 2,
+      "Skills": [
+        "acrobatics",
+        "animal handling",
+        "insight",
+        "religion"
+      ],
+      "Armor": null,
+      "Shields": "",
+      "Weapons": null,
+      "MainHand": "",
+      "OffHand": ""
+    },
+    "Equipment": {
+      "Weapon": null,
+      "Armor": "",
+      "Shield": ""
+    },
+    "Spellcasting": {
+      "CantripsKnown": 0,
+      "SpellsKnown": 0,
+      "CanCast": false,
+      "CasterType": "",
+      "learned_spells": [],
+      "prepared_spells": [],
+      "slots": {},
+      "maxslots": {},
+      "PreparedMode": false,
+      "LearnedMode": false
+    }
+  },
+  {
+    "Name": "Galadriel",
+    "Race": "high elf",
+    "Background": "acolyte",
+    "Class": "sorcerer",
+    "Level": 20,
+    "Proficiency": 6,
+    "Stats": {
+      "Str": 8,
+      "StrMod": -1,
+      "Dex": 10,
+      "DexMod": 0,
+      "Con": 12,
+      "ConMod": 1,
+      "Intel": 15,
+      "IntelMod": 2,
+      "Wis": 14,
+      "WisMod": 2,
+      "Cha": 13,
+      "ChaMod": 1
+    },
+    "Skills": {
+      "MaxAllowed": 2,
+      "Skills": [
+        "arcana",
+        "deception",
+        "insight",
+        "religion"
+      ],
+      "Armor": null,
+      "Shields": "",
+      "Weapons": null,
+      "MainHand": "",
+      "OffHand": ""
+    },
+    "Equipment": {
+      "Weapon": null,
+      "Armor": "",
+      "Shield": ""
+    },
+    "Spellcasting": {
+      "CantripsKnown": 0,
+      "SpellsKnown": 0,
+      "CanCast": true,
+      "CasterType": "full",
+      "learned_spells": [
+        "acid arrow"
+      ],
+      "prepared_spells": [],
+      "slots": {
+        "1": 4,
+        "2": 3,
+        "3": 3,
+        "4": 3,
+        "5": 3,
+        "6": 2,
+        "7": 2,
+        "8": 1,
+        "9": 1
+      },
+      "maxslots": {
+        "1": 4,
+        "2": 3,
+        "3": 3,
+        "4": 3,
+        "5": 3,
+        "6": 2,
+        "7": 2,
+        "8": 1,
+        "9": 1
+      },
+      "PreparedMode": false,
+      "LearnedMode": true
     }
   }
 ]

@@ -5,11 +5,11 @@ import (
 )
 
 var SpellcastingType = map[string]string{
-	"wizard":   "full",
-	"sorcerer": "full",
+	"bard":     "full",
 	"cleric":   "full",
 	"druid":    "full",
-	"bard":     "full",
+	"sorcerer": "full",
+	"wizard":   "full",
 
 	"paladin": "half",
 	"ranger":  "half",
@@ -57,8 +57,14 @@ type Equipment struct {
 }
 
 type Spellcasting struct {
+	CantripsKnown  int
+	SpellsKnown    int
+	CanCast        bool
+	CasterType     string
 	LearnedSpells  []string    `json:"learned_spells"`
 	PreparedSpells []string    `json:"prepared_spells"`
 	Slots          map[int]int `json:"slots"`
 	MaxSlots       map[int]int `json:"maxslots"`
+	PreparedMode   bool
+	LearnedMode    bool
 }
