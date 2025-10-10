@@ -34,6 +34,12 @@ func main() {
 	}
 	cmd := os.Args[1]
 
+	err := service.LoadSpellsCSV("5e-SRD-Spells.csv")
+	if err != nil {
+		fmt.Println("Error loading spell list:", err)
+		os.Exit(1)
+	}
+
 	switch cmd {
 	case "create":
 		createCmd := flag.NewFlagSet("create", flag.ExitOnError)
@@ -277,13 +283,13 @@ func main() {
 		fmt.Println("no equipment provided")
 
 	case "learn-spell":
-		prepareCmd := flag.NewFlagSet("learn-spell", flag.ExitOnError)
-		name := prepareCmd.String("name", "", "character name (required)")
-		spell := prepareCmd.String("spell", "", "spell name (required)")
-		_ = prepareCmd.Parse(os.Args[2:])
+		learnCmd := flag.NewFlagSet("learn-spell", flag.ExitOnError)
+		name := learnCmd.String("name", "", "character name (required)")
+		spell := learnCmd.String("spell", "", "spell name (required)")
+		_ = learnCmd.Parse(os.Args[2:])
 
 		if *name == "" || *spell == "" {
-			fmt.Println("usage: prepare-spell -name <name> -spell <spell>")
+			fmt.Println("usage: learn-spell -name <name> -spell <spell>")
 			os.Exit(2)
 		}
 
@@ -295,7 +301,7 @@ func main() {
 		}
 
 		if character.Spellcasting == nil || !character.Spellcasting.CanCast {
-			fmt.Printf("this class can't cast spells")
+			fmt.Printf("this class can't cast spells\n")
 			return
 		}
 
@@ -305,13 +311,32 @@ func main() {
 				return
 			}
 		}
+
 		if character.Spellcasting.PreparedMode {
 			fmt.Printf("this class prepares spells and can't learn them\n")
 			return
 		}
 
-		character.Spellcasting.LearnedMode = true
+		// check for non-existing spells (csv)
+		level, err := service.GetSpellLevel(*spell)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 
+		if !service.IsSpellForClass(*spell, character.Class) {
+			fmt.Printf("%s cannot learn %s\n", character.Class, *spell)
+			return
+		}
+
+		if level > 0 {
+			if slots, ok := character.Spellcasting.Slots[level]; !ok || slots == 0 {
+				fmt.Printf("the spell has higher level than the available spell slots\n")
+				return
+			}
+		}
+
+		character.Spellcasting.LearnedMode = true
 		character.Spellcasting.LearnedSpells = append(character.Spellcasting.LearnedSpells, *spell)
 
 		if err := repo.Save(character); err != nil {
@@ -340,7 +365,7 @@ func main() {
 		}
 
 		if character.Spellcasting == nil || !character.Spellcasting.CanCast {
-			fmt.Printf("this class can't cast spells")
+			fmt.Printf("this class can't cast spells\n")
 			return
 		}
 
@@ -356,8 +381,26 @@ func main() {
 			return
 		}
 
-		character.Spellcasting.PreparedMode = true
+		// check for non-existing spells (csv)
+		level, err := service.GetSpellLevel(*spell)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 
+		if !service.IsSpellForClass(*spell, character.Class) {
+			fmt.Printf("%s cannot prepare %s\n", character.Class, *spell)
+			return
+		}
+
+		if level > 0 {
+			if slots, ok := character.Spellcasting.Slots[level]; !ok || slots == 0 {
+				fmt.Printf("the spell has higher level than the available spell slots\n")
+				return
+			}
+		}
+
+		character.Spellcasting.PreparedMode = true
 		character.Spellcasting.PreparedSpells = append(character.Spellcasting.PreparedSpells, *spell)
 
 		if err := repo.Save(character); err != nil {
