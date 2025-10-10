@@ -153,6 +153,20 @@ func main() {
 			strings.Join(character.Skills.Skills, ", "),
 		)
 
+		if character.Spellcasting != nil && character.Spellcasting.CanCast {
+			fmt.Println("Spell slots:")
+
+			if character.Spellcasting.CantripsKnown > 0 {
+				fmt.Printf("  Level 0: %d\n", character.Spellcasting.CantripsKnown)
+			}
+
+			for lvl := 1; lvl <= 9; lvl++ {
+				if count, ok := character.Spellcasting.MaxSlots[lvl]; ok && count > 0 {
+					fmt.Printf("  Level %d: %d\n", lvl, count)
+				}
+			}
+		}
+
 		if weapon, ok := character.Equipment.Weapon["main hand"]; ok {
 			fmt.Printf("Main hand: %s\n", weapon)
 		}

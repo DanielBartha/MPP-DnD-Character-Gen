@@ -291,5 +291,192 @@
       "PreparedMode": false,
       "LearnedMode": true
     }
+  },
+  {
+    "Name": "Obi-Wan Kenobi",
+    "Race": "human",
+    "Background": "acolyte",
+    "Class": "paladin",
+    "Level": 20,
+    "Proficiency": 6,
+    "Stats": {
+      "Str": 13,
+      "StrMod": 1,
+      "Dex": 9,
+      "DexMod": -1,
+      "Con": 15,
+      "ConMod": 2,
+      "Intel": 11,
+      "IntelMod": 0,
+      "Wis": 16,
+      "WisMod": 3,
+      "Cha": 14,
+      "ChaMod": 2
+    },
+    "Skills": {
+      "MaxAllowed": 2,
+      "Skills": [
+        "athletics",
+        "insight",
+        "insight",
+        "religion"
+      ],
+      "Armor": null,
+      "Shields": "",
+      "Weapons": null,
+      "MainHand": "",
+      "OffHand": ""
+    },
+    "Equipment": {
+      "Weapon": null,
+      "Armor": "",
+      "Shield": ""
+    },
+    "Spellcasting": {
+      "CantripsKnown": 0,
+      "SpellsKnown": 0,
+      "CanCast": true,
+      "CasterType": "half",
+      "learned_spells": [],
+      "prepared_spells": [],
+      "slots": {
+        "1": 4,
+        "2": 3,
+        "3": 3,
+        "4": 3,
+        "5": 2
+      },
+      "maxslots": {
+        "1": 4,
+        "2": 3,
+        "3": 3,
+        "4": 3,
+        "5": 2
+      },
+      "PreparedMode": false,
+      "LearnedMode": false
+    }
+  },
+  {
+    "Name": "Anakin Skywalker",
+    "Race": "human",
+    "Background": "acolyte",
+    "Class": "warlock",
+    "Level": 20,
+    "Proficiency": 6,
+    "Stats": {
+      "Str": 13,
+      "StrMod": 1,
+      "Dex": 9,
+      "DexMod": -1,
+      "Con": 15,
+      "ConMod": 2,
+      "Intel": 14,
+      "IntelMod": 2,
+      "Wis": 11,
+      "WisMod": 0,
+      "Cha": 16,
+      "ChaMod": 3
+    },
+    "Skills": {
+      "MaxAllowed": 2,
+      "Skills": [
+        "arcana",
+        "deception",
+        "insight",
+        "religion"
+      ],
+      "Armor": null,
+      "Shields": "",
+      "Weapons": null,
+      "MainHand": "",
+      "OffHand": ""
+    },
+    "Equipment": {
+      "Weapon": null,
+      "Armor": "",
+      "Shield": ""
+    },
+    "Spellcasting": {
+      "CantripsKnown": 4,
+      "SpellsKnown": 0,
+      "CanCast": true,
+      "CasterType": "pact",
+      "learned_spells": [],
+      "prepared_spells": [],
+      "slots": {
+        "5": 4
+      },
+      "maxslots": {
+        "5": 4
+      },
+      "PreparedMode": false,
+      "LearnedMode": false
+    }
+  },
+  {
+    "Name": "Qui-Gon Jinn",
+    "Race": "human",
+    "Background": "acolyte",
+    "Class": "cleric",
+    "Level": 10,
+    "Proficiency": 4,
+    "Stats": {
+      "Str": 15,
+      "StrMod": 2,
+      "Dex": 9,
+      "DexMod": -1,
+      "Con": 11,
+      "ConMod": 0,
+      "Intel": 14,
+      "IntelMod": 2,
+      "Wis": 16,
+      "WisMod": 3,
+      "Cha": 13,
+      "ChaMod": 1
+    },
+    "Skills": {
+      "MaxAllowed": 2,
+      "Skills": [
+        "history",
+        "insight",
+        "insight",
+        "religion"
+      ],
+      "Armor": null,
+      "Shields": "",
+      "Weapons": null,
+      "MainHand": "",
+      "OffHand": ""
+    },
+    "Equipment": {
+      "Weapon": null,
+      "Armor": "",
+      "Shield": ""
+    },
+    "Spellcasting": {
+      "CantripsKnown": 4,
+      "SpellsKnown": 0,
+      "CanCast": true,
+      "CasterType": "full",
+      "learned_spells": [],
+      "prepared_spells": [],
+      "slots": {
+        "1": 4,
+        "2": 3,
+        "3": 3,
+        "4": 3,
+        "5": 2
+      },
+      "maxslots": {
+        "1": 4,
+        "2": 3,
+        "3": 3,
+        "4": 3,
+        "5": 2
+      },
+      "PreparedMode": false,
+      "LearnedMode": false
+    }
   }
 ]

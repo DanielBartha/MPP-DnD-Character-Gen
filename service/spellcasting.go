@@ -137,4 +137,27 @@ func (s *CharacterService) InitSpellcasting(c *domain.Character) {
 
 	c.Spellcasting.CanCast = true
 	c.Spellcasting.CasterType = casterType
+
+	switch casterType {
+	case "full":
+		if c.Level >= 10 {
+			c.Spellcasting.CantripsKnown = 4
+		} else if c.Level >= 4 {
+			c.Spellcasting.CantripsKnown = 3
+		} else {
+			c.Spellcasting.CantripsKnown = 2
+		}
+
+	case "half":
+		c.Spellcasting.CantripsKnown = 0
+
+	case "pact":
+		if c.Level >= 10 {
+			c.Spellcasting.CantripsKnown = 4
+		} else if c.Level >= 4 {
+			c.Spellcasting.CantripsKnown = 3
+		} else {
+			c.Spellcasting.CantripsKnown = 2
+		}
+	}
 }
