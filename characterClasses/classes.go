@@ -12,6 +12,8 @@ type ClassSkills struct {
 	OffHand    string
 }
 
+// TODO: in the future change Classes map to only pass types data
+
 var Classes = map[string]ClassSkills{
 	"barbarian": {
 		MaxAllowed: 2,
