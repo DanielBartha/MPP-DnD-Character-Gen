@@ -401,5 +401,60 @@
       "PreparedMode": false,
       "LearnedMode": false
     }
+  },
+  {
+    "Name": "Kaelen Swiftstep",
+    "Race": "human",
+    "Background": "acolyte",
+    "Class": "rogue",
+    "Level": 1,
+    "Proficiency": 2,
+    "Stats": {
+      "Str": 11,
+      "StrMod": 0,
+      "Dex": 16,
+      "DexMod": 3,
+      "Con": 15,
+      "ConMod": 2,
+      "Intel": 13,
+      "IntelMod": 1,
+      "Wis": 14,
+      "WisMod": 2,
+      "Cha": 9,
+      "ChaMod": -1
+    },
+    "Skills": {
+      "MaxAllowed": 4,
+      "Skills": [
+        "acrobatics",
+        "athletics",
+        "deception",
+        "insight",
+        "insight",
+        "religion"
+      ],
+      "Armor": null,
+      "Shields": "",
+      "Weapons": null,
+      "MainHand": "",
+      "OffHand": ""
+    },
+    "Equipment": {
+      "Weapon": null,
+      "Armor": "leather armor",
+      "Shield": ""
+    },
+    "Spellcasting": {
+      "CantripsKnown": 0,
+      "SpellsKnown": 0,
+      "CanCast": false,
+      "CasterType": "",
+      "learned_spells": [],
+      "prepared_spells": [],
+      "slots": {},
+      "maxslots": {},
+      "PreparedMode": false,
+      "LearnedMode": false
+    }
   }
 ]
