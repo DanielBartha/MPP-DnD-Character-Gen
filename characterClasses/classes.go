@@ -12,22 +12,6 @@ type ClassSkills struct {
 	OffHand    string
 }
 
-type ArmorTypes map[string][]string
-
-var ArmorTypesData = ArmorTypes{
-	"light": {
-		"padded", "leather", "studded leather",
-	},
-
-	"medium": {
-		"hide", "chain shirt", "scale mail", "breast plate", "half plate",
-	},
-
-	"heavy": {
-		"ring mail", "chain mail", "splint", "plate",
-	},
-}
-
 // TODO: in the future change Classes map to only pass types data
 
 var Classes = map[string]ClassSkills{
