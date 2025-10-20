@@ -36,12 +36,11 @@ type apiWeaponResp struct {
 type apiArmorResp struct {
 	Index      string `json:"index"`
 	Name       string `json:"name"`
-	ArmorClass []struct {
-		Value int `json:"value"`
+	ArmorClass struct {
+		Base     int  `json:"base"`
+		DexBonus bool `json:"dex_bonus"`
+		MaxBonus int  `json:"max_bonus"`
 	} `json:"armor_class"`
-	ArmorClassDexBonus struct {
-		Type string `json:"type"`
-	} `json:"-"`
 }
 
 var requestsPerSecond = 6
@@ -88,7 +87,7 @@ func fetchURL(ctx context.Context, url string) ([]byte, error) {
 	return io.ReadAll(resp.Body)
 }
 
-// public helper functions: fetch Spell/Weapon/Armor
+// helper functions for spells/armor/weapons
 // will check cache first and return chached file if present; else request and cache
 func FetchSpell(index string) (*apiSpellResp, error) {
 	index = strings.ToLower(index)
@@ -102,7 +101,6 @@ func FetchSpell(index string) (*apiSpellResp, error) {
 		// when corrupt, falls back to re-fetch
 	}
 
-	// build url + fetch
 	url := fmt.Sprintf("%s/spells/%s", baseURL, index)
 	ctx, cancel := context.WithTimeout(context.Background(), requestTimeout)
 	defer cancel()
@@ -117,7 +115,6 @@ func FetchSpell(index string) (*apiSpellResp, error) {
 		return nil, err
 	}
 
-	// ensure cache dir
 	_ = ensureDir(filepath.Dir(cachePath))
 	_ = os.WriteFile(cachePath, b, 0o644)
 
@@ -135,7 +132,7 @@ func FetchWeapon(index string) (*apiWeaponResp, error) {
 		}
 	}
 
-	url := fmt.Sprintf("%s/weapons/%s", baseURL, index)
+	url := fmt.Sprintf("%s/equipment/%s", baseURL, index)
 	ctx, cancel := context.WithTimeout(context.Background(), requestTimeout)
 	defer cancel()
 

@@ -68,3 +68,23 @@ type Spellcasting struct {
 	PreparedMode   bool
 	LearnedMode    bool
 }
+
+type SpellInfo struct {
+	Name   string
+	School string
+	Range  string
+}
+
+type WeaponInfo struct {
+	Name      string
+	Category  string
+	Range     int
+	TwoHanded bool
+}
+
+type ArmorInfo struct {
+	Name     string
+	BaseAC   int
+	DexBonus bool
+	MaxBonus int
+}
