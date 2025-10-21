@@ -412,7 +412,7 @@ func main() {
 
 	case "enrich-spells":
 		input := "5e-SRD-Spells.csv"
-		output := "data/enriched/5e-SRD-Spells.csv"
+		output := "data/enriched/5e-SRD-Spells-enriched.csv"
 
 		if err := service.EnrichSpellsCSV(input, output); err != nil {
 			fmt.Println("Error: ", err)

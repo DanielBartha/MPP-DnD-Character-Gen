@@ -9,12 +9,15 @@ import (
 	"strings"
 )
 
-type SpellInfo struct {
+type SpellMetadata struct {
+	Name    string
 	Level   int
 	Classes []string
+	School  string
+	Range   string
 }
 
-var SpellDB map[string]SpellInfo
+var SpellDB map[string]SpellMetadata
 
 func LoadSpellsCSV(path string) error {
 	f, err := os.Open(path)
@@ -26,7 +29,7 @@ func LoadSpellsCSV(path string) error {
 	reader := csv.NewReader(f)
 	reader.Read()
 
-	SpellDB = make(map[string]SpellInfo)
+	SpellDB = make(map[string]SpellMetadata)
 
 	for {
 		record, err := reader.Read()
@@ -44,7 +47,7 @@ func LoadSpellsCSV(path string) error {
 		level, _ := strconv.Atoi(levelStr)
 		classes := splitAndTrim(classStr)
 
-		SpellDB[strings.ToLower(name)] = SpellInfo{
+		SpellDB[strings.ToLower(name)] = SpellMetadata{
 			Level:   level,
 			Classes: classes,
 		}

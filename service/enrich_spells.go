@@ -49,18 +49,17 @@ func EnrichSpellsCSV(inputPath, outputPath string) error {
 		name := strings.TrimSpace(record[0])
 		apiIndex := sanitizeAPIIndex(name)
 
-		spell, fetchErr := FetchSpell(apiIndex)
+		apiResp, fetchErr := FetchSpell(apiIndex)
 		if fetchErr != nil {
 			fmt.Printf("skipping %s: %v\n", name, fetchErr)
-			missing++
 			writer.Write(append(record, "N/A", "N/A"))
+			missing++
 			continue
 		}
 
-		school := spell.School.Name
-		spellRange := spell.Range
+		domainSpell := ToDomainSpell(apiResp)
 
-		record = append(record, school, spellRange)
+		record = append(record, domainSpell.School, domainSpell.Range)
 		writer.Write(record)
 		processed++
 
