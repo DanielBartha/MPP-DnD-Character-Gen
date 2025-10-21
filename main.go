@@ -410,6 +410,15 @@ func main() {
 
 		fmt.Printf("Prepared spell %s\n", *spell)
 
+	case "enrich-spells":
+		input := "5e-SRD-Spells.csv"
+		output := "data/enriched/5e-SRD-Spells.csv"
+
+		if err := service.EnrichSpellsCSV(input, output); err != nil {
+			fmt.Println("Error: ", err)
+			os.Exit(2)
+		}
+
 	default:
 		usage()
 		os.Exit(2)

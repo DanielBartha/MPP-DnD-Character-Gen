@@ -57,7 +57,6 @@ func ensureDir(path string) error {
 	return os.MkdirAll(path, 0o755)
 }
 
-// cached response path helpers
 func spellCachePath(index string) string {
 	return filepath.Join("data", "api_cache", "spells", index+".json")
 }
@@ -88,7 +87,7 @@ func fetchURL(ctx context.Context, url string) ([]byte, error) {
 }
 
 // helper functions for spells/armor/weapons
-// will check cache first and return chached file if present; else request and cache
+// checks cache first and return chached file if present; else request and cache
 func FetchSpell(index string) (*apiSpellResp, error) {
 	index = strings.ToLower(index)
 	cachePath := spellCachePath(index)
@@ -208,7 +207,6 @@ func FetchSpellsBatch(indexes []string) map[string]*apiSpellResp {
 		go worker()
 	}
 
-	// rate limiter
 	interval := time.Second / time.Duration(requestsPerSecond)
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()

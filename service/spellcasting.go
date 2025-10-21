@@ -97,7 +97,7 @@ func GetSlotsForClassLevel(class string, level int) (map[int]int, string, error)
 		if m, ok := pactCasterSlots[level]; ok {
 			return copyIntMap(m), "pact", nil
 		}
-	//default ain't a spellcaster, aka not listed in SpellcastingType
+	//default aka not spellcaster
 	default:
 		return nil, "", fmt.Errorf("no slot table for class %s", class)
 	}

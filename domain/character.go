@@ -70,9 +70,10 @@ type Spellcasting struct {
 }
 
 type SpellInfo struct {
-	Name   string
-	School string
-	Range  string
+	Name   string `json:"name"`
+	Level  int    `json:"level"`
+	School string `json:"school"`
+	Range  string `json:"range"`
 }
 
 type WeaponInfo struct {
