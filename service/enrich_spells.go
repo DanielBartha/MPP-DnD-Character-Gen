@@ -6,13 +6,12 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"time"
 )
 
-func EnrichSpellsCSV(inputPath, outputPath string) error {
+func EnrichSpells(inputPath, outputPath string) error {
 	f, err := os.Open(inputPath)
 	if err != nil {
-		return fmt.Errorf("failed to open csv: %w", err)
+		return fmt.Errorf("failed to open input csv: %w", err)
 	}
 	defer f.Close()
 
@@ -30,7 +29,7 @@ func EnrichSpellsCSV(inputPath, outputPath string) error {
 
 	outFile, err := os.Create(outputPath)
 	if err != nil {
-		return fmt.Errorf("failed to create output csv: %w", err)
+		return fmt.Errorf("failed to create output: %w", err)
 	}
 	defer outFile.Close()
 
@@ -38,7 +37,8 @@ func EnrichSpellsCSV(inputPath, outputPath string) error {
 	defer writer.Flush()
 	writer.Write(header)
 
-	var processed, missing int
+	var records [][]string
+	var indexes []string
 
 	for {
 		record, err := reader.Read()
@@ -46,27 +46,35 @@ func EnrichSpellsCSV(inputPath, outputPath string) error {
 			break
 		}
 
-		name := strings.TrimSpace(record[0])
-		apiIndex := sanitizeAPIIndex(name)
-
-		apiResp, fetchErr := FetchSpell(apiIndex)
-		if fetchErr != nil {
-			fmt.Printf("skipping %s: %v\n", name, fetchErr)
-			writer.Write(append(record, "N/A", "N/A"))
-			missing++
-			continue
-		}
-
-		domainSpell := ToDomainSpell(apiResp)
-
-		record = append(record, domainSpell.School, domainSpell.Range)
-		writer.Write(record)
-		processed++
-
-		time.Sleep(150 * time.Millisecond)
+		records = append(records, record)
+		indexes = append(indexes, sanitizeAPIIndex(record[0]))
 	}
 
-	fmt.Printf("Finished; processed: %d, missing: %d\n", processed, missing)
+	fmt.Printf("Fetching data for %d spells...\n", len(indexes))
+	spellMap := FetchSpellsBatch(indexes)
+
+	var processed, missing int
+
+	for _, record := range records {
+		name := record[0]
+		apiIndex := sanitizeAPIIndex(name)
+
+		apiResp := spellMap[apiIndex]
+		if apiResp == nil {
+			fmt.Printf("missing %s\n", name)
+			record = append(record, "N/A", "N/A")
+			missing++
+		} else {
+			domainSpell := ToDomainSpell(apiResp)
+			record = append(record, domainSpell.School, domainSpell.Range)
+			processed++
+		}
+
+		writer.Write(record)
+	}
+
+	fmt.Printf("Enriched spells; processed %d, missing: %d\n", processed, missing)
+
 	return nil
 }
 

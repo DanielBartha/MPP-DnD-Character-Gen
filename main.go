@@ -8,6 +8,7 @@ import (
 
 	"path/filepath"
 
+	"github.com/DanielBartha/MPP-DnD-Character-Gen/characterClasses"
 	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
 	"github.com/DanielBartha/MPP-DnD-Character-Gen/repository"
 	"github.com/DanielBartha/MPP-DnD-Character-Gen/service"
@@ -39,6 +40,16 @@ func main() {
 		fmt.Println("Error loading spell list:", err)
 		os.Exit(1)
 	}
+
+	allWeps, err := service.LoadEnrichedWeapons("data/enriched/5e-SRD-Weapons-Enriched.csv")
+	if err != nil {
+		fmt.Println("Error loading weapons:", err)
+		os.Exit(1)
+	}
+	simple := service.SimpleWeapons(allWeps)
+	martial := service.MartialWeapons(allWeps)
+
+	characterClasses.InitWeapons(allWeps, simple, martial)
 
 	switch cmd {
 	case "create":
@@ -99,10 +110,20 @@ func main() {
 		}
 
 		svc := service.NewCharacterService()
-		svc.AssignClassSkills(&characterCreate)
+
+		characterCreate.Skills = svc.GetClassSkills(&characterCreate)
 		svc.ApplyRacialBonuses(&characterCreate)
 		svc.UpdateProficiency(&characterCreate)
 		svc.InitSpellcasting(&characterCreate)
+
+		characterCreate.Equipment = domain.Equipment{
+			Weapon: map[string]string{
+				"main hand": "",
+				"off hand":  "",
+			},
+			Armor:  "",
+			Shield: "",
+		}
 
 		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
 		if err := repo.Save(&characterCreate); err != nil {
@@ -173,13 +194,13 @@ func main() {
 			}
 		}
 
-		if weapon, ok := character.Equipment.Weapon["main hand"]; ok {
+		if weapon, ok := character.Equipment.Weapon["main hand"]; ok && weapon != "" {
 			fmt.Printf("Main hand: %s\n", weapon)
 		}
-		if weapon, ok := character.Equipment.Weapon["off hand"]; ok {
+
+		if weapon, ok := character.Equipment.Weapon["off hand"]; ok && weapon != "" {
 			fmt.Printf("Off hand: %s\n", weapon)
 		}
-
 		if character.Equipment.Armor != "" {
 			fmt.Printf("Armor: %s\n", character.Equipment.Armor)
 		}
@@ -317,7 +338,7 @@ func main() {
 			return
 		}
 
-		// check for non-existing spells (csv)
+		// checks for non-existing spells (csv)
 		level, err := service.GetSpellLevel(*spell)
 		if err != nil {
 			fmt.Println(err)
@@ -414,7 +435,16 @@ func main() {
 		input := "5e-SRD-Spells.csv"
 		output := "data/enriched/5e-SRD-Spells-enriched.csv"
 
-		if err := service.EnrichSpellsCSV(input, output); err != nil {
+		if err := service.EnrichSpells(input, output); err != nil {
+			fmt.Println("Error: ", err)
+			os.Exit(2)
+		}
+
+	case "enrich-weapons":
+		input := "5e-SRD-Equipment.csv"
+		output := "data/enriched/5e-SRD-Weapons-Enriched.csv"
+
+		if err := service.EnrichWeapons(input, output); err != nil {
 			fmt.Println("Error: ", err)
 			os.Exit(2)
 		}

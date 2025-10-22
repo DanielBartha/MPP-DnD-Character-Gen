@@ -90,15 +90,6 @@ func fetchURL(ctx context.Context, url string) ([]byte, error) {
 // checks cache first and return chached file if present; else request and cache
 func FetchSpell(index string) (*apiSpellResp, error) {
 	index = strings.ToLower(index)
-	cachePath := spellCachePath(index)
-
-	if data, err := os.ReadFile(cachePath); err == nil {
-		var r apiSpellResp
-		if err := json.Unmarshal(data, &r); err == nil {
-			return &r, nil
-		}
-		// when corrupt, falls back to re-fetch
-	}
 
 	url := fmt.Sprintf("%s/spells/%s", baseURL, index)
 	ctx, cancel := context.WithTimeout(context.Background(), requestTimeout)
@@ -113,9 +104,6 @@ func FetchSpell(index string) (*apiSpellResp, error) {
 	if err := json.Unmarshal(b, &r); err != nil {
 		return nil, err
 	}
-
-	_ = ensureDir(filepath.Dir(cachePath))
-	_ = os.WriteFile(cachePath, b, 0o644)
 
 	return &r, nil
 }
@@ -230,6 +218,96 @@ func FetchSpellsBatch(indexes []string) map[string]*apiSpellResp {
 		}
 		results[r.idx] = r.res
 	}
+
+	cahceDir := filepath.Join("data", "api_cache")
+	if err := ensureDir(cahceDir); err != nil {
+		fmt.Println("failed ensuring cache directory: ", err)
+		return results
+	}
+
+	cachePath := filepath.Join(cahceDir, "spells.json")
+	data, err := json.MarshalIndent(results, "", "  ")
+	if err != nil {
+		fmt.Println("failed to marshal spells.json: ", err)
+		return results
+	}
+
+	if err := os.WriteFile(cachePath, data, 0o644); err != nil {
+		fmt.Println("failed to write spells.json: ", err)
+		return results
+	}
+
+	fmt.Printf("Saved %d spells to %s\n", len(results), cachePath)
+
+	return results
+}
+
+func FetchWeaponsBatch(indexes []string) map[string]*apiWeaponResp {
+	results := make(map[string]*apiWeaponResp)
+
+	type result struct {
+		idx string
+		res *apiWeaponResp
+		err error
+	}
+
+	chIn := make(chan string)
+	chOut := make(chan result)
+
+	worker := func() {
+		for idx := range chIn {
+			r, err := FetchWeapon(idx)
+			chOut <- result{idx: idx, res: r, err: err}
+		}
+	}
+
+	workers := 5
+	for i := 0; i < workers; i++ {
+		go worker()
+	}
+
+	interval := time.Second / time.Duration(requestsPerSecond)
+	ticker := time.NewTicker(interval)
+	defer ticker.Stop()
+
+	go func() {
+		for _, idx := range indexes {
+			<-ticker.C
+			chIn <- idx
+		}
+		close(chIn)
+	}()
+
+	for i := 0; i < len(indexes); i++ {
+		r := <-chOut
+
+		if r.err != nil {
+			fmt.Printf("error fetching %s: %v\n", r.idx, r.err)
+			results[r.idx] = nil
+			continue
+		}
+		results[r.idx] = r.res
+	}
+
+	cacheDir := filepath.Join("data", "api_cache")
+	if err := ensureDir(cacheDir); err != nil {
+		fmt.Println("failed to ensure cache directory:", err)
+		return results
+	}
+
+	cachePath := filepath.Join(cacheDir, "weapons.json")
+	data, err := json.MarshalIndent(results, "", "  ")
+	if err != nil {
+		fmt.Println("failed to marshal weapons.json: ", err)
+		return results
+	}
+
+	if err := os.WriteFile(cachePath, data, 0o644); err != nil {
+		fmt.Println("failed to write weapons.json: ", err)
+		return results
+	}
+
+	fmt.Printf("Saved %d weapons to %s\n", len(results), cachePath)
 
 	return results
 }

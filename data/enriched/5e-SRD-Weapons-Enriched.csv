@@ -1,0 +1,38 @@
+name,category,range,two_handed
+Club,Simple,5,false
+Dagger,Simple,5,false
+Greatclub,Simple,5,false
+Handaxe,Simple,5,false
+Javelin,Simple,5,false
+Light hammer,Simple,5,false
+Mace,Simple,5,false
+Quarterstaff,Simple,5,false
+Sickle,Simple,5,false
+Spear,Simple,5,false
+"Crossbow, light",Simple,80,false
+Dart,Simple,20,false
+Shortbow,Simple,80,false
+Sling,Simple,30,false
+Battleaxe,Martial,5,false
+Flail,Martial,5,false
+Glaive,Martial,5,false
+Greataxe,Martial,5,false
+Greatsword,Martial,5,false
+Halberd,Martial,5,false
+Lance,Martial,5,false
+Longsword,Martial,5,false
+Maul,Martial,5,false
+Morningstar,Martial,5,false
+Pike,Martial,5,false
+Rapier,Martial,5,false
+Scimitar,Martial,5,false
+Shortsword,Martial,5,false
+Trident,Martial,5,false
+War pick,Martial,5,false
+Warhammer,Martial,5,false
+Whip,Martial,5,false
+Blowgun,Martial,25,false
+"Crossbow, hand",Martial,30,false
+"Crossbow, heavy",Martial,100,false
+Longbow,Martial,150,false
+Net,Martial,5,false

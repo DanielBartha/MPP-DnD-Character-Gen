@@ -1,9 +1,5 @@
 package domain
 
-import (
-	"github.com/DanielBartha/MPP-DnD-Character-Gen/characterClasses"
-)
-
 var SpellcastingType = map[string]string{
 	"bard":     "full",
 	"cleric":   "full",
@@ -25,9 +21,19 @@ type Character struct {
 	Level        int
 	Proficiency  int
 	Stats        Stats
-	Skills       characterClasses.ClassSkills
+	Skills       ClassLoadout
 	Equipment    Equipment
 	Spellcasting *Spellcasting
+}
+
+type ClassLoadout struct {
+	MaxAllowed int
+	Skills     []string
+	Armor      []string
+	Shields    string
+	Weapons    []WeaponInfo
+	MainHand   string
+	OffHand    string
 }
 
 type Stats struct {

@@ -46,37 +46,45 @@ func (s *CharacterService) UpdateProficiency(character *domain.Character) {
 	character.Stats.ChaMod = abilityModifier(character.Stats.Cha)
 }
 
-func (s *CharacterService) AssignClassSkills(character *domain.Character) {
-	classKey := strings.ToLower(strings.TrimSpace(character.Class))
+func (s *CharacterService) GetClassSkills(c *domain.Character) domain.ClassLoadout {
+	classKey := strings.ToLower(strings.TrimSpace(c.Class))
+	cs, ok := characterClasses.Classes[classKey]
 
-	classSkills, ok := characterClasses.Classes[classKey]
 	if !ok {
-		character.Skills = characterClasses.ClassSkills{
+		return domain.ClassLoadout{
 			MaxAllowed: 0,
 			Skills:     []string{"insight", "religion"},
+			Armor:      []string{},
+			Shields:    "",
+			Weapons:    []domain.WeaponInfo{},
+			MainHand:   "",
+			OffHand:    "",
 		}
-		return
 	}
 
-	// local copy of skills to not modify global map on accident
-	src := classSkills.Skills
-	localSlice := make([]string, len(src))
-	copy(localSlice, src)
+	src := cs.Skills
+	localSkills := make([]string, len(src))
+	copy(localSkills, src)
 
 	selected := []string{}
-	if classSkills.MaxAllowed > 0 && len(localSlice) > 0 {
-		limit := classSkills.MaxAllowed
-		if limit > len(localSlice) {
-			limit = len(localSlice)
+	if cs.MaxAllowed > 0 && len(localSkills) > 0 {
+		limit := cs.MaxAllowed
+		if limit > len(localSkills) {
+			limit = len(localSkills)
 		}
-		selected = localSlice[:limit]
+		selected = localSkills[:limit]
 	}
 
 	selected = append(selected, "insight", "religion")
 
-	character.Skills = characterClasses.ClassSkills{
-		MaxAllowed: classSkills.MaxAllowed,
+	return domain.ClassLoadout{
+		MaxAllowed: cs.MaxAllowed,
 		Skills:     selected,
+		Armor:      cs.Armor,
+		Shields:    cs.Shields,
+		Weapons:    cs.Weapons,
+		MainHand:   cs.MainHand,
+		OffHand:    cs.OffHand,
 	}
 }
 
