@@ -57,17 +57,17 @@ func ensureDir(path string) error {
 	return os.MkdirAll(path, 0o755)
 }
 
-func spellCachePath(index string) string {
-	return filepath.Join("data", "api_cache", "spells", index+".json")
-}
+// func spellCachePath(index string) string {
+// 	return filepath.Join("data", "api_cache", "spells", index+".json")
+// }
 
-func weaponCachePath(index string) string {
-	return filepath.Join("data", "api_cache", "weapons", index+".json")
-}
+// func weaponCachePath(index string) string {
+// 	return filepath.Join("data", "api_cache", "weapons", index+".json")
+// }
 
-func armorCachePath(index string) string {
-	return filepath.Join("data", "api_cache", "armor", index+".json")
-}
+// func armorCachePath(index string) string {
+// 	return filepath.Join("data", "api_cache", "armor", index+".json")
+// }
 
 // fetching single URL w/ context + return bytes
 func fetchURL(ctx context.Context, url string) ([]byte, error) {
@@ -110,14 +110,14 @@ func FetchSpell(index string) (*apiSpellResp, error) {
 
 func FetchWeapon(index string) (*apiWeaponResp, error) {
 	index = strings.ToLower(index)
-	cachePath := weaponCachePath(index)
+	// // cachePath := weaponCachePath(index)
 
-	if data, err := os.ReadFile(cachePath); err == nil {
-		var r apiWeaponResp
-		if err := json.Unmarshal(data, &r); err == nil {
-			return &r, nil
-		}
-	}
+	// if data, err := os.ReadFile(cachePath); err == nil {
+	// 	var r apiWeaponResp
+	// 	if err := json.Unmarshal(data, &r); err == nil {
+	// 		return &r, nil
+	// 	}
+	// }
 
 	url := fmt.Sprintf("%s/equipment/%s", baseURL, index)
 	ctx, cancel := context.WithTimeout(context.Background(), requestTimeout)
@@ -133,22 +133,22 @@ func FetchWeapon(index string) (*apiWeaponResp, error) {
 		return nil, err
 	}
 
-	_ = ensureDir(filepath.Dir(cachePath))
-	_ = os.WriteFile(cachePath, b, 0o644)
+	// _ = ensureDir(filepath.Dir(cachePath))
+	// _ = os.WriteFile(cachePath, b, 0o644)
 
 	return &r, nil
 }
 
 func FetchArmor(index string) (*apiArmorResp, error) {
 	index = strings.ToLower(index)
-	cachePath := armorCachePath(index)
+	// cachePath := armorCachePath(index)
 
-	if data, err := os.ReadFile(cachePath); err == nil {
-		var r apiArmorResp
-		if err := json.Unmarshal(data, &r); err == nil {
-			return &r, nil
-		}
-	}
+	// if data, err := os.ReadFile(cachePath); err == nil {
+	// 	var r apiArmorResp
+	// 	if err := json.Unmarshal(data, &r); err == nil {
+	// 		return &r, nil
+	// 	}
+	// }
 
 	url := fmt.Sprintf("%s/equipment/%s", baseURL, index)
 	ctx, cancel := context.WithTimeout(context.Background(), requestTimeout)
@@ -164,8 +164,8 @@ func FetchArmor(index string) (*apiArmorResp, error) {
 		return nil, err
 	}
 
-	_ = ensureDir(filepath.Dir(cachePath))
-	_ = os.WriteFile(cachePath, b, 0o644)
+	// _ = ensureDir(filepath.Dir(cachePath))
+	// _ = os.WriteFile(cachePath, b, 0o644)
 
 	return &r, nil
 }
@@ -304,6 +304,75 @@ func FetchWeaponsBatch(indexes []string) map[string]*apiWeaponResp {
 
 	if err := os.WriteFile(cachePath, data, 0o644); err != nil {
 		fmt.Println("failed to write weapons.json: ", err)
+		return results
+	}
+
+	fmt.Printf("Saved %d weapons to %s\n", len(results), cachePath)
+
+	return results
+}
+
+func FetchArmorBatch(indexes []string) map[string]*apiArmorResp {
+	results := make(map[string]*apiArmorResp)
+
+	type result struct {
+		idx string
+		res *apiArmorResp
+		err error
+	}
+
+	chIn := make(chan string)
+	chOut := make(chan result)
+
+	worker := func() {
+		for idx := range chIn {
+			r, err := FetchArmor(idx)
+			chOut <- result{idx: idx, res: r, err: err}
+		}
+	}
+
+	workers := 5
+	for i := 0; i < workers; i++ {
+		go worker()
+	}
+
+	interval := time.Second / time.Duration(requestsPerSecond)
+	ticker := time.NewTicker(interval)
+	defer ticker.Stop()
+
+	go func() {
+		for _, idx := range indexes {
+			<-ticker.C
+			chIn <- idx
+		}
+		close(chIn)
+	}()
+
+	for i := 0; i < len(indexes); i++ {
+		r := <-chOut
+		if r.err != nil {
+			fmt.Printf("error fetching %s: %v\n", r.idx, r.err)
+			results[r.idx] = nil
+			continue
+		}
+		results[r.idx] = r.res
+	}
+
+	cacheDir := filepath.Join("data", "api_cache")
+	if err := ensureDir(cacheDir); err != nil {
+		fmt.Println("failed to ensure cache directory:", err)
+		return results
+	}
+
+	cachePath := filepath.Join(cacheDir, "armor.json")
+	data, err := json.MarshalIndent(results, "", "  ")
+	if err != nil {
+		fmt.Println("failed to marshal armor.json: ", err)
+		return results
+	}
+
+	if err := os.WriteFile(cachePath, data, 0o644); err != nil {
+		fmt.Println("failed to write armor.json: ", err)
 		return results
 	}
 

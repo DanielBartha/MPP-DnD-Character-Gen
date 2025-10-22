@@ -41,7 +41,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	allWeps, err := service.LoadEnrichedWeapons("data/enriched/5e-SRD-Weapons-Enriched.csv")
+	allWeps, err := service.LoadEnrichedWeapons("5e-SRD-Equipment.csv")
 	if err != nil {
 		fmt.Println("Error loading weapons:", err)
 		os.Exit(1)
@@ -445,6 +445,15 @@ func main() {
 		output := "data/enriched/5e-SRD-Weapons-Enriched.csv"
 
 		if err := service.EnrichWeapons(input, output); err != nil {
+			fmt.Println("Error: ", err)
+			os.Exit(2)
+		}
+
+	case "enrich-armor":
+		input := "5e-SRD-Equipment.csv"
+		output := "data/enriched/5e-SRD-Armor-Enriched.csv"
+
+		if err := service.EnrichArmor(input, output); err != nil {
 			fmt.Println("Error: ", err)
 			os.Exit(2)
 		}
