@@ -1,0 +1,372 @@
+{
+  "battleaxe": {
+    "index": "battleaxe",
+    "name": "Battleaxe",
+    "weapon_category": "Martial",
+    "range": {
+      "normal": 5,
+      "long": 0
+    },
+    "two_handed": false
+  },
+  "blowgun": {
+    "index": "blowgun",
+    "name": "Blowgun",
+    "weapon_category": "Martial",
+    "range": {
+      "normal": 25,
+      "long": 100
+    },
+    "two_handed": false
+  },
+  "club": {
+    "index": "club",
+    "name": "Club",
+    "weapon_category": "Simple",
+    "range": {
+      "normal": 5,
+      "long": 0
+    },
+    "two_handed": false
+  },
+  "crossbow-hand": {
+    "index": "crossbow-hand",
+    "name": "Crossbow, hand",
+    "weapon_category": "Martial",
+    "range": {
+      "normal": 30,
+      "long": 120
+    },
+    "two_handed": false
+  },
+  "crossbow-heavy": {
+    "index": "crossbow-heavy",
+    "name": "Crossbow, heavy",
+    "weapon_category": "Martial",
+    "range": {
+      "normal": 100,
+      "long": 400
+    },
+    "two_handed": false
+  },
+  "crossbow-light": {
+    "index": "crossbow-light",
+    "name": "Crossbow, light",
+    "weapon_category": "Simple",
+    "range": {
+      "normal": 80,
+      "long": 320
+    },
+    "two_handed": false
+  },
+  "dagger": {
+    "index": "dagger",
+    "name": "Dagger",
+    "weapon_category": "Simple",
+    "range": {
+      "normal": 5,
+      "long": 0
+    },
+    "two_handed": false
+  },
+  "dart": {
+    "index": "dart",
+    "name": "Dart",
+    "weapon_category": "Simple",
+    "range": {
+      "normal": 20,
+      "long": 60
+    },
+    "two_handed": false
+  },
+  "flail": {
+    "index": "flail",
+    "name": "Flail",
+    "weapon_category": "Martial",
+    "range": {
+      "normal": 5,
+      "long": 0
+    },
+    "two_handed": false
+  },
+  "glaive": {
+    "index": "glaive",
+    "name": "Glaive",
+    "weapon_category": "Martial",
+    "range": {
+      "normal": 5,
+      "long": 0
+    },
+    "two_handed": false
+  },
+  "greataxe": {
+    "index": "greataxe",
+    "name": "Greataxe",
+    "weapon_category": "Martial",
+    "range": {
+      "normal": 5,
+      "long": 0
+    },
+    "two_handed": false
+  },
+  "greatclub": {
+    "index": "greatclub",
+    "name": "Greatclub",
+    "weapon_category": "Simple",
+    "range": {
+      "normal": 5,
+      "long": 0
+    },
+    "two_handed": false
+  },
+  "greatsword": {
+    "index": "greatsword",
+    "name": "Greatsword",
+    "weapon_category": "Martial",
+    "range": {
+      "normal": 5,
+      "long": 0
+    },
+    "two_handed": false
+  },
+  "halberd": {
+    "index": "halberd",
+    "name": "Halberd",
+    "weapon_category": "Martial",
+    "range": {
+      "normal": 5,
+      "long": 0
+    },
+    "two_handed": false
+  },
+  "handaxe": {
+    "index": "handaxe",
+    "name": "Handaxe",
+    "weapon_category": "Simple",
+    "range": {
+      "normal": 5,
+      "long": 0
+    },
+    "two_handed": false
+  },
+  "javelin": {
+    "index": "javelin",
+    "name": "Javelin",
+    "weapon_category": "Simple",
+    "range": {
+      "normal": 5,
+      "long": 0
+    },
+    "two_handed": false
+  },
+  "lance": {
+    "index": "lance",
+    "name": "Lance",
+    "weapon_category": "Martial",
+    "range": {
+      "normal": 5,
+      "long": 0
+    },
+    "two_handed": false
+  },
+  "light-hammer": {
+    "index": "light-hammer",
+    "name": "Light hammer",
+    "weapon_category": "Simple",
+    "range": {
+      "normal": 5,
+      "long": 0
+    },
+    "two_handed": false
+  },
+  "longbow": {
+    "index": "longbow",
+    "name": "Longbow",
+    "weapon_category": "Martial",
+    "range": {
+      "normal": 150,
+      "long": 600
+    },
+    "two_handed": false
+  },
+  "longsword": {
+    "index": "longsword",
+    "name": "Longsword",
+    "weapon_category": "Martial",
+    "range": {
+      "normal": 5,
+      "long": 0
+    },
+    "two_handed": false
+  },
+  "mace": {
+    "index": "mace",
+    "name": "Mace",
+    "weapon_category": "Simple",
+    "range": {
+      "normal": 5,
+      "long": 0
+    },
+    "two_handed": false
+  },
+  "maul": {
+    "index": "maul",
+    "name": "Maul",
+    "weapon_category": "Martial",
+    "range": {
+      "normal": 5,
+      "long": 0
+    },
+    "two_handed": false
+  },
+  "morningstar": {
+    "index": "morningstar",
+    "name": "Morningstar",
+    "weapon_category": "Martial",
+    "range": {
+      "normal": 5,
+      "long": 0
+    },
+    "two_handed": false
+  },
+  "net": {
+    "index": "net",
+    "name": "Net",
+    "weapon_category": "Martial",
+    "range": {
+      "normal": 5,
+      "long": 15
+    },
+    "two_handed": false
+  },
+  "pike": {
+    "index": "pike",
+    "name": "Pike",
+    "weapon_category": "Martial",
+    "range": {
+      "normal": 5,
+      "long": 0
+    },
+    "two_handed": false
+  },
+  "quarterstaff": {
+    "index": "quarterstaff",
+    "name": "Quarterstaff",
+    "weapon_category": "Simple",
+    "range": {
+      "normal": 5,
+      "long": 0
+    },
+    "two_handed": false
+  },
+  "rapier": {
+    "index": "rapier",
+    "name": "Rapier",
+    "weapon_category": "Martial",
+    "range": {
+      "normal": 5,
+      "long": 0
+    },
+    "two_handed": false
+  },
+  "scimitar": {
+    "index": "scimitar",
+    "name": "Scimitar",
+    "weapon_category": "Martial",
+    "range": {
+      "normal": 5,
+      "long": 0
+    },
+    "two_handed": false
+  },
+  "shortbow": {
+    "index": "shortbow",
+    "name": "Shortbow",
+    "weapon_category": "Simple",
+    "range": {
+      "normal": 80,
+      "long": 320
+    },
+    "two_handed": false
+  },
+  "shortsword": {
+    "index": "shortsword",
+    "name": "Shortsword",
+    "weapon_category": "Martial",
+    "range": {
+      "normal": 5,
+      "long": 0
+    },
+    "two_handed": false
+  },
+  "sickle": {
+    "index": "sickle",
+    "name": "Sickle",
+    "weapon_category": "Simple",
+    "range": {
+      "normal": 5,
+      "long": 0
+    },
+    "two_handed": false
+  },
+  "sling": {
+    "index": "sling",
+    "name": "Sling",
+    "weapon_category": "Simple",
+    "range": {
+      "normal": 30,
+      "long": 120
+    },
+    "two_handed": false
+  },
+  "spear": {
+    "index": "spear",
+    "name": "Spear",
+    "weapon_category": "Simple",
+    "range": {
+      "normal": 5,
+      "long": 0
+    },
+    "two_handed": false
+  },
+  "trident": {
+    "index": "trident",
+    "name": "Trident",
+    "weapon_category": "Martial",
+    "range": {
+      "normal": 5,
+      "long": 0
+    },
+    "two_handed": false
+  },
+  "war-pick": {
+    "index": "war-pick",
+    "name": "War pick",
+    "weapon_category": "Martial",
+    "range": {
+      "normal": 5,
+      "long": 0
+    },
+    "two_handed": false
+  },
+  "warhammer": {
+    "index": "warhammer",
+    "name": "Warhammer",
+    "weapon_category": "Martial",
+    "range": {
+      "normal": 5,
+      "long": 0
+    },
+    "two_handed": false
+  },
+  "whip": {
+    "index": "whip",
+    "name": "Whip",
+    "weapon_category": "Martial",
+    "range": {
+      "normal": 5,
+      "long": 0
+    },
+    "two_handed": false
+  }
+}

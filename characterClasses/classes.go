@@ -1,18 +1,65 @@
 package characterClasses
 
-import "github.com/DanielBartha/MPP-DnD-Character-Gen/weapons"
+import (
+	"strings"
+
+	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
+)
+
+var (
+	AllWeapons     []domain.WeaponInfo
+	SimpleWeapons  []domain.WeaponInfo
+	MartialWeapons []domain.WeaponInfo
+)
 
 type ClassSkills struct {
 	MaxAllowed int
 	Skills     []string
 	Armor      []string
 	Shields    string
-	Weapons    []weapons.Weapon
+	Weapons    []domain.WeaponInfo
 	MainHand   string
 	OffHand    string
 }
 
-// TODO: in the future change Classes map to only pass types data
+func InitWeapons(all, simple, martial []domain.WeaponInfo) {
+	AllWeapons = append([]domain.WeaponInfo{}, all...)
+	SimpleWeapons = append([]domain.WeaponInfo{}, simple...)
+	MartialWeapons = append([]domain.WeaponInfo{}, martial...)
+}
+
+func findWeaponByName(name string) domain.WeaponInfo {
+	for _, w := range AllWeapons {
+		if strings.EqualFold(w.Name, name) {
+			return w
+		}
+	}
+	return domain.WeaponInfo{Name: name}
+}
+
+func CombineWeaponSets(sets ...[]domain.WeaponInfo) []domain.WeaponInfo {
+	out := make([]domain.WeaponInfo, 0)
+	for _, s := range sets {
+		out = append(out, s...)
+	}
+	return out
+}
+
+func WithExtraWeapons(base []domain.WeaponInfo, names ...string) []domain.WeaponInfo {
+	out := append([]domain.WeaponInfo{}, base...)
+	for _, n := range names {
+		out = append(out, findWeaponByName(n))
+	}
+	return out
+}
+
+func WeaponsByName(names ...string) []domain.WeaponInfo {
+	out := make([]domain.WeaponInfo, 0, len(names))
+	for _, n := range names {
+		out = append(out, findWeaponByName(n))
+	}
+	return out
+}
 
 var Classes = map[string]ClassSkills{
 	"barbarian": {
@@ -24,7 +71,7 @@ var Classes = map[string]ClassSkills{
 			"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate",
 		},
 		Shields:  "shield",
-		Weapons:  weapons.GetAllWeapons(),
+		Weapons:  AllWeapons,
 		MainHand: "main hand",
 		OffHand:  "off hand",
 	},
@@ -38,15 +85,9 @@ var Classes = map[string]ClassSkills{
 		Armor: []string{
 			"padded", "leather", "studded leather",
 		},
-		Weapons: append(
-			append([]weapons.Weapon{}, weapons.SimpleMelee...),
-			append(
-				weapons.SimpleRanged,
-				weapons.Weapon{Name: "hand crossbow", TwoHanded: false},
-				weapons.Weapon{Name: "longsword", TwoHanded: false},
-				weapons.Weapon{Name: "rapier", TwoHanded: false},
-				weapons.Weapon{Name: "shortsword", TwoHanded: false},
-			)...,
+		Weapons: WithExtraWeapons(
+			SimpleWeapons,
+			"hand crossbow", "longsword", "rapier", "shortsword",
 		),
 		MainHand: "main hand",
 		OffHand:  "off hand",
@@ -60,7 +101,7 @@ var Classes = map[string]ClassSkills{
 			"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate",
 		},
 		Shields:  "shield",
-		Weapons:  weapons.GetSimpleWeapons(),
+		Weapons:  SimpleWeapons,
 		MainHand: "main hand",
 		OffHand:  "off hand",
 	},
@@ -74,19 +115,18 @@ var Classes = map[string]ClassSkills{
 			"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate",
 		},
 		Shields: "shield",
-		Weapons: append(
-			weapons.SimpleRanged,
-			weapons.Weapon{Name: "club", TwoHanded: false},
-			weapons.Weapon{Name: "greatclub", TwoHanded: true},
-			weapons.Weapon{Name: "dagger", TwoHanded: false},
-			weapons.Weapon{Name: "dart", TwoHanded: false},
-			weapons.Weapon{Name: "javelins", TwoHanded: false},
-			weapons.Weapon{Name: "maces", TwoHanded: false},
-			weapons.Weapon{Name: "quarterstaff", TwoHanded: false},
-			weapons.Weapon{Name: "scimitar", TwoHanded: false},
-			weapons.Weapon{Name: "sickle", TwoHanded: false},
-			weapons.Weapon{Name: "sling", TwoHanded: true},
-			weapons.Weapon{Name: "spear", TwoHanded: false},
+		Weapons: append(SimpleWeapons,
+			findWeaponByName("club"),
+			findWeaponByName("greatclub"),
+			findWeaponByName("dagger"),
+			findWeaponByName("dart"),
+			findWeaponByName("javelins"),
+			findWeaponByName("maces"),
+			findWeaponByName("quarterstaff"),
+			findWeaponByName("scimitar"),
+			findWeaponByName("sickle"),
+			findWeaponByName("sling"),
+			findWeaponByName("spear"),
 		),
 		MainHand: "main hand",
 		OffHand:  "off hand",
@@ -100,7 +140,7 @@ var Classes = map[string]ClassSkills{
 			"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate", "ring mail", "chain mail", "splint", "plate",
 		},
 		Shields:  "shield",
-		Weapons:  weapons.GetAllWeapons(),
+		Weapons:  AllWeapons,
 		MainHand: "main hand",
 		OffHand:  "off hand",
 	},
@@ -110,8 +150,8 @@ var Classes = map[string]ClassSkills{
 			"acrobatics", "athletics", "history", "insight", "religion", "stealth",
 		},
 		// NO ARMOR
-		Weapons: append(weapons.GetSimpleWeapons(),
-			weapons.Weapon{Name: "shortsword", TwoHanded: false},
+		Weapons: append(SimpleWeapons,
+			findWeaponByName("shortsword"),
 		),
 		MainHand: "main hand",
 		OffHand:  "off hand",
@@ -125,7 +165,7 @@ var Classes = map[string]ClassSkills{
 			"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate", "ring mail", "chain mail", "splint", "plate",
 		},
 		Shields:  "shield",
-		Weapons:  weapons.GetAllWeapons(),
+		Weapons:  AllWeapons,
 		MainHand: "main hand",
 		OffHand:  "off hand",
 	},
@@ -138,7 +178,7 @@ var Classes = map[string]ClassSkills{
 			"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate",
 		},
 		Shields:  "shield",
-		Weapons:  weapons.GetAllWeapons(),
+		Weapons:  AllWeapons,
 		MainHand: "main hand",
 		OffHand:  "off hand",
 	},
@@ -150,11 +190,9 @@ var Classes = map[string]ClassSkills{
 		Armor: []string{
 			"padded", "leather", "studded leather",
 		},
-		Weapons: append(weapons.GetSimpleWeapons(),
-			weapons.Weapon{Name: "hand crossbow", TwoHanded: false},
-			weapons.Weapon{Name: "longsword", TwoHanded: false},
-			weapons.Weapon{Name: "rapier", TwoHanded: false},
-			weapons.Weapon{Name: "shortsword", TwoHanded: false},
+		Weapons: WithExtraWeapons(
+			SimpleWeapons,
+			"hand crossbow", "longsword", "rapier", "shortsword",
 		),
 		MainHand: "main hand",
 		OffHand:  "off hand",
@@ -165,13 +203,9 @@ var Classes = map[string]ClassSkills{
 			"arcana", "deception", "insight", "intimidation", "persuasion", "religion",
 		},
 		// NO ARMOR
-		Weapons: []weapons.Weapon{
-			{Name: "dagger", TwoHanded: false},
-			{Name: "dart", TwoHanded: false},
-			{Name: "sling", TwoHanded: true},
-			{Name: "quarterstaff", TwoHanded: false},
-			{Name: "light crossbow", TwoHanded: true},
-		},
+		Weapons: WeaponsByName(
+			"dagger", "dart", "sling", "quarterstaff", "light crossbow",
+		),
 		MainHand: "main hand",
 		OffHand:  "off hand",
 	},
@@ -183,7 +217,7 @@ var Classes = map[string]ClassSkills{
 		Armor: []string{
 			"padded", "leather", "studded leather",
 		},
-		Weapons:  weapons.GetSimpleWeapons(),
+		Weapons:  SimpleWeapons,
 		MainHand: "main hand",
 		OffHand:  "off hand",
 	},
@@ -193,13 +227,9 @@ var Classes = map[string]ClassSkills{
 			"arcana", "history", "insight", "investigation", "medicine", "religion",
 		},
 		// NO ARMOR
-		Weapons: []weapons.Weapon{
-			{Name: "dagger", TwoHanded: false},
-			{Name: "dart", TwoHanded: false},
-			{Name: "sling", TwoHanded: true},
-			{Name: "quarterstaff", TwoHanded: false},
-			{Name: "light crossbow", TwoHanded: true},
-		},
+		Weapons: WeaponsByName(
+			"dagger", "dart", "sling", "quarterstaff", "light crossbow",
+		),
 		MainHand: "main hand",
 		OffHand:  "off hand",
 	},
