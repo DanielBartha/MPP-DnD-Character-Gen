@@ -57,18 +57,6 @@ func ensureDir(path string) error {
 	return os.MkdirAll(path, 0o755)
 }
 
-// func spellCachePath(index string) string {
-// 	return filepath.Join("data", "api_cache", "spells", index+".json")
-// }
-
-// func weaponCachePath(index string) string {
-// 	return filepath.Join("data", "api_cache", "weapons", index+".json")
-// }
-
-// func armorCachePath(index string) string {
-// 	return filepath.Join("data", "api_cache", "armor", index+".json")
-// }
-
 // fetching single URL w/ context + return bytes
 func fetchURL(ctx context.Context, url string) ([]byte, error) {
 	req, _ := http.NewRequestWithContext(ctx, "GET", url, nil)
@@ -87,7 +75,6 @@ func fetchURL(ctx context.Context, url string) ([]byte, error) {
 }
 
 // helper functions for spells/armor/weapons
-// checks cache first and return chached file if present; else request and cache
 func FetchSpell(index string) (*apiSpellResp, error) {
 	index = strings.ToLower(index)
 
@@ -110,14 +97,6 @@ func FetchSpell(index string) (*apiSpellResp, error) {
 
 func FetchWeapon(index string) (*apiWeaponResp, error) {
 	index = strings.ToLower(index)
-	// // cachePath := weaponCachePath(index)
-
-	// if data, err := os.ReadFile(cachePath); err == nil {
-	// 	var r apiWeaponResp
-	// 	if err := json.Unmarshal(data, &r); err == nil {
-	// 		return &r, nil
-	// 	}
-	// }
 
 	url := fmt.Sprintf("%s/equipment/%s", baseURL, index)
 	ctx, cancel := context.WithTimeout(context.Background(), requestTimeout)
@@ -133,22 +112,11 @@ func FetchWeapon(index string) (*apiWeaponResp, error) {
 		return nil, err
 	}
 
-	// _ = ensureDir(filepath.Dir(cachePath))
-	// _ = os.WriteFile(cachePath, b, 0o644)
-
 	return &r, nil
 }
 
 func FetchArmor(index string) (*apiArmorResp, error) {
 	index = strings.ToLower(index)
-	// cachePath := armorCachePath(index)
-
-	// if data, err := os.ReadFile(cachePath); err == nil {
-	// 	var r apiArmorResp
-	// 	if err := json.Unmarshal(data, &r); err == nil {
-	// 		return &r, nil
-	// 	}
-	// }
 
 	url := fmt.Sprintf("%s/equipment/%s", baseURL, index)
 	ctx, cancel := context.WithTimeout(context.Background(), requestTimeout)
@@ -163,9 +131,6 @@ func FetchArmor(index string) (*apiArmorResp, error) {
 	if err := json.Unmarshal(b, &r); err != nil {
 		return nil, err
 	}
-
-	// _ = ensureDir(filepath.Dir(cachePath))
-	// _ = os.WriteFile(cachePath, b, 0o644)
 
 	return &r, nil
 }

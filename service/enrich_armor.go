@@ -6,7 +6,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"time"
 )
 
 func EnrichArmor(inputPath, outputPath string) error {
@@ -38,7 +37,8 @@ func EnrichArmor(inputPath, outputPath string) error {
 	defer writer.Flush()
 	writer.Write(header)
 
-	var processed, missing int
+	var armorIndexes []string
+	var records [][]string
 
 	for {
 		record, err := reader.Read()
@@ -49,22 +49,38 @@ func EnrichArmor(inputPath, outputPath string) error {
 		name := strings.TrimSpace(record[0])
 		itemType := strings.ToLower(strings.TrimSpace(record[1]))
 
+		if itemType == "armor" {
+			apiIndex := sanitizeAPIIndex(name)
+			armorIndexes = append(armorIndexes, apiIndex)
+		}
+
+		records = append(records, record)
+	}
+
+	results := FetchArmorBatch(armorIndexes)
+
+	var processed, missing int
+
+	for _, record := range records {
+		name := strings.TrimSpace(record[0])
+		itemType := strings.ToLower(strings.TrimSpace(record[1]))
+
 		if itemType != "armor" {
 			writer.Write(append(record, "N/A", "N/A", "N/A"))
 			continue
 		}
 
 		apiIndex := sanitizeAPIIndex(name)
-		apiResp, fetchErr := FetchArmor(apiIndex)
-		if fetchErr != nil {
-			fmt.Printf("skipping %s: %v\n", name, fetchErr)
+		apiResp := results[apiIndex]
+
+		if apiResp == nil {
+			fmt.Printf("Skipping %s: not found\n", name)
 			writer.Write(append(record, "N/A", "N/A", "N/A"))
 			missing++
 			continue
 		}
 
 		domainArmor := ToDomainArmor(apiResp)
-
 		record = append(
 			record,
 			fmt.Sprintf("%d", domainArmor.BaseAC),
@@ -73,11 +89,10 @@ func EnrichArmor(inputPath, outputPath string) error {
 		)
 		writer.Write(record)
 		processed++
-
-		time.Sleep(150 * time.Millisecond)
 	}
 
-	fmt.Printf("Finished processing: %d, missing: %d\n", processed, missing)
+	writer.Flush()
+	fmt.Printf("Finished; processed %d, missing %d\n", processed, missing)
 
 	return nil
 }
