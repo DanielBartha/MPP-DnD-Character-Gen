@@ -50,7 +50,7 @@ func EnrichArmor(inputPath, outputPath string) error {
 		itemType := strings.ToLower(strings.TrimSpace(record[1]))
 
 		if itemType == "armor" {
-			apiIndex := sanitizeAPIIndex(name)
+			apiIndex := SanitizeKey(name)
 			armorIndexes = append(armorIndexes, apiIndex)
 		}
 
@@ -70,7 +70,7 @@ func EnrichArmor(inputPath, outputPath string) error {
 			continue
 		}
 
-		apiIndex := sanitizeAPIIndex(name)
+		apiIndex := SanitizeKey(name)
 		apiResp := results[apiIndex]
 
 		if apiResp == nil {

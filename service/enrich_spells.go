@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
 )
 
 func EnrichSpells(inputPath, outputPath string) error {
@@ -47,7 +46,7 @@ func EnrichSpells(inputPath, outputPath string) error {
 		}
 
 		records = append(records, record)
-		indexes = append(indexes, sanitizeAPIIndex(record[0]))
+		indexes = append(indexes, SanitizeKey(record[0]))
 	}
 
 	fmt.Printf("Fetching data for %d spells...\n", len(indexes))
@@ -57,7 +56,7 @@ func EnrichSpells(inputPath, outputPath string) error {
 
 	for _, record := range records {
 		name := record[0]
-		apiIndex := sanitizeAPIIndex(name)
+		apiIndex := SanitizeKey(name)
 
 		apiResp := spellMap[apiIndex]
 		if apiResp == nil {
@@ -76,19 +75,4 @@ func EnrichSpells(inputPath, outputPath string) error {
 	fmt.Printf("Enriched spells; processed %d, missing: %d\n", processed, missing)
 
 	return nil
-}
-
-func sanitizeAPIIndex(name string) string {
-	index := strings.ToLower(name)
-	index = strings.ReplaceAll(index, "'", "")
-	index = strings.ReplaceAll(index, "’", "")
-	index = strings.ReplaceAll(index, "(", "")
-	index = strings.ReplaceAll(index, ")", "")
-	index = strings.ReplaceAll(index, ",", "")
-	index = strings.ReplaceAll(index, "/", "-")
-	index = strings.ReplaceAll(index, ":", "")
-	index = strings.ReplaceAll(index, ".", "")
-	index = strings.ReplaceAll(index, " ", "-")
-	index = strings.TrimSpace(index)
-	return index
 }
