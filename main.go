@@ -3,6 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
+	"net/http"
 	"os"
 	"strings"
 
@@ -57,7 +59,7 @@ func main() {
 
 		name := createCmd.String("name", "", "character name (required)")
 		race := createCmd.String("race", "", "character race (required)")
-		// "acolyte" as default value
+		// "acolyte" default
 		background := createCmd.String("background", "acolyte", "character background (required)")
 		class := createCmd.String("class", "", "character class (required)")
 		level := createCmd.Int("level", 1, "character level (required)")
@@ -467,6 +469,12 @@ func main() {
 			fmt.Println("Error: ", err)
 			os.Exit(2)
 		}
+
+	case "serve":
+		fs := http.FileServer(http.Dir("."))
+		fmt.Printf("Serving on http://localhost:8080\n")
+		fmt.Printf("Open: http://localhost:8080/charactersheet.html\n")
+		log.Fatal(http.ListenAndServe(":8080", fs))
 
 	default:
 		usage()

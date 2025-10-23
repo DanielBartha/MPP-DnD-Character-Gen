@@ -69,7 +69,10 @@
       "Ability": "",
       "SpellSaveDC": 0,
       "SpellAttackBonus": 0
-    }
+    },
+    "ArmorClass": 0,
+    "InitiativeBonus": 0,
+    "PassivePerception": 0
   },
   {
     "Name": "Thorga Stonehand",
@@ -141,79 +144,10 @@
       "Ability": "",
       "SpellSaveDC": 0,
       "SpellAttackBonus": 0
-    }
-  },
-  {
-    "Name": "Branric Ironwall",
-    "Race": "human",
-    "Background": "acolyte",
-    "Class": "paladin",
-    "Level": 1,
-    "Proficiency": 2,
-    "Stats": {
-      "Str": 16,
-      "StrMod": 3,
-      "Dex": 9,
-      "DexMod": -1,
-      "Con": 15,
-      "ConMod": 2,
-      "Intel": 11,
-      "IntelMod": 0,
-      "Wis": 13,
-      "WisMod": 1,
-      "Cha": 14,
-      "ChaMod": 2
     },
-    "Skills": {
-      "MaxAllowed": 2,
-      "Skills": [
-        "athletics",
-        "insight",
-        "insight",
-        "religion"
-      ],
-      "Armor": [
-        "padded",
-        "leather",
-        "studded leather",
-        "hide",
-        "chain shirt",
-        "scale mail",
-        "breast plate",
-        "half plate",
-        "ring mail",
-        "chain mail",
-        "splint",
-        "plate"
-      ],
-      "Shields": "shield",
-      "Weapons": null,
-      "MainHand": "main hand",
-      "OffHand": "off hand"
-    },
-    "Equipment": {
-      "Weapon": {
-        "main hand": "",
-        "off hand": ""
-      },
-      "Armor": "plate armor",
-      "Shield": "shield"
-    },
-    "Spellcasting": {
-      "CantripsKnown": 0,
-      "SpellsKnown": 0,
-      "CanCast": true,
-      "CasterType": "half",
-      "learned_spells": [],
-      "prepared_spells": [],
-      "slots": {},
-      "maxslots": {},
-      "PreparedMode": false,
-      "LearnedMode": false,
-      "Ability": "",
-      "SpellSaveDC": 0,
-      "SpellAttackBonus": 0
-    }
+    "ArmorClass": 0,
+    "InitiativeBonus": 0,
+    "PassivePerception": 0
   },
   {
     "Name": "Ragna Wolfblood",
@@ -281,75 +215,10 @@
       "Ability": "",
       "SpellSaveDC": 0,
       "SpellAttackBonus": 0
-    }
-  },
-  {
-    "Name": "Brynja Axebreaker",
-    "Race": "human",
-    "Background": "acolyte",
-    "Class": "barbarian",
-    "Level": 1,
-    "Proficiency": 2,
-    "Stats": {
-      "Str": 16,
-      "StrMod": 3,
-      "Dex": 14,
-      "DexMod": 2,
-      "Con": 15,
-      "ConMod": 2,
-      "Intel": 9,
-      "IntelMod": -1,
-      "Wis": 13,
-      "WisMod": 1,
-      "Cha": 11,
-      "ChaMod": 0
     },
-    "Skills": {
-      "MaxAllowed": 2,
-      "Skills": [
-        "animal handling",
-        "athletics",
-        "insight",
-        "religion"
-      ],
-      "Armor": [
-        "padded",
-        "leather",
-        "studded leather",
-        "hide",
-        "chain shirt",
-        "scale mail",
-        "breast plate",
-        "half plate"
-      ],
-      "Shields": "shield",
-      "Weapons": null,
-      "MainHand": "main hand",
-      "OffHand": "off hand"
-    },
-    "Equipment": {
-      "Weapon": {
-        "main hand": "",
-        "off hand": ""
-      },
-      "Armor": "half plate",
-      "Shield": "shield"
-    },
-    "Spellcasting": {
-      "CantripsKnown": 0,
-      "SpellsKnown": 0,
-      "CanCast": false,
-      "CasterType": "",
-      "learned_spells": [],
-      "prepared_spells": [],
-      "slots": {},
-      "maxslots": {},
-      "PreparedMode": false,
-      "LearnedMode": false,
-      "Ability": "",
-      "SpellSaveDC": 0,
-      "SpellAttackBonus": 0
-    }
+    "ArmorClass": 0,
+    "InitiativeBonus": 0,
+    "PassivePerception": 0
   },
   {
     "Name": "Tashi Cloudwalker",
@@ -415,7 +284,10 @@
       "Ability": "",
       "SpellSaveDC": 0,
       "SpellAttackBonus": 0
-    }
+    },
+    "ArmorClass": 0,
+    "InitiativeBonus": 0,
+    "PassivePerception": 0
   },
   {
     "Name": "Joren Ironstep",
@@ -481,7 +353,10 @@
       "Ability": "",
       "SpellSaveDC": 0,
       "SpellAttackBonus": 0
-    }
+    },
+    "ArmorClass": 0,
+    "InitiativeBonus": 0,
+    "PassivePerception": 0
   },
   {
     "Name": "Gandalf",
@@ -562,7 +437,9 @@
       "SpellsKnown": 0,
       "CanCast": true,
       "CasterType": "full",
-      "learned_spells": [],
+      "learned_spells": [
+        "acid arrow"
+      ],
       "prepared_spells": [],
       "slots": {
         "1": 4,
@@ -587,11 +464,14 @@
         "9": 1
       },
       "PreparedMode": false,
-      "LearnedMode": false,
+      "LearnedMode": true,
       "Ability": "intelligence",
       "SpellSaveDC": 16,
       "SpellAttackBonus": 8
-    }
+    },
+    "ArmorClass": 0,
+    "InitiativeBonus": 0,
+    "PassivePerception": 0
   },
   {
     "Name": "Qui-Gon Jinn",
@@ -671,7 +551,10 @@
       "Ability": "wisdom",
       "SpellSaveDC": 15,
       "SpellAttackBonus": 7
-    }
+    },
+    "ArmorClass": 0,
+    "InitiativeBonus": 0,
+    "PassivePerception": 0
   },
   {
     "Name": "Kaelen Swiftstep",
@@ -761,6 +644,155 @@
       "Ability": "",
       "SpellSaveDC": 0,
       "SpellAttackBonus": 0
-    }
+    },
+    "ArmorClass": 0,
+    "InitiativeBonus": 0,
+    "PassivePerception": 0
+  },
+  {
+    "Name": "Branric Ironwall",
+    "Race": "human",
+    "Background": "acolyte",
+    "Class": "paladin",
+    "Level": 1,
+    "Proficiency": 2,
+    "Stats": {
+      "Str": 16,
+      "StrMod": 3,
+      "Dex": 9,
+      "DexMod": -1,
+      "Con": 15,
+      "ConMod": 2,
+      "Intel": 11,
+      "IntelMod": 0,
+      "Wis": 13,
+      "WisMod": 1,
+      "Cha": 14,
+      "ChaMod": 2
+    },
+    "Skills": {
+      "MaxAllowed": 2,
+      "Skills": [
+        "athletics",
+        "insight",
+        "insight",
+        "religion"
+      ],
+      "Armor": [
+        "padded",
+        "leather",
+        "studded leather",
+        "hide",
+        "chain shirt",
+        "scale mail",
+        "breast plate",
+        "half plate",
+        "ring mail",
+        "chain mail",
+        "splint",
+        "plate"
+      ],
+      "Shields": "shield",
+      "Weapons": null,
+      "MainHand": "main hand",
+      "OffHand": "off hand"
+    },
+    "Equipment": {
+      "Weapon": {
+        "main hand": "",
+        "off hand": ""
+      },
+      "Armor": "plate armor",
+      "Shield": "shield"
+    },
+    "Spellcasting": {
+      "CantripsKnown": 0,
+      "SpellsKnown": 0,
+      "CanCast": true,
+      "CasterType": "half",
+      "learned_spells": [],
+      "prepared_spells": [],
+      "slots": {},
+      "maxslots": {},
+      "PreparedMode": false,
+      "LearnedMode": false,
+      "Ability": "charisma",
+      "SpellSaveDC": 12,
+      "SpellAttackBonus": 4
+    },
+    "ArmorClass": 20,
+    "InitiativeBonus": -1,
+    "PassivePerception": 11
+  },
+  {
+    "Name": "Brynja Axebreaker",
+    "Race": "human",
+    "Background": "acolyte",
+    "Class": "barbarian",
+    "Level": 1,
+    "Proficiency": 2,
+    "Stats": {
+      "Str": 16,
+      "StrMod": 3,
+      "Dex": 14,
+      "DexMod": 2,
+      "Con": 15,
+      "ConMod": 2,
+      "Intel": 9,
+      "IntelMod": -1,
+      "Wis": 13,
+      "WisMod": 1,
+      "Cha": 11,
+      "ChaMod": 0
+    },
+    "Skills": {
+      "MaxAllowed": 2,
+      "Skills": [
+        "animal handling",
+        "athletics",
+        "insight",
+        "religion"
+      ],
+      "Armor": [
+        "padded",
+        "leather",
+        "studded leather",
+        "hide",
+        "chain shirt",
+        "scale mail",
+        "breast plate",
+        "half plate"
+      ],
+      "Shields": "shield",
+      "Weapons": null,
+      "MainHand": "main hand",
+      "OffHand": "off hand"
+    },
+    "Equipment": {
+      "Weapon": {
+        "main hand": "",
+        "off hand": ""
+      },
+      "Armor": "half plate",
+      "Shield": "shield"
+    },
+    "Spellcasting": {
+      "CantripsKnown": 0,
+      "SpellsKnown": 0,
+      "CanCast": false,
+      "CasterType": "",
+      "learned_spells": [],
+      "prepared_spells": [],
+      "slots": {},
+      "maxslots": {},
+      "PreparedMode": false,
+      "LearnedMode": false,
+      "Ability": "",
+      "SpellSaveDC": 0,
+      "SpellAttackBonus": 0
+    },
+    "ArmorClass": 19,
+    "InitiativeBonus": 2,
+    "PassivePerception": 11
   }
 ]

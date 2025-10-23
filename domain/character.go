@@ -14,16 +14,19 @@ var SpellcastingType = map[string]string{
 }
 
 type Character struct {
-	Name         string
-	Race         string
-	Background   string
-	Class        string
-	Level        int
-	Proficiency  int
-	Stats        Stats
-	Skills       ClassLoadout
-	Equipment    Equipment
-	Spellcasting *Spellcasting
+	Name              string
+	Race              string
+	Background        string
+	Class             string
+	Level             int
+	Proficiency       int
+	Stats             Stats
+	Skills            ClassLoadout
+	Equipment         Equipment
+	Spellcasting      *Spellcasting
+	ArmorClass        int
+	InitiativeBonus   int
+	PassivePerception int
 }
 
 type ClassLoadout struct {

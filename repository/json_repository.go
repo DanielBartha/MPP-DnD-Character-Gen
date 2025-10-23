@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 
 	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
+	"github.com/DanielBartha/MPP-DnD-Character-Gen/service"
 )
 
 /*
@@ -50,6 +51,8 @@ func NewJsonRepository(filePath string) *JsonRepository {
 }
 
 func (repo *JsonRepository) Save(character *domain.Character) error {
+	service.ComputeDerivedStats(character)
+
 	characters, _ := repo.List()
 
 	updated := false
@@ -79,6 +82,7 @@ func (repo *JsonRepository) Load(name string) (*domain.Character, error) {
 
 	for _, c := range characters {
 		if c.Name == name {
+			service.ComputeDerivedStats(c)
 			return c, nil
 		}
 	}
