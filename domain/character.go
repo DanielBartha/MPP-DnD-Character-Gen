@@ -63,16 +63,19 @@ type Equipment struct {
 }
 
 type Spellcasting struct {
-	CantripsKnown  int
-	SpellsKnown    int
-	CanCast        bool
-	CasterType     string
-	LearnedSpells  []string    `json:"learned_spells"`
-	PreparedSpells []string    `json:"prepared_spells"`
-	Slots          map[int]int `json:"slots"`
-	MaxSlots       map[int]int `json:"maxslots"`
-	PreparedMode   bool
-	LearnedMode    bool
+	CantripsKnown    int
+	SpellsKnown      int
+	CanCast          bool
+	CasterType       string
+	LearnedSpells    []string    `json:"learned_spells"`
+	PreparedSpells   []string    `json:"prepared_spells"`
+	Slots            map[int]int `json:"slots"`
+	MaxSlots         map[int]int `json:"maxslots"`
+	PreparedMode     bool
+	LearnedMode      bool
+	Ability          string
+	SpellSaveDC      int
+	SpellAttackBonus int
 }
 
 type SpellInfo struct {

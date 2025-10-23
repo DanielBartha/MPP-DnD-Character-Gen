@@ -184,13 +184,19 @@ func main() {
 			fmt.Println("Spell slots:")
 
 			if character.Spellcasting.CantripsKnown > 0 {
-				fmt.Printf("  Level 0: %d\n", character.Spellcasting.CantripsKnown)
+				fmt.Printf("Level 0: %d\n", character.Spellcasting.CantripsKnown)
 			}
 
 			for lvl := 1; lvl <= 9; lvl++ {
 				if count, ok := character.Spellcasting.MaxSlots[lvl]; ok && count > 0 {
-					fmt.Printf("  Level %d: %d\n", lvl, count)
+					fmt.Printf("Level %d: %d\n", lvl, count)
 				}
+			}
+
+			if character.Spellcasting.Ability != "" {
+				fmt.Printf("Spellcasting ability: %s\n", strings.ToLower(character.Spellcasting.Ability))
+				fmt.Printf("Spell save DC: %d\n", character.Spellcasting.SpellSaveDC)
+				fmt.Printf("Spell attack bonus: +%d\n", character.Spellcasting.SpellAttackBonus)
 			}
 		}
 
@@ -210,10 +216,8 @@ func main() {
 		}
 
 		fmt.Printf("Armor class: %d\n", service.CalculateArmorClass(character))
-
 		fmt.Printf("Initiative bonus: %d\n", service.CalculateInitiative(&character.Stats))
-
-		fmt.Printf("Passive Perception: %d\n", service.CalculatePassivePerception(character))
+		fmt.Printf("Passive perception: %d\n", service.CalculatePassivePerception(character))
 
 	case "list":
 		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
@@ -408,7 +412,7 @@ func main() {
 			return
 		}
 
-		// check for non-existing spells (csv)
+		// checks for non-existing spells (csv)
 		level, err := service.GetSpellLevel(*spell)
 		if err != nil {
 			fmt.Println(err)

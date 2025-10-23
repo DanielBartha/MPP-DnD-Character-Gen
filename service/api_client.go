@@ -341,7 +341,7 @@ func FetchArmorBatch(indexes []string) map[string]*apiArmorResp {
 		return results
 	}
 
-	fmt.Printf("Saved %d weapons to %s\n", len(results), cachePath)
+	fmt.Printf("Saved %d armor to %s\n", len(results), cachePath)
 
 	return results
 }

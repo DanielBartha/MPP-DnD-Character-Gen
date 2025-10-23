@@ -46,7 +46,7 @@ func EnrichSpells(inputPath, outputPath string) error {
 		}
 
 		records = append(records, record)
-		indexes = append(indexes, SanitizeKey(record[0]))
+		indexes = append(indexes, SanitizeApiKey(record[0]))
 	}
 
 	fmt.Printf("Fetching data for %d spells...\n", len(indexes))
@@ -56,7 +56,7 @@ func EnrichSpells(inputPath, outputPath string) error {
 
 	for _, record := range records {
 		name := record[0]
-		apiIndex := SanitizeKey(name)
+		apiIndex := SanitizeApiKey(name)
 
 		apiResp := spellMap[apiIndex]
 		if apiResp == nil {

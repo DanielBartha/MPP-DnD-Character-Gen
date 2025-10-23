@@ -39,7 +39,7 @@ func CalculateArmorClass(c *domain.Character) int {
 	class := strings.ToLower(c.Class)
 
 	if e.Armor != "" {
-		armorKey := SanitizeKey(e.Armor)
+		armorKey := SanitizeLocalKey(e.Armor)
 		armorInfo, ok := ArmorData[armorKey]
 
 		ac := 10 + s.DexMod
