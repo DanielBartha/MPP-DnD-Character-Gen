@@ -89,17 +89,22 @@ func (s *CharacterService) GetClassSkills(c *domain.Character) domain.ClassLoado
 }
 
 func (s *CharacterService) ApplyRacialBonuses(character *domain.Character) {
-	switch strings.ToLower(character.Race) {
+	race := strings.ToLower(strings.ReplaceAll(character.Race, " ", "-"))
+	switch race {
 	case "dwarf":
 		character.Stats.Con += 2
+
+	case "hill-dwarf":
+		character.Stats.Con += 2
+		character.Stats.Wis += 1
 
 	case "elf":
 		character.Stats.Dex += 2
 
-	case "halfling", "stout halfling":
+	case "halfling", "stout-halfling":
 		character.Stats.Dex += 2
 
-	case "lightfoot halfling":
+	case "lightfoot-halfling":
 		character.Stats.Dex += 2
 		character.Stats.Cha++
 

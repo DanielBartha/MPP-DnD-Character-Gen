@@ -1,6 +1,10 @@
 package service
 
-import "github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
+import (
+	"strings"
+
+	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
+)
 
 type ArmorInfo struct {
 	BaseAC   int
@@ -29,9 +33,31 @@ func CalculateInitiative(s *domain.Stats) int {
 	return s.DexMod
 }
 
-func CalculateArmorClass(s *domain.Stats, e *domain.Equipment) int {
-	if e.Armor == "" {
+func CalculateArmorClass(c *domain.Character) int {
+	s := &c.Stats
+	e := &c.Equipment
+	class := strings.ToLower(c.Class)
+
+	if e.Armor != "" {
+		armorKey := SanitizeKey(e.Armor)
+		armorInfo, ok := ArmorData[armorKey]
+
 		ac := 10 + s.DexMod
+		if ok {
+			ac = armorInfo.BaseAC
+			switch armorInfo.DexBonus {
+			case "full":
+				ac += s.DexMod
+			case "max2":
+				dex := s.DexMod
+				if dex > 2 {
+					dex = 2
+				}
+				ac += dex
+			case "none":
+				// no bolus
+			}
+		}
 
 		if e.Shield != "" {
 			ac += 2
@@ -39,38 +65,25 @@ func CalculateArmorClass(s *domain.Stats, e *domain.Equipment) int {
 		return ac
 	}
 
-	armorKey := SanitizeKey(e.Armor)
-	armorInfo, ok := ArmorData[armorKey]
-
-	if !ok {
-		ac := 10 + s.DexMod
+	if class == "barbarian" {
+		ac := 10 + s.DexMod + s.ConMod
 		if e.Shield != "" {
 			ac += 2
 		}
 		return ac
 	}
 
-	ac := armorInfo.BaseAC
-
-	switch armorInfo.DexBonus {
-
-	case "full":
-		ac += s.DexMod
-
-	case "max2":
-		dex := s.DexMod
-		if dex > 2 {
-			dex = 2
+	if class == "monk" {
+		ac := 10 + s.DexMod + s.WisMod
+		if e.Shield != "" {
+			ac += 2
 		}
-		ac += dex
-
-	case "none":
-		// no bonus
+		return ac
 	}
 
+	ac := 10 + s.DexMod
 	if e.Shield != "" {
 		ac += 2
 	}
-
 	return ac
 }

@@ -3,16 +3,19 @@ package service
 import "strings"
 
 func SanitizeKey(name string) string {
-	index := strings.ToLower(name)
-	index = strings.ReplaceAll(index, "'", "")
-	index = strings.ReplaceAll(index, "’", "")
-	index = strings.ReplaceAll(index, "(", "")
-	index = strings.ReplaceAll(index, ")", "")
-	index = strings.ReplaceAll(index, ",", "")
-	index = strings.ReplaceAll(index, "/", "-")
-	index = strings.ReplaceAll(index, ":", "")
-	index = strings.ReplaceAll(index, ".", "")
-	index = strings.ReplaceAll(index, " ", "-")
-	index = strings.TrimSpace(index)
-	return index
+	key := strings.ToLower(name)
+	key = strings.ReplaceAll(key, "'", "")
+	key = strings.ReplaceAll(key, "’", "")
+	key = strings.ReplaceAll(key, "(", "")
+	key = strings.ReplaceAll(key, ")", "")
+	key = strings.ReplaceAll(key, ",", "")
+	key = strings.ReplaceAll(key, "/", "-")
+	key = strings.ReplaceAll(key, ":", "")
+	key = strings.ReplaceAll(key, ".", "")
+	key = strings.ReplaceAll(key, " ", "-")
+	key = strings.ReplaceAll(key, " ", "-")
+	key = strings.TrimSuffix(key, "-armor")
+	key = strings.TrimSuffix(key, " armor")
+	key = strings.TrimSpace(key)
+	return key
 }

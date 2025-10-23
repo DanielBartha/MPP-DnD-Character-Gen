@@ -194,8 +194,6 @@ func main() {
 			}
 		}
 
-		hasProtection := false
-
 		if weapon, ok := character.Equipment.Weapon["main hand"]; ok && weapon != "" {
 			fmt.Printf("Main hand: %s\n", weapon)
 		}
@@ -204,7 +202,6 @@ func main() {
 			fmt.Printf("Off hand: %s\n", weapon)
 		}
 		if character.Equipment.Armor != "" {
-			hasProtection = true
 			fmt.Printf("Armor: %s\n", character.Equipment.Armor)
 		}
 
@@ -212,11 +209,11 @@ func main() {
 			fmt.Printf("Shield: %s\n", character.Equipment.Shield)
 		}
 
-		if hasProtection {
-			fmt.Printf("Armor class: %d\n", service.CalculateArmorClass(&character.Stats, &character.Equipment))
-		}
+		fmt.Printf("Armor class: %d\n", service.CalculateArmorClass(character))
 
-		fmt.Printf("Initiative bonus: %+d\n", service.CalculateInitiative(&character.Stats))
+		fmt.Printf("Initiative bonus: %d\n", service.CalculateInitiative(&character.Stats))
+
+		fmt.Printf("Passive Perception: %d\n", service.CalculatePassivePerception(character))
 
 	case "list":
 		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
