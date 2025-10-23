@@ -1,0 +1,766 @@
+[
+  {
+    "Name": "Kaelthar Stormcloud",
+    "Race": "dwarf",
+    "Background": "acolyte",
+    "Class": "fighter",
+    "Level": 3,
+    "Proficiency": 2,
+    "Stats": {
+      "Str": 16,
+      "StrMod": 3,
+      "Dex": 16,
+      "DexMod": 3,
+      "Con": 15,
+      "ConMod": 2,
+      "Intel": 8,
+      "IntelMod": -1,
+      "Wis": 12,
+      "WisMod": 1,
+      "Cha": 14,
+      "ChaMod": 2
+    },
+    "Skills": {
+      "MaxAllowed": 2,
+      "Skills": [
+        "acrobatics",
+        "animal handling",
+        "insight",
+        "religion"
+      ],
+      "Armor": [
+        "padded",
+        "leather",
+        "studded leather",
+        "hide",
+        "chain shirt",
+        "scale mail",
+        "breast plate",
+        "half plate",
+        "ring mail",
+        "chain mail",
+        "splint",
+        "plate"
+      ],
+      "Shields": "shield",
+      "Weapons": null,
+      "MainHand": "main hand",
+      "OffHand": "off hand"
+    },
+    "Equipment": {
+      "Weapon": {
+        "main hand": "",
+        "off hand": ""
+      },
+      "Armor": "",
+      "Shield": ""
+    },
+    "Spellcasting": {
+      "CantripsKnown": 0,
+      "SpellsKnown": 0,
+      "CanCast": false,
+      "CasterType": "",
+      "learned_spells": [],
+      "prepared_spells": [],
+      "slots": {},
+      "maxslots": {},
+      "PreparedMode": false,
+      "LearnedMode": false,
+      "Ability": "",
+      "SpellSaveDC": 0,
+      "SpellAttackBonus": 0
+    }
+  },
+  {
+    "Name": "Thorga Stonehand",
+    "Race": "hill dwarf",
+    "Background": "acolyte",
+    "Class": "fighter",
+    "Level": 1,
+    "Proficiency": 2,
+    "Stats": {
+      "Str": 15,
+      "StrMod": 2,
+      "Dex": 12,
+      "DexMod": 1,
+      "Con": 16,
+      "ConMod": 3,
+      "Intel": 8,
+      "IntelMod": -1,
+      "Wis": 14,
+      "WisMod": 2,
+      "Cha": 10,
+      "ChaMod": 0
+    },
+    "Skills": {
+      "MaxAllowed": 2,
+      "Skills": [
+        "acrobatics",
+        "animal handling",
+        "insight",
+        "religion"
+      ],
+      "Armor": [
+        "padded",
+        "leather",
+        "studded leather",
+        "hide",
+        "chain shirt",
+        "scale mail",
+        "breast plate",
+        "half plate",
+        "ring mail",
+        "chain mail",
+        "splint",
+        "plate"
+      ],
+      "Shields": "shield",
+      "Weapons": null,
+      "MainHand": "main hand",
+      "OffHand": "off hand"
+    },
+    "Equipment": {
+      "Weapon": {
+        "main hand": "",
+        "off hand": ""
+      },
+      "Armor": "scale mail",
+      "Shield": "shield"
+    },
+    "Spellcasting": {
+      "CantripsKnown": 0,
+      "SpellsKnown": 0,
+      "CanCast": false,
+      "CasterType": "",
+      "learned_spells": [],
+      "prepared_spells": [],
+      "slots": {},
+      "maxslots": {},
+      "PreparedMode": false,
+      "LearnedMode": false,
+      "Ability": "",
+      "SpellSaveDC": 0,
+      "SpellAttackBonus": 0
+    }
+  },
+  {
+    "Name": "Branric Ironwall",
+    "Race": "human",
+    "Background": "acolyte",
+    "Class": "paladin",
+    "Level": 1,
+    "Proficiency": 2,
+    "Stats": {
+      "Str": 16,
+      "StrMod": 3,
+      "Dex": 9,
+      "DexMod": -1,
+      "Con": 15,
+      "ConMod": 2,
+      "Intel": 11,
+      "IntelMod": 0,
+      "Wis": 13,
+      "WisMod": 1,
+      "Cha": 14,
+      "ChaMod": 2
+    },
+    "Skills": {
+      "MaxAllowed": 2,
+      "Skills": [
+        "athletics",
+        "insight",
+        "insight",
+        "religion"
+      ],
+      "Armor": [
+        "padded",
+        "leather",
+        "studded leather",
+        "hide",
+        "chain shirt",
+        "scale mail",
+        "breast plate",
+        "half plate",
+        "ring mail",
+        "chain mail",
+        "splint",
+        "plate"
+      ],
+      "Shields": "shield",
+      "Weapons": null,
+      "MainHand": "main hand",
+      "OffHand": "off hand"
+    },
+    "Equipment": {
+      "Weapon": {
+        "main hand": "",
+        "off hand": ""
+      },
+      "Armor": "plate armor",
+      "Shield": "shield"
+    },
+    "Spellcasting": {
+      "CantripsKnown": 0,
+      "SpellsKnown": 0,
+      "CanCast": true,
+      "CasterType": "half",
+      "learned_spells": [],
+      "prepared_spells": [],
+      "slots": {},
+      "maxslots": {},
+      "PreparedMode": false,
+      "LearnedMode": false,
+      "Ability": "",
+      "SpellSaveDC": 0,
+      "SpellAttackBonus": 0
+    }
+  },
+  {
+    "Name": "Ragna Wolfblood",
+    "Race": "half orc",
+    "Background": "acolyte",
+    "Class": "barbarian",
+    "Level": 1,
+    "Proficiency": 2,
+    "Stats": {
+      "Str": 17,
+      "StrMod": 3,
+      "Dex": 14,
+      "DexMod": 2,
+      "Con": 14,
+      "ConMod": 2,
+      "Intel": 8,
+      "IntelMod": -1,
+      "Wis": 12,
+      "WisMod": 1,
+      "Cha": 10,
+      "ChaMod": 0
+    },
+    "Skills": {
+      "MaxAllowed": 2,
+      "Skills": [
+        "animal handling",
+        "athletics",
+        "insight",
+        "religion"
+      ],
+      "Armor": [
+        "padded",
+        "leather",
+        "studded leather",
+        "hide",
+        "chain shirt",
+        "scale mail",
+        "breast plate",
+        "half plate"
+      ],
+      "Shields": "shield",
+      "Weapons": null,
+      "MainHand": "main hand",
+      "OffHand": "off hand"
+    },
+    "Equipment": {
+      "Weapon": {
+        "main hand": "",
+        "off hand": ""
+      },
+      "Armor": "",
+      "Shield": ""
+    },
+    "Spellcasting": {
+      "CantripsKnown": 0,
+      "SpellsKnown": 0,
+      "CanCast": false,
+      "CasterType": "",
+      "learned_spells": [],
+      "prepared_spells": [],
+      "slots": {},
+      "maxslots": {},
+      "PreparedMode": false,
+      "LearnedMode": false,
+      "Ability": "",
+      "SpellSaveDC": 0,
+      "SpellAttackBonus": 0
+    }
+  },
+  {
+    "Name": "Brynja Axebreaker",
+    "Race": "human",
+    "Background": "acolyte",
+    "Class": "barbarian",
+    "Level": 1,
+    "Proficiency": 2,
+    "Stats": {
+      "Str": 16,
+      "StrMod": 3,
+      "Dex": 14,
+      "DexMod": 2,
+      "Con": 15,
+      "ConMod": 2,
+      "Intel": 9,
+      "IntelMod": -1,
+      "Wis": 13,
+      "WisMod": 1,
+      "Cha": 11,
+      "ChaMod": 0
+    },
+    "Skills": {
+      "MaxAllowed": 2,
+      "Skills": [
+        "animal handling",
+        "athletics",
+        "insight",
+        "religion"
+      ],
+      "Armor": [
+        "padded",
+        "leather",
+        "studded leather",
+        "hide",
+        "chain shirt",
+        "scale mail",
+        "breast plate",
+        "half plate"
+      ],
+      "Shields": "shield",
+      "Weapons": null,
+      "MainHand": "main hand",
+      "OffHand": "off hand"
+    },
+    "Equipment": {
+      "Weapon": {
+        "main hand": "",
+        "off hand": ""
+      },
+      "Armor": "half plate",
+      "Shield": "shield"
+    },
+    "Spellcasting": {
+      "CantripsKnown": 0,
+      "SpellsKnown": 0,
+      "CanCast": false,
+      "CasterType": "",
+      "learned_spells": [],
+      "prepared_spells": [],
+      "slots": {},
+      "maxslots": {},
+      "PreparedMode": false,
+      "LearnedMode": false,
+      "Ability": "",
+      "SpellSaveDC": 0,
+      "SpellAttackBonus": 0
+    }
+  },
+  {
+    "Name": "Tashi Cloudwalker",
+    "Race": "human",
+    "Background": "acolyte",
+    "Class": "monk",
+    "Level": 1,
+    "Proficiency": 2,
+    "Stats": {
+      "Str": 11,
+      "StrMod": 0,
+      "Dex": 16,
+      "DexMod": 3,
+      "Con": 14,
+      "ConMod": 2,
+      "Intel": 9,
+      "IntelMod": -1,
+      "Wis": 15,
+      "WisMod": 2,
+      "Cha": 13,
+      "ChaMod": 1
+    },
+    "Skills": {
+      "MaxAllowed": 2,
+      "Skills": [
+        "acrobatics",
+        "athletics",
+        "insight",
+        "religion"
+      ],
+      "Armor": null,
+      "Shields": "",
+      "Weapons": [
+        {
+          "Name": "shortsword",
+          "Category": "",
+          "Range": 0,
+          "TwoHanded": false
+        }
+      ],
+      "MainHand": "main hand",
+      "OffHand": "off hand"
+    },
+    "Equipment": {
+      "Weapon": {
+        "main hand": "",
+        "off hand": ""
+      },
+      "Armor": "",
+      "Shield": ""
+    },
+    "Spellcasting": {
+      "CantripsKnown": 0,
+      "SpellsKnown": 0,
+      "CanCast": false,
+      "CasterType": "",
+      "learned_spells": [],
+      "prepared_spells": [],
+      "slots": {},
+      "maxslots": {},
+      "PreparedMode": false,
+      "LearnedMode": false,
+      "Ability": "",
+      "SpellSaveDC": 0,
+      "SpellAttackBonus": 0
+    }
+  },
+  {
+    "Name": "Joren Ironstep",
+    "Race": "human",
+    "Background": "acolyte",
+    "Class": "monk",
+    "Level": 1,
+    "Proficiency": 2,
+    "Stats": {
+      "Str": 14,
+      "StrMod": 2,
+      "Dex": 13,
+      "DexMod": 1,
+      "Con": 15,
+      "ConMod": 2,
+      "Intel": 9,
+      "IntelMod": -1,
+      "Wis": 16,
+      "WisMod": 3,
+      "Cha": 11,
+      "ChaMod": 0
+    },
+    "Skills": {
+      "MaxAllowed": 2,
+      "Skills": [
+        "acrobatics",
+        "athletics",
+        "insight",
+        "religion"
+      ],
+      "Armor": null,
+      "Shields": "",
+      "Weapons": [
+        {
+          "Name": "shortsword",
+          "Category": "",
+          "Range": 0,
+          "TwoHanded": false
+        }
+      ],
+      "MainHand": "main hand",
+      "OffHand": "off hand"
+    },
+    "Equipment": {
+      "Weapon": {
+        "main hand": "",
+        "off hand": ""
+      },
+      "Armor": "chain shirt",
+      "Shield": ""
+    },
+    "Spellcasting": {
+      "CantripsKnown": 0,
+      "SpellsKnown": 0,
+      "CanCast": false,
+      "CasterType": "",
+      "learned_spells": [],
+      "prepared_spells": [],
+      "slots": {},
+      "maxslots": {},
+      "PreparedMode": false,
+      "LearnedMode": false,
+      "Ability": "",
+      "SpellSaveDC": 0,
+      "SpellAttackBonus": 0
+    }
+  },
+  {
+    "Name": "Gandalf",
+    "Race": "human",
+    "Background": "acolyte",
+    "Class": "wizard",
+    "Level": 20,
+    "Proficiency": 6,
+    "Stats": {
+      "Str": 9,
+      "StrMod": -1,
+      "Dex": 11,
+      "DexMod": 0,
+      "Con": 13,
+      "ConMod": 1,
+      "Intel": 15,
+      "IntelMod": 2,
+      "Wis": 16,
+      "WisMod": 3,
+      "Cha": 14,
+      "ChaMod": 2
+    },
+    "Skills": {
+      "MaxAllowed": 2,
+      "Skills": [
+        "arcana",
+        "history",
+        "insight",
+        "religion"
+      ],
+      "Armor": null,
+      "Shields": "",
+      "Weapons": [
+        {
+          "Name": "dagger",
+          "Category": "",
+          "Range": 0,
+          "TwoHanded": false
+        },
+        {
+          "Name": "dart",
+          "Category": "",
+          "Range": 0,
+          "TwoHanded": false
+        },
+        {
+          "Name": "sling",
+          "Category": "",
+          "Range": 0,
+          "TwoHanded": false
+        },
+        {
+          "Name": "quarterstaff",
+          "Category": "",
+          "Range": 0,
+          "TwoHanded": false
+        },
+        {
+          "Name": "light crossbow",
+          "Category": "",
+          "Range": 0,
+          "TwoHanded": false
+        }
+      ],
+      "MainHand": "main hand",
+      "OffHand": "off hand"
+    },
+    "Equipment": {
+      "Weapon": {
+        "main hand": "",
+        "off hand": ""
+      },
+      "Armor": "",
+      "Shield": ""
+    },
+    "Spellcasting": {
+      "CantripsKnown": 5,
+      "SpellsKnown": 0,
+      "CanCast": true,
+      "CasterType": "full",
+      "learned_spells": [],
+      "prepared_spells": [],
+      "slots": {
+        "1": 4,
+        "2": 3,
+        "3": 3,
+        "4": 3,
+        "5": 3,
+        "6": 2,
+        "7": 2,
+        "8": 1,
+        "9": 1
+      },
+      "maxslots": {
+        "1": 4,
+        "2": 3,
+        "3": 3,
+        "4": 3,
+        "5": 3,
+        "6": 2,
+        "7": 2,
+        "8": 1,
+        "9": 1
+      },
+      "PreparedMode": false,
+      "LearnedMode": false,
+      "Ability": "intelligence",
+      "SpellSaveDC": 16,
+      "SpellAttackBonus": 8
+    }
+  },
+  {
+    "Name": "Qui-Gon Jinn",
+    "Race": "human",
+    "Background": "acolyte",
+    "Class": "cleric",
+    "Level": 10,
+    "Proficiency": 4,
+    "Stats": {
+      "Str": 15,
+      "StrMod": 2,
+      "Dex": 9,
+      "DexMod": -1,
+      "Con": 11,
+      "ConMod": 0,
+      "Intel": 14,
+      "IntelMod": 2,
+      "Wis": 16,
+      "WisMod": 3,
+      "Cha": 13,
+      "ChaMod": 1
+    },
+    "Skills": {
+      "MaxAllowed": 2,
+      "Skills": [
+        "history",
+        "insight",
+        "insight",
+        "religion"
+      ],
+      "Armor": [
+        "padded",
+        "leather",
+        "studded leather",
+        "hide",
+        "chain shirt",
+        "scale mail",
+        "breast plate",
+        "half plate"
+      ],
+      "Shields": "shield",
+      "Weapons": null,
+      "MainHand": "main hand",
+      "OffHand": "off hand"
+    },
+    "Equipment": {
+      "Weapon": {
+        "main hand": "",
+        "off hand": ""
+      },
+      "Armor": "",
+      "Shield": ""
+    },
+    "Spellcasting": {
+      "CantripsKnown": 5,
+      "SpellsKnown": 0,
+      "CanCast": true,
+      "CasterType": "full",
+      "learned_spells": [],
+      "prepared_spells": [],
+      "slots": {
+        "1": 4,
+        "2": 3,
+        "3": 3,
+        "4": 3,
+        "5": 2
+      },
+      "maxslots": {
+        "1": 4,
+        "2": 3,
+        "3": 3,
+        "4": 3,
+        "5": 2
+      },
+      "PreparedMode": false,
+      "LearnedMode": false,
+      "Ability": "wisdom",
+      "SpellSaveDC": 15,
+      "SpellAttackBonus": 7
+    }
+  },
+  {
+    "Name": "Kaelen Swiftstep",
+    "Race": "human",
+    "Background": "acolyte",
+    "Class": "rogue",
+    "Level": 1,
+    "Proficiency": 2,
+    "Stats": {
+      "Str": 11,
+      "StrMod": 0,
+      "Dex": 16,
+      "DexMod": 3,
+      "Con": 15,
+      "ConMod": 2,
+      "Intel": 13,
+      "IntelMod": 1,
+      "Wis": 14,
+      "WisMod": 2,
+      "Cha": 9,
+      "ChaMod": -1
+    },
+    "Skills": {
+      "MaxAllowed": 4,
+      "Skills": [
+        "acrobatics",
+        "athletics",
+        "deception",
+        "insight",
+        "insight",
+        "religion"
+      ],
+      "Armor": [
+        "padded",
+        "leather",
+        "studded leather"
+      ],
+      "Shields": "",
+      "Weapons": [
+        {
+          "Name": "hand crossbow",
+          "Category": "",
+          "Range": 0,
+          "TwoHanded": false
+        },
+        {
+          "Name": "longsword",
+          "Category": "",
+          "Range": 0,
+          "TwoHanded": false
+        },
+        {
+          "Name": "rapier",
+          "Category": "",
+          "Range": 0,
+          "TwoHanded": false
+        },
+        {
+          "Name": "shortsword",
+          "Category": "",
+          "Range": 0,
+          "TwoHanded": false
+        }
+      ],
+      "MainHand": "main hand",
+      "OffHand": "off hand"
+    },
+    "Equipment": {
+      "Weapon": {
+        "main hand": "",
+        "off hand": ""
+      },
+      "Armor": "leather armor",
+      "Shield": ""
+    },
+    "Spellcasting": {
+      "CantripsKnown": 0,
+      "SpellsKnown": 0,
+      "CanCast": false,
+      "CasterType": "",
+      "learned_spells": [],
+      "prepared_spells": [],
+      "slots": {},
+      "maxslots": {},
+      "PreparedMode": false,
+      "LearnedMode": false,
+      "Ability": "",
+      "SpellSaveDC": 0,
+      "SpellAttackBonus": 0
+    }
+  }
+]

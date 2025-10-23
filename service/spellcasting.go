@@ -105,6 +105,22 @@ func GetSlotsForClassLevel(class string, level int) (map[int]int, string, error)
 	return nil, casterType, fmt.Errorf("no slot table for %s level %d", class, level)
 }
 
+func GetSpellcastingAbility(class string) string {
+	switch strings.ToLower(strings.TrimSpace(class)) {
+	case "bard", "paladin", "sorcerer", "warlock":
+		return "charisma"
+
+	case "cleric", "druid", "ranger":
+		return "wisdom"
+
+	case "wizard", "artificer":
+		return "intelligence"
+
+	default:
+		return ""
+	}
+}
+
 func copyIntMap(in map[int]int) map[int]int {
 	mapCopy := make(map[int]int, len(in))
 	for k, v := range in {
@@ -138,14 +154,34 @@ func (s *CharacterService) InitSpellcasting(c *domain.Character) {
 	c.Spellcasting.CanCast = true
 	c.Spellcasting.CasterType = casterType
 
+	ability := GetSpellcastingAbility(c.Class)
+	c.Spellcasting.Ability = ability
+
+	var abilityMod int
+	switch ability {
+	case "intelligence":
+		abilityMod = c.Stats.IntelMod
+
+	case "wisdom":
+		abilityMod = c.Stats.WisMod
+
+	case "charisma":
+		abilityMod = c.Stats.ChaMod
+	}
+
+	if c.Spellcasting.CanCast && ability != "" {
+		c.Spellcasting.SpellSaveDC = 8 + c.Proficiency + abilityMod
+		c.Spellcasting.SpellAttackBonus = c.Proficiency + abilityMod
+	}
+
 	switch casterType {
 	case "full":
 		if c.Level >= 10 {
-			c.Spellcasting.CantripsKnown = 4
+			c.Spellcasting.CantripsKnown = 5
 		} else if c.Level >= 4 {
-			c.Spellcasting.CantripsKnown = 3
+			c.Spellcasting.CantripsKnown = 4
 		} else {
-			c.Spellcasting.CantripsKnown = 2
+			c.Spellcasting.CantripsKnown = 3
 		}
 
 	case "half":

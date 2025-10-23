@@ -52,7 +52,7 @@ func EnrichWeapons(inputPath, outputPath string) error {
 
 	var indexes []string
 	for _, w := range baseWeapons {
-		indexes = append(indexes, sanitizeAPIIndex(w.Name))
+		indexes = append(indexes, SanitizeApiKey(w.Name))
 	}
 
 	fmt.Printf("Fetching weapon data for %d weapons...\n", len(indexes))
@@ -74,7 +74,7 @@ func EnrichWeapons(inputPath, outputPath string) error {
 	writer.Write([]string{"name", "category", "range", "two_handed"})
 
 	for _, w := range baseWeapons {
-		idx := sanitizeAPIIndex(w.Name)
+		idx := SanitizeApiKey(w.Name)
 		apiData := weaponMap[idx]
 
 		if apiData == nil {
