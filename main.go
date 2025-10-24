@@ -183,22 +183,22 @@ func main() {
 		)
 
 		if character.Spellcasting != nil && character.Spellcasting.CanCast {
-			os.Stdout.WriteString("Spell slots:\n")
+			fmt.Println("Spell slots:")
 
 			if character.Spellcasting.CantripsKnown > 0 {
-				os.Stdout.WriteString(fmt.Sprintf("Level 0: %d\n", character.Spellcasting.CantripsKnown))
+				fmt.Printf("  Level 0: %d\n", character.Spellcasting.CantripsKnown)
 			}
 
 			for lvl := 1; lvl <= 9; lvl++ {
 				if count, ok := character.Spellcasting.MaxSlots[lvl]; ok && count > 0 {
-					os.Stdout.WriteString(fmt.Sprintf("Level %d: %d\n", lvl, count))
+					fmt.Printf("  Level %d: %d\n", lvl, count)
 				}
 			}
 
 			if character.Spellcasting.Ability != "" {
-				os.Stdout.WriteString(fmt.Sprintf("Spellcasting ability: %s\n", strings.ToLower(character.Spellcasting.Ability)))
-				os.Stdout.WriteString(fmt.Sprintf("Spell save DC: %d\n", character.Spellcasting.SpellSaveDC))
-				os.Stdout.WriteString(fmt.Sprintf("Spell attack bonus: +%d\n", character.Spellcasting.SpellAttackBonus))
+				fmt.Printf("Spellcasting ability: %s\n", strings.ToLower(character.Spellcasting.Ability))
+				fmt.Printf("Spell save DC: %d\n", character.Spellcasting.SpellSaveDC)
+				fmt.Printf("Spell attack bonus: +%d\n", character.Spellcasting.SpellAttackBonus)
 			}
 		}
 
