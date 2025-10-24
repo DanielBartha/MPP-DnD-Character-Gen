@@ -183,7 +183,7 @@ func main() {
 		)
 
 		if character.Spellcasting != nil && character.Spellcasting.CanCast {
-			fmt.Println("Spell slots:")
+			fmt.Printf("Spell slots:\n")
 
 			if character.Spellcasting.CantripsKnown > 0 {
 				fmt.Printf("Level 0: %d\n", character.Spellcasting.CantripsKnown)
@@ -191,7 +191,7 @@ func main() {
 
 			for lvl := 1; lvl <= 9; lvl++ {
 				if count, ok := character.Spellcasting.MaxSlots[lvl]; ok && count > 0 {
-					fmt.Printf("Level %d: %d\n", lvl, count)
+					fmt.Printf("%s\n", fmt.Sprintf("Level %d: %d", lvl, count))
 				}
 			}
 
