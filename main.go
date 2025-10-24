@@ -127,7 +127,7 @@ func main() {
 			Shield: "",
 		}
 
-		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
+		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
 		if err := repo.Save(&characterCreate); err != nil {
 			fmt.Println("error saving character:", err)
 			os.Exit(2)
@@ -145,7 +145,7 @@ func main() {
 			os.Exit(2)
 		}
 
-		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
+		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
 		character, err := repo.Load(*name)
 		if err != nil {
 			fmt.Printf("character %q not found\n", *name)
@@ -222,7 +222,7 @@ func main() {
 		fmt.Printf("Passive perception: %d\n", service.CalculatePassivePerception(character))
 
 	case "list":
-		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
+		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
 		characters, err := repo.List()
 		if err != nil {
 			fmt.Println("error listing characters:", err)
@@ -246,7 +246,7 @@ func main() {
 			os.Exit(2)
 		}
 
-		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
+		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
 		if err := repo.Delete(*name); err != nil {
 			fmt.Println("error deleting character:", err)
 			os.Exit(2)
@@ -267,7 +267,7 @@ func main() {
 			os.Exit(2)
 		}
 
-		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
+		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
 		character, err := repo.Load(*name)
 		if err != nil {
 			fmt.Printf("character %q not found\n", *name)
@@ -326,7 +326,7 @@ func main() {
 			os.Exit(2)
 		}
 
-		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
+		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
 		character, err := repo.Load(*name)
 		if err != nil {
 			fmt.Printf("character %q not found\n", *name)
@@ -390,7 +390,7 @@ func main() {
 			os.Exit(2)
 		}
 
-		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
+		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
 		character, err := repo.Load(*name)
 		if err != nil {
 			fmt.Printf("character %q not found\n", *name)

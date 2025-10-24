@@ -1,6 +1,8 @@
 package service
 
-import "github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
+import (
+	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
+)
 
 func ComputeDerivedStats(c *domain.Character) {
 	c.ArmorClass = CalculateArmorClass(c)
