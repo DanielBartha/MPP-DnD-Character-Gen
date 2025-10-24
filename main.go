@@ -183,7 +183,7 @@ func main() {
 		)
 
 		if character.Spellcasting != nil && character.Spellcasting.CanCast {
-			fmt.Printf("Spell slots:\u200B\n")
+			fmt.Printf("Spell slots:\n")
 
 			if character.Spellcasting.CantripsKnown > 0 {
 				fmt.Printf("Level 0: %d\n", character.Spellcasting.CantripsKnown)
