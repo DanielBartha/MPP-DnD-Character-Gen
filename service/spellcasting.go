@@ -151,8 +151,26 @@ func (s *CharacterService) InitSpellcasting(c *domain.Character) {
 		c.Spellcasting.MaxSlots[lvl] = count
 	}
 
-	c.Spellcasting.CanCast = true
 	c.Spellcasting.CasterType = casterType
+
+	canCast := true
+	switch strings.ToLower(c.Class) {
+	case "paladin", "ranger":
+		if c.Level < 2 {
+			canCast = false
+		}
+	case "eldritch knight", "arcane trickster":
+		if c.Level < 3 {
+			canCast = false
+		}
+	case "fighter", "rogue":
+		canCast = false
+	}
+
+	c.Spellcasting.CanCast = canCast
+	if !canCast {
+		return
+	}
 
 	ability := GetSpellcastingAbility(c.Class)
 	c.Spellcasting.Ability = ability
@@ -161,15 +179,13 @@ func (s *CharacterService) InitSpellcasting(c *domain.Character) {
 	switch ability {
 	case "intelligence":
 		abilityMod = c.Stats.IntelMod
-
 	case "wisdom":
 		abilityMod = c.Stats.WisMod
-
 	case "charisma":
 		abilityMod = c.Stats.ChaMod
 	}
 
-	if c.Spellcasting.CanCast && ability != "" {
+	if ability != "" {
 		c.Spellcasting.SpellSaveDC = 8 + c.Proficiency + abilityMod
 		c.Spellcasting.SpellAttackBonus = c.Proficiency + abilityMod
 	}
@@ -183,10 +199,8 @@ func (s *CharacterService) InitSpellcasting(c *domain.Character) {
 		} else {
 			c.Spellcasting.CantripsKnown = 3
 		}
-
 	case "half":
 		c.Spellcasting.CantripsKnown = 0
-
 	case "pact":
 		if c.Level >= 10 {
 			c.Spellcasting.CantripsKnown = 4

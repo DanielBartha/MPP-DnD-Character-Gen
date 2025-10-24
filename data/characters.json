@@ -468,81 +468,6 @@
     "PassivePerception": 12
   },
   {
-    "Name": "Branric Ironwall",
-    "Race": "human",
-    "Background": "acolyte",
-    "Class": "paladin",
-    "Level": 1,
-    "Proficiency": 2,
-    "Stats": {
-      "Str": 16,
-      "StrMod": 3,
-      "Dex": 9,
-      "DexMod": -1,
-      "Con": 15,
-      "ConMod": 2,
-      "Intel": 11,
-      "IntelMod": 0,
-      "Wis": 13,
-      "WisMod": 1,
-      "Cha": 14,
-      "ChaMod": 2
-    },
-    "Skills": {
-      "MaxAllowed": 2,
-      "Skills": [
-        "athletics",
-        "insight",
-        "insight",
-        "religion"
-      ],
-      "Armor": [
-        "padded",
-        "leather",
-        "studded leather",
-        "hide",
-        "chain shirt",
-        "scale mail",
-        "breast plate",
-        "half plate",
-        "ring mail",
-        "chain mail",
-        "splint",
-        "plate"
-      ],
-      "Shields": "shield",
-      "Weapons": null,
-      "MainHand": "main hand",
-      "OffHand": "off hand"
-    },
-    "Equipment": {
-      "Weapon": {
-        "main hand": "",
-        "off hand": ""
-      },
-      "Armor": "plate armor",
-      "Shield": "shield"
-    },
-    "Spellcasting": {
-      "CantripsKnown": 0,
-      "SpellsKnown": 0,
-      "CanCast": true,
-      "CasterType": "half",
-      "learned_spells": [],
-      "prepared_spells": [],
-      "slots": {},
-      "maxslots": {},
-      "PreparedMode": false,
-      "LearnedMode": false,
-      "Ability": "charisma",
-      "SpellSaveDC": 12,
-      "SpellAttackBonus": 4
-    },
-    "ArmorClass": 20,
-    "InitiativeBonus": -1,
-    "PassivePerception": 11
-  },
-  {
     "Name": "Ragna Wolfblood",
     "Race": "half orc",
     "Background": "acolyte",
@@ -837,5 +762,80 @@
     "ArmorClass": 9,
     "InitiativeBonus": -1,
     "PassivePerception": 13
+  },
+  {
+    "Name": "Branric Ironwall",
+    "Race": "human",
+    "Background": "acolyte",
+    "Class": "paladin",
+    "Level": 1,
+    "Proficiency": 2,
+    "Stats": {
+      "Str": 16,
+      "StrMod": 3,
+      "Dex": 9,
+      "DexMod": -1,
+      "Con": 15,
+      "ConMod": 2,
+      "Intel": 11,
+      "IntelMod": 0,
+      "Wis": 13,
+      "WisMod": 1,
+      "Cha": 14,
+      "ChaMod": 2
+    },
+    "Skills": {
+      "MaxAllowed": 2,
+      "Skills": [
+        "athletics",
+        "insight",
+        "insight",
+        "religion"
+      ],
+      "Armor": [
+        "padded",
+        "leather",
+        "studded leather",
+        "hide",
+        "chain shirt",
+        "scale mail",
+        "breast plate",
+        "half plate",
+        "ring mail",
+        "chain mail",
+        "splint",
+        "plate"
+      ],
+      "Shields": "shield",
+      "Weapons": null,
+      "MainHand": "main hand",
+      "OffHand": "off hand"
+    },
+    "Equipment": {
+      "Weapon": {
+        "main hand": "",
+        "off hand": ""
+      },
+      "Armor": "plate armor",
+      "Shield": "shield"
+    },
+    "Spellcasting": {
+      "CantripsKnown": 0,
+      "SpellsKnown": 0,
+      "CanCast": false,
+      "CasterType": "half",
+      "learned_spells": [],
+      "prepared_spells": [],
+      "slots": {},
+      "maxslots": {},
+      "PreparedMode": false,
+      "LearnedMode": false,
+      "Ability": "",
+      "SpellSaveDC": 0,
+      "SpellAttackBonus": 0
+    },
+    "ArmorClass": 20,
+    "InitiativeBonus": -1,
+    "PassivePerception": 11
   }
 ]
