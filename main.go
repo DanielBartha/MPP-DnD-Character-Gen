@@ -3,6 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
+	"net/http"
 	"os"
 	"strings"
 
@@ -57,7 +59,7 @@ func main() {
 
 		name := createCmd.String("name", "", "character name (required)")
 		race := createCmd.String("race", "", "character race (required)")
-		// "acolyte" as default value
+		// "acolyte" default
 		background := createCmd.String("background", "acolyte", "character background (required)")
 		class := createCmd.String("class", "", "character class (required)")
 		level := createCmd.Int("level", 1, "character level (required)")
@@ -125,7 +127,7 @@ func main() {
 			Shield: "",
 		}
 
-		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
+		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
 		if err := repo.Save(&characterCreate); err != nil {
 			fmt.Println("error saving character:", err)
 			os.Exit(2)
@@ -143,7 +145,7 @@ func main() {
 			os.Exit(2)
 		}
 
-		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
+		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
 		character, err := repo.Load(*name)
 		if err != nil {
 			fmt.Printf("character %q not found\n", *name)
@@ -220,7 +222,7 @@ func main() {
 		fmt.Printf("Passive perception: %d\n", service.CalculatePassivePerception(character))
 
 	case "list":
-		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
+		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
 		characters, err := repo.List()
 		if err != nil {
 			fmt.Println("error listing characters:", err)
@@ -244,7 +246,7 @@ func main() {
 			os.Exit(2)
 		}
 
-		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
+		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
 		if err := repo.Delete(*name); err != nil {
 			fmt.Println("error deleting character:", err)
 			os.Exit(2)
@@ -265,7 +267,7 @@ func main() {
 			os.Exit(2)
 		}
 
-		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
+		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
 		character, err := repo.Load(*name)
 		if err != nil {
 			fmt.Printf("character %q not found\n", *name)
@@ -324,7 +326,7 @@ func main() {
 			os.Exit(2)
 		}
 
-		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
+		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
 		character, err := repo.Load(*name)
 		if err != nil {
 			fmt.Printf("character %q not found\n", *name)
@@ -388,7 +390,7 @@ func main() {
 			os.Exit(2)
 		}
 
-		repo := repository.NewJsonRepository(filepath.Join("data", "settings.json"))
+		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
 		character, err := repo.Load(*name)
 		if err != nil {
 			fmt.Printf("character %q not found\n", *name)
@@ -467,6 +469,12 @@ func main() {
 			fmt.Println("Error: ", err)
 			os.Exit(2)
 		}
+
+	case "serve":
+		fs := http.FileServer(http.Dir("."))
+		fmt.Printf("Serving on http://localhost:8080\n")
+		fmt.Printf("Open: http://localhost:8080/charactersheet.html\n")
+		log.Fatal(http.ListenAndServe(":8080", fs))
 
 	default:
 		usage()

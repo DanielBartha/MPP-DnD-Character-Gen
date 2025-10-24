@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +11,12 @@
 <body>
     <form class="charsheet">
   <header>
+    <section class="charselect">
+      <label for="charSelect">Select Character</label>
+      <select id="characterSelect">
+        <option value="">-- Choose character --</option>
+      </select>
+    </section>
     <section class="charname">
       <label for="charname">Character Name</label><input name="charname" placeholder="Thoradin Fireforge" />
     </section>
@@ -373,5 +380,6 @@
     </section>
   </main>
 </form>
+<script src="script.js"></script>
 </body>
 </html>
