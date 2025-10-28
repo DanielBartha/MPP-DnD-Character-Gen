@@ -133,16 +133,20 @@ func main() {
 
 	case "list":
 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
-		characters, err := repo.List()
+		facade := service.NewCharacterFacade(repo)
+
+		chars, err := facade.ListCharacters()
 		if err != nil {
-			fmt.Println("error listing characters:", err)
+			fmt.Println("error listing characters: ", err)
 			os.Exit(2)
 		}
-		if len(characters) == 0 {
+
+		if len(chars) == 0 {
 			fmt.Println("no characters found")
 			return
 		}
-		for _, c := range characters {
+
+		for _, c := range chars {
 			fmt.Printf("- %s (%s %s)\n", c.Name, c.Race, c.Class)
 		}
 
@@ -157,10 +161,13 @@ func main() {
 		}
 
 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
-		if err := repo.Delete(*name); err != nil {
-			fmt.Println("error deleting character:", err)
+		facade := service.NewCharacterFacade(repo)
+
+		if err := facade.DeleteCharacter(*name); err != nil {
+			fmt.Println("error deleting character: ", err)
 			os.Exit(2)
 		}
+
 		fmt.Printf("deleted %s\n", *name)
 
 	case "equip":

@@ -36,6 +36,19 @@ func (f *CharacterFacade) ViewCharacter(name string) (*domain.Character, error) 
 	return char, nil
 }
 
+func (f *CharacterFacade) ListCharacters() ([]*domain.Character, error) {
+	chars, err := f.repo.List()
+	if err != nil {
+		return nil, err
+	}
+
+	return chars, nil
+}
+
+func (f *CharacterFacade) DeleteCharacter(name string) error {
+	return f.repo.Delete(name)
+}
+
 // hook up for racial bonuses assignment for later
 // if fn := f.svc.ApplyRacialBonusesSkillProficiencies; fn != nil {
 // 	fn(c)
