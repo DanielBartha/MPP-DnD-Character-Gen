@@ -71,31 +71,17 @@ func main() {
 		wis := createCmd.Int("wis", 10, "wisdom is required")
 		cha := createCmd.Int("cha", 10, "charisma is required")
 
-		err := createCmd.Parse(os.Args[2:])
-		if err != nil {
-			fmt.Println("error parsing flags")
-			createCmd.Usage()
+		if err := createCmd.Parse(os.Args[2:]); err != nil {
+			fmt.Println("error parsing flags:", err)
 			os.Exit(2)
 		}
 
-		if *name == "" {
-			fmt.Println("name is required")
-			os.Exit(2)
-		}
-		if *race == "" {
-			fmt.Println("race is required")
-			os.Exit(2)
-		}
-		if *class == "" {
-			fmt.Println("class is required")
-			os.Exit(2)
-		}
-		if *level <= 0 {
-			fmt.Println("level is required")
+		if *name == "" || *race == "" || *class == "" || *level <= 0 {
+			fmt.Println("Usage: create -name <name> -race <race> -class <class> -level <n>")
 			os.Exit(2)
 		}
 
-		characterCreate := domain.Character{
+		char := &domain.Character{
 			Name:       *name,
 			Race:       *race,
 			Background: *background,
@@ -109,31 +95,20 @@ func main() {
 				Wis:   *wis,
 				Cha:   *cha,
 			},
-		}
-
-		svc := service.NewCharacterService()
-
-		characterCreate.Skills = svc.GetClassSkills(&characterCreate)
-		svc.ApplyRacialBonuses(&characterCreate)
-		svc.UpdateProficiency(&characterCreate)
-		svc.InitSpellcasting(&characterCreate)
-
-		characterCreate.Equipment = domain.Equipment{
-			Weapon: map[string]string{
-				"main hand": "",
-				"off hand":  "",
+			Equipment: domain.Equipment{
+				Weapon: map[string]string{"main hand": "", "off hand": ""},
 			},
-			Armor:  "",
-			Shield: "",
 		}
 
 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
-		if err := repo.Save(&characterCreate); err != nil {
-			fmt.Println("error saving character:", err)
+		facade := service.NewCharacterFacade(repo)
+
+		if err := facade.CreateCharacter(char); err != nil {
+			fmt.Println("Error creating character: ", err)
 			os.Exit(2)
 		}
 
-		fmt.Printf("saved character %+v\n", characterCreate.Name)
+		fmt.Printf("Saved character %s\n", char.Name)
 
 	case "view":
 		viewCmd := flag.NewFlagSet("view", flag.ExitOnError)
@@ -146,80 +121,15 @@ func main() {
 		}
 
 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
-		character, err := repo.Load(*name)
+		facade := service.NewCharacterFacade(repo)
+
+		char, err := facade.ViewCharacter(*name)
 		if err != nil {
-			fmt.Printf("character %q not found\n", *name)
+			fmt.Printf("Character %q not found\n", *name)
 			return
 		}
 
-		fmt.Printf(
-			"Name: %s\n"+
-				"Class: %s\n"+
-				"Race: %s\n"+
-				"Background: %s\n"+
-				"Level: %d\n"+
-				"Ability scores:\n"+
-				"  STR: %d (%+d)\n"+
-				"  DEX: %d (%+d)\n"+
-				"  CON: %d (%+d)\n"+
-				"  INT: %d (%+d)\n"+
-				"  WIS: %d (%+d)\n"+
-				"  CHA: %d (%+d)\n"+
-				"Proficiency bonus: +%d\n"+
-				"Skill proficiencies: %s\n",
-			character.Name,
-			strings.ToLower(character.Class),
-			strings.ToLower(character.Race),
-			character.Background,
-			character.Level,
-			character.Stats.Str, character.Stats.StrMod,
-			character.Stats.Dex, character.Stats.DexMod,
-			character.Stats.Con, character.Stats.ConMod,
-			character.Stats.Intel, character.Stats.IntelMod,
-			character.Stats.Wis, character.Stats.WisMod,
-			character.Stats.Cha, character.Stats.ChaMod,
-			character.Proficiency,
-			strings.Join(character.Skills.Skills, ", "),
-		)
-
-		if character.Spellcasting != nil && character.Spellcasting.CanCast {
-			fmt.Println("Spell slots:")
-
-			if character.Spellcasting.CantripsKnown > 0 {
-				fmt.Printf("  Level 0: %d\n", character.Spellcasting.CantripsKnown)
-			}
-
-			for lvl := 1; lvl <= 9; lvl++ {
-				if count, ok := character.Spellcasting.MaxSlots[lvl]; ok && count > 0 {
-					fmt.Printf("  Level %d: %d\n", lvl, count)
-				}
-			}
-
-			if character.Spellcasting.Ability != "" {
-				fmt.Printf("Spellcasting ability: %s\n", strings.ToLower(character.Spellcasting.Ability))
-				fmt.Printf("Spell save DC: %d\n", character.Spellcasting.SpellSaveDC)
-				fmt.Printf("Spell attack bonus: +%d\n", character.Spellcasting.SpellAttackBonus)
-			}
-		}
-
-		if weapon, ok := character.Equipment.Weapon["main hand"]; ok && weapon != "" {
-			fmt.Printf("Main hand: %s\n", weapon)
-		}
-
-		if weapon, ok := character.Equipment.Weapon["off hand"]; ok && weapon != "" {
-			fmt.Printf("Off hand: %s\n", weapon)
-		}
-		if character.Equipment.Armor != "" {
-			fmt.Printf("Armor: %s\n", character.Equipment.Armor)
-		}
-
-		if character.Equipment.Shield != "" {
-			fmt.Printf("Shield: %s\n", character.Equipment.Shield)
-		}
-
-		fmt.Printf("Armor class: %d\n", service.CalculateArmorClass(character))
-		fmt.Printf("Initiative bonus: %d\n", service.CalculateInitiative(&character.Stats))
-		fmt.Printf("Passive perception: %d\n", service.CalculatePassivePerception(character))
+		fmt.Print(service.FormatCharacterView(char))
 
 	case "list":
 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))

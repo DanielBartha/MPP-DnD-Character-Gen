@@ -837,5 +837,98 @@
     "ArmorClass": 20,
     "InitiativeBonus": -1,
     "PassivePerception": 11
+  },
+  {
+    "Name": "Test Character",
+    "Race": "human",
+    "Background": "acolyte",
+    "Class": "rogue",
+    "Level": 1,
+    "Proficiency": 2,
+    "Stats": {
+      "Str": 11,
+      "StrMod": 0,
+      "Dex": 16,
+      "DexMod": 3,
+      "Con": 15,
+      "ConMod": 2,
+      "Intel": 13,
+      "IntelMod": 1,
+      "Wis": 14,
+      "WisMod": 2,
+      "Cha": 9,
+      "ChaMod": -1
+    },
+    "Skills": {
+      "MaxAllowed": 4,
+      "Skills": [
+        "acrobatics",
+        "athletics",
+        "deception",
+        "insight",
+        "insight",
+        "religion"
+      ],
+      "Armor": [
+        "padded",
+        "leather",
+        "studded leather"
+      ],
+      "Shields": "",
+      "Weapons": [
+        {
+          "Name": "hand crossbow",
+          "Category": "",
+          "Range": 0,
+          "TwoHanded": false
+        },
+        {
+          "Name": "longsword",
+          "Category": "",
+          "Range": 0,
+          "TwoHanded": false
+        },
+        {
+          "Name": "rapier",
+          "Category": "",
+          "Range": 0,
+          "TwoHanded": false
+        },
+        {
+          "Name": "shortsword",
+          "Category": "",
+          "Range": 0,
+          "TwoHanded": false
+        }
+      ],
+      "MainHand": "main hand",
+      "OffHand": "off hand"
+    },
+    "Equipment": {
+      "Weapon": {
+        "main hand": "",
+        "off hand": ""
+      },
+      "Armor": "",
+      "Shield": ""
+    },
+    "Spellcasting": {
+      "CantripsKnown": 0,
+      "SpellsKnown": 0,
+      "CanCast": false,
+      "CasterType": "",
+      "learned_spells": [],
+      "prepared_spells": [],
+      "slots": {},
+      "maxslots": {},
+      "PreparedMode": false,
+      "LearnedMode": false,
+      "Ability": "",
+      "SpellSaveDC": 0,
+      "SpellAttackBonus": 0
+    },
+    "ArmorClass": 13,
+    "InitiativeBonus": 3,
+    "PassivePerception": 12
   }
 ]
