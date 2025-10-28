@@ -424,77 +424,6 @@
     "PassivePerception": 11
   },
   {
-    "Name": "Gorrak Bearhide",
-    "Race": "human",
-    "Background": "acolyte",
-    "Class": "barbarian",
-    "Level": 1,
-    "Proficiency": 2,
-    "Stats": {
-      "Str": 16,
-      "StrMod": 3,
-      "Dex": 14,
-      "DexMod": 2,
-      "Con": 15,
-      "ConMod": 2,
-      "Intel": 9,
-      "IntelMod": -1,
-      "Wis": 13,
-      "WisMod": 1,
-      "Cha": 11,
-      "ChaMod": 0
-    },
-    "Skills": {
-      "MaxAllowed": 2,
-      "Skills": [
-        "animal handling",
-        "athletics",
-        "insight",
-        "religion"
-      ],
-      "Armor": [
-        "padded",
-        "leather",
-        "studded leather",
-        "hide",
-        "chain shirt",
-        "scale mail",
-        "breast plate",
-        "half plate"
-      ],
-      "Shields": "shield",
-      "Weapons": null,
-      "MainHand": "main hand",
-      "OffHand": "off hand"
-    },
-    "Equipment": {
-      "Weapon": {
-        "main hand": "",
-        "off hand": ""
-      },
-      "Armor": "",
-      "Shield": "shield"
-    },
-    "Spellcasting": {
-      "CantripsKnown": 0,
-      "SpellsKnown": 0,
-      "CanCast": false,
-      "CasterType": "",
-      "learned_spells": [],
-      "prepared_spells": [],
-      "slots": {},
-      "maxslots": {},
-      "PreparedMode": false,
-      "LearnedMode": false,
-      "Ability": "",
-      "SpellSaveDC": 0,
-      "SpellAttackBonus": 0
-    },
-    "ArmorClass": 16,
-    "InitiativeBonus": 2,
-    "PassivePerception": 11
-  },
-  {
     "Name": "Brynja Axebreaker",
     "Race": "human",
     "Background": "acolyte",
@@ -837,5 +766,229 @@
     "ArmorClass": 10,
     "InitiativeBonus": 0,
     "PassivePerception": 13
+  },
+  {
+    "Name": "TestChar",
+    "Race": "elf",
+    "Background": "acolyte",
+    "Class": "ranger",
+    "Level": 7,
+    "Proficiency": 3,
+    "Stats": {
+      "Str": 10,
+      "StrMod": 0,
+      "Dex": 12,
+      "DexMod": 1,
+      "Con": 10,
+      "ConMod": 0,
+      "Intel": 10,
+      "IntelMod": 0,
+      "Wis": 10,
+      "WisMod": 0,
+      "Cha": 10,
+      "ChaMod": 0
+    },
+    "Skills": {
+      "MaxAllowed": 3,
+      "Skills": [
+        "animal handling",
+        "athletics",
+        "insight",
+        "insight",
+        "religion"
+      ],
+      "Armor": [
+        "padded",
+        "leather",
+        "studded leather",
+        "hide",
+        "chain shirt",
+        "scale mail",
+        "breast plate",
+        "half plate"
+      ],
+      "Shields": "shield",
+      "Weapons": null,
+      "MainHand": "main hand",
+      "OffHand": "off hand"
+    },
+    "Equipment": {
+      "Weapon": {
+        "main hand": "",
+        "off hand": ""
+      },
+      "Armor": "",
+      "Shield": ""
+    },
+    "Spellcasting": {
+      "CantripsKnown": 0,
+      "SpellsKnown": 0,
+      "CanCast": true,
+      "CasterType": "half",
+      "learned_spells": [],
+      "prepared_spells": [],
+      "slots": {
+        "1": 4,
+        "2": 3
+      },
+      "maxslots": {
+        "1": 4,
+        "2": 3
+      },
+      "PreparedMode": false,
+      "LearnedMode": false,
+      "Ability": "wisdom",
+      "SpellSaveDC": 11,
+      "SpellAttackBonus": 3
+    },
+    "ArmorClass": 11,
+    "InitiativeBonus": 1,
+    "PassivePerception": 10
+  },
+  {
+    "Name": "Gorrak Bearhide",
+    "Race": "human",
+    "Background": "acolyte",
+    "Class": "barbarian",
+    "Level": 1,
+    "Proficiency": 2,
+    "Stats": {
+      "Str": 16,
+      "StrMod": 3,
+      "Dex": 14,
+      "DexMod": 2,
+      "Con": 15,
+      "ConMod": 2,
+      "Intel": 9,
+      "IntelMod": -1,
+      "Wis": 13,
+      "WisMod": 1,
+      "Cha": 11,
+      "ChaMod": 0
+    },
+    "Skills": {
+      "MaxAllowed": 2,
+      "Skills": [
+        "animal handling",
+        "athletics",
+        "insight",
+        "religion"
+      ],
+      "Armor": [
+        "padded",
+        "leather",
+        "studded leather",
+        "hide",
+        "chain shirt",
+        "scale mail",
+        "breast plate",
+        "half plate"
+      ],
+      "Shields": "shield",
+      "Weapons": null,
+      "MainHand": "main hand",
+      "OffHand": "off hand"
+    },
+    "Equipment": {
+      "Weapon": {
+        "main hand": "",
+        "off hand": ""
+      },
+      "Armor": "",
+      "Shield": "shield"
+    },
+    "Spellcasting": {
+      "CantripsKnown": 0,
+      "SpellsKnown": 0,
+      "CanCast": false,
+      "CasterType": "",
+      "learned_spells": [],
+      "prepared_spells": [],
+      "slots": {},
+      "maxslots": {},
+      "PreparedMode": false,
+      "LearnedMode": false,
+      "Ability": "",
+      "SpellSaveDC": 0,
+      "SpellAttackBonus": 0
+    },
+    "ArmorClass": 14,
+    "InitiativeBonus": 2,
+    "PassivePerception": 11
+  },
+  {
+    "Name": "Aragorn",
+    "Race": "human",
+    "Background": "acolyte",
+    "Class": "fighter",
+    "Level": 20,
+    "Proficiency": 6,
+    "Stats": {
+      "Str": 11,
+      "StrMod": 0,
+      "Dex": 14,
+      "DexMod": 2,
+      "Con": 15,
+      "ConMod": 2,
+      "Intel": 11,
+      "IntelMod": 0,
+      "Wis": 13,
+      "WisMod": 1,
+      "Cha": 16,
+      "ChaMod": 3
+    },
+    "Skills": {
+      "MaxAllowed": 2,
+      "Skills": [
+        "acrobatics",
+        "animal handling",
+        "insight",
+        "religion"
+      ],
+      "Armor": [
+        "padded",
+        "leather",
+        "studded leather",
+        "hide",
+        "chain shirt",
+        "scale mail",
+        "breast plate",
+        "half plate",
+        "ring mail",
+        "chain mail",
+        "splint",
+        "plate"
+      ],
+      "Shields": "shield",
+      "Weapons": null,
+      "MainHand": "main hand",
+      "OffHand": "off hand"
+    },
+    "Equipment": {
+      "Weapon": {
+        "main hand": "",
+        "off hand": ""
+      },
+      "Armor": "",
+      "Shield": ""
+    },
+    "Spellcasting": {
+      "CantripsKnown": 0,
+      "SpellsKnown": 0,
+      "CanCast": false,
+      "CasterType": "",
+      "learned_spells": [],
+      "prepared_spells": [],
+      "slots": {},
+      "maxslots": {},
+      "PreparedMode": false,
+      "LearnedMode": false,
+      "Ability": "",
+      "SpellSaveDC": 0,
+      "SpellAttackBonus": 0
+    },
+    "ArmorClass": 12,
+    "InitiativeBonus": 2,
+    "PassivePerception": 11
   }
 ]

@@ -101,3 +101,33 @@ type ArmorInfo struct {
 	DexBonus bool
 	MaxBonus int
 }
+
+func abilityModifier(score int) int {
+	result := (score - 10) / 2
+	if (score-10)%2 < 0 {
+		result--
+	}
+	return result
+}
+
+func (c *Character) UpdateProficiency() {
+	switch {
+	case c.Level >= 17:
+		c.Proficiency = 6
+	case c.Level >= 13:
+		c.Proficiency = 5
+	case c.Level >= 9:
+		c.Proficiency = 4
+	case c.Level >= 5:
+		c.Proficiency = 3
+	default:
+		c.Proficiency = 2
+	}
+
+	c.Stats.StrMod = abilityModifier(c.Stats.Str)
+	c.Stats.DexMod = abilityModifier(c.Stats.Dex)
+	c.Stats.ConMod = abilityModifier(c.Stats.Con)
+	c.Stats.IntelMod = abilityModifier(c.Stats.Intel)
+	c.Stats.WisMod = abilityModifier(c.Stats.Wis)
+	c.Stats.ChaMod = abilityModifier(c.Stats.Cha)
+}
