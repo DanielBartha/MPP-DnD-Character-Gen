@@ -966,11 +966,11 @@
     },
     "Equipment": {
       "Weapon": {
-        "main hand": "",
-        "off hand": ""
+        "main hand": "battleaxe",
+        "off hand": "dagger"
       },
-      "Armor": "",
-      "Shield": ""
+      "Armor": "plate armor",
+      "Shield": "shield"
     },
     "Spellcasting": {
       "CantripsKnown": 0,
@@ -1041,11 +1041,11 @@
     },
     "Equipment": {
       "Weapon": {
-        "main hand": "",
+        "main hand": "battleaxe",
         "off hand": ""
       },
-      "Armor": "",
-      "Shield": ""
+      "Armor": "plate armor",
+      "Shield": "shield"
     },
     "Spellcasting": {
       "CantripsKnown": 0,

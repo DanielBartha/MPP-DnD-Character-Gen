@@ -186,13 +186,33 @@ func main() {
 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
 		facade := service.NewCharacterFacade(repo)
 
-		message, err := facade.EquipItem(*name, *weapon, *slot, *armor, *shield)
+		err := facade.EquipItem(*name, *weapon, *slot, *armor, *shield)
 		if err != nil {
-			fmt.Println(err)
-			os.Exit(2)
+			switch err {
+			case domain.ErrSlotOccupied:
+				fmt.Printf("%s already occupied\n", *slot)
+				return
+
+			default:
+				fmt.Println("error equipping:", err)
+				os.Exit(2)
+			}
 		}
 
-		fmt.Println(message)
+		if *weapon != "" && *slot != "" {
+			fmt.Printf("Equipped weapon %s to %s\n", *weapon, *slot)
+			return
+		}
+		if *armor != "" {
+			fmt.Printf("Equipped armor %s\n", *armor)
+			return
+		}
+		if *shield != "" {
+			fmt.Printf("Equipped shield %s\n", *shield)
+			return
+		}
+
+		fmt.Println("no equipment provided")
 
 	case "learn-spell":
 		learnCmd := flag.NewFlagSet("learn-spell", flag.ExitOnError)

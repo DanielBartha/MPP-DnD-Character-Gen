@@ -50,23 +50,31 @@ func (f *CharacterFacade) DeleteCharacter(name string) error {
 	return f.repo.Delete(name)
 }
 
-func (f *CharacterFacade) EquipItem(name, weapon, slot, armor, shield string) (string, error) {
-	char, err := f.repo.Load(name)
+func (f *CharacterFacade) EquipItem(name, weapon, slot, armor, shield string) error {
+	character, err := f.repo.Load(name)
 	if err != nil {
-		return "", fmt.Errorf("character %q not found", name)
+		return err
 	}
 
-	equipService := NewEquipmentService()
-	message, err := equipService.Equip(char, weapon, slot, armor, shield)
-	if err != nil {
-		return "", err
+	if weapon != "" && slot != "" {
+		if err := character.EquipWeapon(slot, weapon); err != nil {
+			return err
+		}
 	}
 
-	if err := f.repo.Save(char); err != nil {
-		return "", fmt.Errorf("error saving character: %v", err)
+	if armor != "" {
+		if err := character.EquipArmor(armor); err != nil {
+			return err
+		}
 	}
 
-	return message, nil
+	if shield != "" {
+		if err := character.EquipShield(shield); err != nil {
+			return err
+		}
+	}
+
+	return f.repo.Save(character)
 }
 
 func (f *CharacterFacade) LearnSpell(name, spell string) (string, error) {
