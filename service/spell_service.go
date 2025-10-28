@@ -48,3 +48,39 @@ func (s *SpellService) LearnSpell(c *domain.Character, spellName string) (string
 
 	return fmt.Sprintf("Learned spell %s", spellName), nil
 }
+
+func (s *SpellService) PrepareSpell(c *domain.Character, spellName string) (string, error) {
+	if c.Spellcasting == nil || !c.Spellcasting.CanCast {
+		return "", fmt.Errorf("this class can't cast spells")
+	}
+
+	for _, s := range c.Spellcasting.PreparedSpells {
+		if strings.EqualFold(s, spellName) {
+			return "", fmt.Errorf("%s already prepared", spellName)
+		}
+	}
+
+	if c.Spellcasting.LearnedMode {
+		return "", fmt.Errorf("this class learns spells and can't prepare them")
+	}
+
+	level, err := GetSpellLevel(spellName)
+	if err != nil {
+		return "", err
+	}
+
+	if !IsSpellForClass(spellName, c.Class) {
+		return "", fmt.Errorf("%s cannot prepare %s", c.Class, spellName)
+	}
+
+	if level > 0 {
+		if slots, ok := c.Spellcasting.Slots[level]; !ok || slots == 0 {
+			return "", fmt.Errorf("the spell has higher level than the available spell slots")
+		}
+	}
+
+	c.Spellcasting.PreparedMode = true
+	c.Spellcasting.PreparedSpells = append(c.Spellcasting.PreparedSpells, spellName)
+
+	return fmt.Sprintf("Prepared spell %s", spellName), nil
+}

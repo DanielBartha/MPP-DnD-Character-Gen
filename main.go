@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
 
 	"path/filepath"
 
@@ -229,57 +228,15 @@ func main() {
 		}
 
 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
-		character, err := repo.Load(*name)
-		if err != nil {
-			fmt.Printf("character %q not found\n", *name)
-			return
-		}
+		facade := service.NewCharacterFacade(repo)
 
-		if character.Spellcasting == nil || !character.Spellcasting.CanCast {
-			fmt.Printf("this class can't cast spells\n")
-			return
-		}
-
-		for _, s := range character.Spellcasting.PreparedSpells {
-			if strings.EqualFold(s, *spell) {
-				fmt.Printf("%s already prepared\n", *spell)
-				return
-			}
-		}
-
-		if character.Spellcasting.LearnedMode {
-			fmt.Printf("this class learns spells and can't prepare them\n")
-			return
-		}
-
-		// checks for non-existing spells (csv)
-		level, err := service.GetSpellLevel(*spell)
+		message, err := facade.PrepareSpell(*name, *spell)
 		if err != nil {
 			fmt.Println(err)
-			return
-		}
-
-		if !service.IsSpellForClass(*spell, character.Class) {
-			fmt.Printf("%s cannot prepare %s\n", character.Class, *spell)
-			return
-		}
-
-		if level > 0 {
-			if slots, ok := character.Spellcasting.Slots[level]; !ok || slots == 0 {
-				fmt.Printf("the spell has higher level than the available spell slots\n")
-				return
-			}
-		}
-
-		character.Spellcasting.PreparedMode = true
-		character.Spellcasting.PreparedSpells = append(character.Spellcasting.PreparedSpells, *spell)
-
-		if err := repo.Save(character); err != nil {
-			fmt.Println("error saving character:", err)
 			os.Exit(2)
 		}
 
-		fmt.Printf("Prepared spell %s\n", *spell)
+		fmt.Println(message)
 
 	case "enrich-spells":
 		input := "5e-SRD-Spells.csv"

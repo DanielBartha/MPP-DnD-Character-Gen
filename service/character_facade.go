@@ -89,6 +89,25 @@ func (f *CharacterFacade) LearnSpell(name, spell string) (string, error) {
 	return message, nil
 }
 
+func (f *CharacterFacade) PrepareSpell(name, spell string) (string, error) {
+	char, err := f.repo.Load(name)
+	if err != nil {
+		return "", fmt.Errorf("character %q not found", name)
+	}
+
+	spellService := NewSpellService()
+	message, err := spellService.PrepareSpell(char, spell)
+	if err != nil {
+		return "", err
+	}
+
+	if err := f.repo.Save(char); err != nil {
+		return "", fmt.Errorf("error saving character: %v", err)
+	}
+
+	return message, nil
+}
+
 // hook up for racial bonuses assignment for later
 // if fn := f.svc.ApplyRacialBonusesSkillProficiencies; fn != nil {
 // 	fn(c)
