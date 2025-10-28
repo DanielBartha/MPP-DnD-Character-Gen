@@ -20,7 +20,7 @@ func NewCharacterFacade(repo domain.CharacterRepository) *CharacterFacade {
 
 func (f *CharacterFacade) CreateCharacter(c *domain.Character) error {
 	c.Skills = f.svc.GetClassSkills(c)
-	f.svc.ApplyRacialBonuses(c)
+	c.ApplyRacialBonuses()
 	c.UpdateProficiency()
 	f.svc.InitSpellcasting(c)
 	ComputeDerivedStats(c)

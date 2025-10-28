@@ -990,5 +990,173 @@
     "ArmorClass": 12,
     "InitiativeBonus": 2,
     "PassivePerception": 11
+  },
+  {
+    "Name": "Test2",
+    "Race": "half-orc",
+    "Background": "acolyte",
+    "Class": "fighter",
+    "Level": 3,
+    "Proficiency": 2,
+    "Stats": {
+      "Str": 12,
+      "StrMod": 1,
+      "Dex": 10,
+      "DexMod": 0,
+      "Con": 11,
+      "ConMod": 0,
+      "Intel": 10,
+      "IntelMod": 0,
+      "Wis": 10,
+      "WisMod": 0,
+      "Cha": 10,
+      "ChaMod": 0
+    },
+    "Skills": {
+      "MaxAllowed": 2,
+      "Skills": [
+        "acrobatics",
+        "animal handling",
+        "insight",
+        "religion"
+      ],
+      "Armor": [
+        "padded",
+        "leather",
+        "studded leather",
+        "hide",
+        "chain shirt",
+        "scale mail",
+        "breast plate",
+        "half plate",
+        "ring mail",
+        "chain mail",
+        "splint",
+        "plate"
+      ],
+      "Shields": "shield",
+      "Weapons": null,
+      "MainHand": "main hand",
+      "OffHand": "off hand"
+    },
+    "Equipment": {
+      "Weapon": {
+        "main hand": "",
+        "off hand": ""
+      },
+      "Armor": "",
+      "Shield": ""
+    },
+    "Spellcasting": {
+      "CantripsKnown": 0,
+      "SpellsKnown": 0,
+      "CanCast": false,
+      "CasterType": "",
+      "learned_spells": [],
+      "prepared_spells": [],
+      "slots": {},
+      "maxslots": {},
+      "PreparedMode": false,
+      "LearnedMode": false,
+      "Ability": "",
+      "SpellSaveDC": 0,
+      "SpellAttackBonus": 0
+    },
+    "ArmorClass": 10,
+    "InitiativeBonus": 0,
+    "PassivePerception": 10
+  },
+  {
+    "Name": "Merry Brandybuck",
+    "Race": "lightfoot halfling",
+    "Background": "acolyte",
+    "Class": "rogue",
+    "Level": 1,
+    "Proficiency": 2,
+    "Stats": {
+      "Str": 8,
+      "StrMod": -1,
+      "Dex": 17,
+      "DexMod": 3,
+      "Con": 14,
+      "ConMod": 2,
+      "Intel": 10,
+      "IntelMod": 0,
+      "Wis": 12,
+      "WisMod": 1,
+      "Cha": 14,
+      "ChaMod": 2
+    },
+    "Skills": {
+      "MaxAllowed": 4,
+      "Skills": [
+        "acrobatics",
+        "athletics",
+        "deception",
+        "insight",
+        "insight",
+        "religion"
+      ],
+      "Armor": [
+        "padded",
+        "leather",
+        "studded leather"
+      ],
+      "Shields": "",
+      "Weapons": [
+        {
+          "Name": "hand crossbow",
+          "Category": "",
+          "Range": 0,
+          "TwoHanded": false
+        },
+        {
+          "Name": "longsword",
+          "Category": "",
+          "Range": 0,
+          "TwoHanded": false
+        },
+        {
+          "Name": "rapier",
+          "Category": "",
+          "Range": 0,
+          "TwoHanded": false
+        },
+        {
+          "Name": "shortsword",
+          "Category": "",
+          "Range": 0,
+          "TwoHanded": false
+        }
+      ],
+      "MainHand": "main hand",
+      "OffHand": "off hand"
+    },
+    "Equipment": {
+      "Weapon": {
+        "main hand": "",
+        "off hand": ""
+      },
+      "Armor": "chain shirt",
+      "Shield": "shield"
+    },
+    "Spellcasting": {
+      "CantripsKnown": 0,
+      "SpellsKnown": 0,
+      "CanCast": false,
+      "CasterType": "",
+      "learned_spells": [],
+      "prepared_spells": [],
+      "slots": {},
+      "maxslots": {},
+      "PreparedMode": false,
+      "LearnedMode": false,
+      "Ability": "",
+      "SpellSaveDC": 0,
+      "SpellAttackBonus": 0
+    },
+    "ArmorClass": 13,
+    "InitiativeBonus": 3,
+    "PassivePerception": 11
   }
 ]
