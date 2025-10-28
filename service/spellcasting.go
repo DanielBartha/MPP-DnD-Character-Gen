@@ -79,8 +79,8 @@ var pactCasterSlots = map[int]map[int]int{
 
 func GetSlotsForClassLevel(class string, level int) (map[int]int, string, error) {
 	classKey := strings.ToLower(strings.TrimSpace(class))
-	casterType, ok := domain.SpellcastingType[classKey]
-	if !ok {
+	casterType := domain.GetSpellcastingType(classKey)
+	if casterType == "" {
 		return nil, "", fmt.Errorf("class %s is not a spellcaster", class)
 	}
 

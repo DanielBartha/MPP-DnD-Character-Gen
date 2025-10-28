@@ -2,19 +2,6 @@ package domain
 
 import "strings"
 
-var SpellcastingType = map[string]string{
-	"bard":     "full",
-	"cleric":   "full",
-	"druid":    "full",
-	"sorcerer": "full",
-	"wizard":   "full",
-
-	"paladin": "half",
-	"ranger":  "half",
-
-	"warlock": "pact",
-}
-
 type Character struct {
 	Name              string
 	Race              string
@@ -29,87 +16,6 @@ type Character struct {
 	ArmorClass        int
 	InitiativeBonus   int
 	PassivePerception int
-}
-
-type ClassLoadout struct {
-	MaxAllowed int
-	Skills     []string
-	Armor      []string
-	Shields    string
-	Weapons    []WeaponInfo
-	MainHand   string
-	OffHand    string
-}
-
-type Stats struct {
-	Str    int
-	StrMod int
-
-	Dex    int
-	DexMod int
-
-	Con    int
-	ConMod int
-
-	Intel    int
-	IntelMod int
-
-	Wis    int
-	WisMod int
-
-	Cha    int
-	ChaMod int
-}
-
-type Equipment struct {
-	Weapon map[string]string
-	Armor  string
-	Shield string
-}
-
-type Spellcasting struct {
-	CantripsKnown    int
-	SpellsKnown      int
-	CanCast          bool
-	CasterType       string
-	LearnedSpells    []string    `json:"learned_spells"`
-	PreparedSpells   []string    `json:"prepared_spells"`
-	Slots            map[int]int `json:"slots"`
-	MaxSlots         map[int]int `json:"maxslots"`
-	PreparedMode     bool
-	LearnedMode      bool
-	Ability          string
-	SpellSaveDC      int
-	SpellAttackBonus int
-}
-
-type SpellInfo struct {
-	Name   string `json:"name"`
-	Level  int    `json:"level"`
-	School string `json:"school"`
-	Range  string `json:"range"`
-}
-
-type WeaponInfo struct {
-	Name      string
-	Category  string
-	Range     int
-	TwoHanded bool
-}
-
-type ArmorInfo struct {
-	Name     string
-	BaseAC   int
-	DexBonus bool
-	MaxBonus int
-}
-
-func abilityModifier(score int) int {
-	result := (score - 10) / 2
-	if (score-10)%2 < 0 {
-		result--
-	}
-	return result
 }
 
 func (c *Character) UpdateProficiency() {
