@@ -4,15 +4,14 @@ import (
 	"fmt"
 
 	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
-	"github.com/DanielBartha/MPP-DnD-Character-Gen/repository"
 )
 
 type CharacterFacade struct {
-	repo repository.CharacterRepository
+	repo domain.CharacterRepository
 	svc  *CharacterService
 }
 
-func NewCharacterFacade(repo repository.CharacterRepository) *CharacterFacade {
+func NewCharacterFacade(repo domain.CharacterRepository) *CharacterFacade {
 	return &CharacterFacade{
 		repo: repo,
 		svc:  NewCharacterService(),

@@ -43,6 +43,8 @@ type JsonRepository struct {
 	filePath string
 }
 
+var _ domain.CharacterRepository = (*JsonRepository)(nil)
+
 func NewJsonRepository(filePath string) *JsonRepository {
 	dir := filepath.Dir(filePath)
 	_ = os.MkdirAll(dir, 0755)
