@@ -1,123 +1,5 @@
 [
   {
-    "Name": "Gandalf",
-    "Race": "human",
-    "Background": "acolyte",
-    "Class": "wizard",
-    "Level": 20,
-    "Proficiency": 6,
-    "Stats": {
-      "Str": 9,
-      "StrMod": -1,
-      "Dex": 11,
-      "DexMod": 0,
-      "Con": 13,
-      "ConMod": 1,
-      "Intel": 15,
-      "IntelMod": 2,
-      "Wis": 16,
-      "WisMod": 3,
-      "Cha": 14,
-      "ChaMod": 2
-    },
-    "Skills": {
-      "MaxAllowed": 2,
-      "Skills": [
-        "arcana",
-        "history",
-        "insight",
-        "religion"
-      ],
-      "Armor": null,
-      "Shields": "",
-      "Weapons": [
-        {
-          "Name": "dagger",
-          "Category": "",
-          "Range": 0,
-          "TwoHanded": false
-        },
-        {
-          "Name": "dart",
-          "Category": "",
-          "Range": 0,
-          "TwoHanded": false
-        },
-        {
-          "Name": "sling",
-          "Category": "",
-          "Range": 0,
-          "TwoHanded": false
-        },
-        {
-          "Name": "quarterstaff",
-          "Category": "",
-          "Range": 0,
-          "TwoHanded": false
-        },
-        {
-          "Name": "light crossbow",
-          "Category": "",
-          "Range": 0,
-          "TwoHanded": false
-        }
-      ],
-      "MainHand": "main hand",
-      "OffHand": "off hand"
-    },
-    "Equipment": {
-      "Weapon": {
-        "main hand": "",
-        "off hand": ""
-      },
-      "Armor": "",
-      "Shield": ""
-    },
-    "Spellcasting": {
-      "CantripsKnown": 5,
-      "SpellsKnown": 0,
-      "CanCast": true,
-      "CasterType": "full",
-      "learned_spells": [],
-      "prepared_spells": [
-        "burning hands",
-        "fireball",
-        "acid arrow",
-        "mage hand"
-      ],
-      "slots": {
-        "1": 4,
-        "2": 3,
-        "3": 3,
-        "4": 3,
-        "5": 3,
-        "6": 2,
-        "7": 2,
-        "8": 1,
-        "9": 1
-      },
-      "maxslots": {
-        "1": 4,
-        "2": 3,
-        "3": 3,
-        "4": 3,
-        "5": 3,
-        "6": 2,
-        "7": 2,
-        "8": 1,
-        "9": 1
-      },
-      "PreparedMode": true,
-      "LearnedMode": false,
-      "Ability": "intelligence",
-      "SpellSaveDC": 16,
-      "SpellAttackBonus": 8
-    },
-    "ArmorClass": 10,
-    "InitiativeBonus": 0,
-    "PassivePerception": 13
-  },
-  {
     "Name": "Galadriel",
     "Race": "high elf",
     "Background": "acolyte",
@@ -840,5 +722,120 @@
     "ArmorClass": 20,
     "InitiativeBonus": -1,
     "PassivePerception": 11
+  },
+  {
+    "Name": "Gandalf",
+    "Race": "human",
+    "Background": "acolyte",
+    "Class": "wizard",
+    "Level": 20,
+    "Proficiency": 6,
+    "Stats": {
+      "Str": 9,
+      "StrMod": -1,
+      "Dex": 11,
+      "DexMod": 0,
+      "Con": 13,
+      "ConMod": 1,
+      "Intel": 15,
+      "IntelMod": 2,
+      "Wis": 16,
+      "WisMod": 3,
+      "Cha": 14,
+      "ChaMod": 2
+    },
+    "Skills": {
+      "MaxAllowed": 2,
+      "Skills": [
+        "arcana",
+        "history",
+        "insight",
+        "religion"
+      ],
+      "Armor": null,
+      "Shields": "",
+      "Weapons": [
+        {
+          "Name": "dagger",
+          "Category": "",
+          "Range": 0,
+          "TwoHanded": false
+        },
+        {
+          "Name": "dart",
+          "Category": "",
+          "Range": 0,
+          "TwoHanded": false
+        },
+        {
+          "Name": "sling",
+          "Category": "",
+          "Range": 0,
+          "TwoHanded": false
+        },
+        {
+          "Name": "quarterstaff",
+          "Category": "",
+          "Range": 0,
+          "TwoHanded": false
+        },
+        {
+          "Name": "light crossbow",
+          "Category": "",
+          "Range": 0,
+          "TwoHanded": false
+        }
+      ],
+      "MainHand": "main hand",
+      "OffHand": "off hand"
+    },
+    "Equipment": {
+      "Weapon": {
+        "main hand": "",
+        "off hand": ""
+      },
+      "Armor": "",
+      "Shield": ""
+    },
+    "Spellcasting": {
+      "CantripsKnown": 5,
+      "SpellsKnown": 0,
+      "CanCast": true,
+      "CasterType": "full",
+      "learned_spells": [
+        "fireball"
+      ],
+      "prepared_spells": [],
+      "slots": {
+        "1": 4,
+        "2": 3,
+        "3": 3,
+        "4": 3,
+        "5": 3,
+        "6": 2,
+        "7": 2,
+        "8": 1,
+        "9": 1
+      },
+      "maxslots": {
+        "1": 4,
+        "2": 3,
+        "3": 3,
+        "4": 3,
+        "5": 3,
+        "6": 2,
+        "7": 2,
+        "8": 1,
+        "9": 1
+      },
+      "PreparedMode": false,
+      "LearnedMode": true,
+      "Ability": "intelligence",
+      "SpellSaveDC": 16,
+      "SpellAttackBonus": 8
+    },
+    "ArmorClass": 10,
+    "InitiativeBonus": 0,
+    "PassivePerception": 13
   }
 ]

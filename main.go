@@ -185,52 +185,15 @@ func main() {
 		}
 
 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
-		character, err := repo.Load(*name)
+		facade := service.NewCharacterFacade(repo)
+
+		message, err := facade.EquipItem(*name, *weapon, *slot, *armor, *shield)
 		if err != nil {
-			fmt.Printf("character %q not found\n", *name)
-			return
+			fmt.Println(err)
+			os.Exit(2)
 		}
 
-		if *weapon != "" && *slot != "" {
-			if character.Equipment.Weapon == nil {
-				character.Equipment.Weapon = make(map[string]string)
-			}
-
-			if existing, ok := character.Equipment.Weapon[*slot]; ok && existing != "" {
-				fmt.Printf("%s already occupied\n", *slot)
-				return
-			}
-
-			character.Equipment.Weapon[*slot] = *weapon
-			if err := repo.Save(character); err != nil {
-				fmt.Printf("error saving character: %v\n", err)
-				os.Exit(2)
-			}
-			fmt.Printf("Equipped weapon %s to %s\n", *weapon, *slot)
-			return
-		}
-
-		if *armor != "" {
-			character.Equipment.Armor = *armor
-			if err := repo.Save(character); err != nil {
-				fmt.Println("error saving character:", *armor)
-				os.Exit(2)
-			}
-			fmt.Printf("Equipped armor %s\n", *armor)
-			return
-		}
-
-		if *shield != "" {
-			character.Equipment.Shield = *shield
-			if err := repo.Save(character); err != nil {
-				fmt.Println("error saving character:", err)
-				os.Exit(2)
-			}
-			fmt.Printf("Equipped shield %s\n", *shield)
-			return
-		}
-
-		fmt.Println("no equipment provided")
+		fmt.Println(message)
 
 	case "learn-spell":
 		learnCmd := flag.NewFlagSet("learn-spell", flag.ExitOnError)
@@ -244,57 +207,15 @@ func main() {
 		}
 
 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
-		character, err := repo.Load(*name)
-		if err != nil {
-			fmt.Printf("character %q not found\n", *name)
-			return
-		}
+		facade := service.NewCharacterFacade(repo)
 
-		if character.Spellcasting == nil || !character.Spellcasting.CanCast {
-			fmt.Printf("this class can't cast spells\n")
-			return
-		}
-
-		for _, s := range character.Spellcasting.LearnedSpells {
-			if strings.EqualFold(s, *spell) {
-				fmt.Printf("%s already learned\n", *spell)
-				return
-			}
-		}
-
-		if character.Spellcasting.PreparedMode {
-			fmt.Printf("this class prepares spells and can't learn them\n")
-			return
-		}
-
-		// checks for non-existing spells (csv)
-		level, err := service.GetSpellLevel(*spell)
+		message, err := facade.LearnSpell(*name, *spell)
 		if err != nil {
 			fmt.Println(err)
-			return
-		}
-
-		if !service.IsSpellForClass(*spell, character.Class) {
-			fmt.Printf("%s cannot learn %s\n", character.Class, *spell)
-			return
-		}
-
-		if level > 0 {
-			if slots, ok := character.Spellcasting.Slots[level]; !ok || slots == 0 {
-				fmt.Printf("the spell has higher level than the available spell slots\n")
-				return
-			}
-		}
-
-		character.Spellcasting.LearnedMode = true
-		character.Spellcasting.LearnedSpells = append(character.Spellcasting.LearnedSpells, *spell)
-
-		if err := repo.Save(character); err != nil {
-			fmt.Println("error saving character:", err)
 			os.Exit(2)
 		}
 
-		fmt.Printf("Learned spell %s\n", *spell)
+		fmt.Println(message)
 
 	case "prepare-spell":
 		prepareCmd := flag.NewFlagSet("prepare-spell", flag.ExitOnError)

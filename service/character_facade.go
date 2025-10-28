@@ -1,6 +1,8 @@
 package service
 
 import (
+	"fmt"
+
 	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
 	"github.com/DanielBartha/MPP-DnD-Character-Gen/repository"
 )
@@ -47,6 +49,44 @@ func (f *CharacterFacade) ListCharacters() ([]*domain.Character, error) {
 
 func (f *CharacterFacade) DeleteCharacter(name string) error {
 	return f.repo.Delete(name)
+}
+
+func (f *CharacterFacade) EquipItem(name, weapon, slot, armor, shield string) (string, error) {
+	char, err := f.repo.Load(name)
+	if err != nil {
+		return "", fmt.Errorf("character %q not found", name)
+	}
+
+	equipService := NewEquipmentService()
+	message, err := equipService.Equip(char, weapon, slot, armor, shield)
+	if err != nil {
+		return "", err
+	}
+
+	if err := f.repo.Save(char); err != nil {
+		return "", fmt.Errorf("error saving character: %v", err)
+	}
+
+	return message, nil
+}
+
+func (f *CharacterFacade) LearnSpell(name, spell string) (string, error) {
+	char, err := f.repo.Load(name)
+	if err != nil {
+		return "", fmt.Errorf("character %q not found", name)
+	}
+
+	spellService := NewSpellService()
+	message, err := spellService.LearnSpell(char, spell)
+	if err != nil {
+		return "", err
+	}
+
+	if err := f.repo.Save(char); err != nil {
+		return "", fmt.Errorf("error saving character: %v", err)
+	}
+
+	return message, nil
 }
 
 // hook up for racial bonuses assignment for later
