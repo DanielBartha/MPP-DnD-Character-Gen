@@ -43,7 +43,7 @@ type JsonRepository struct {
 	filePath string
 }
 
-var _ domain.CharacterRepository = (*JsonRepository)(nil)
+var _ domain.Repository = (*JsonRepository)(nil)
 
 func NewJsonRepository(filePath string) *JsonRepository {
 	dir := filepath.Dir(filePath)
@@ -52,8 +52,6 @@ func NewJsonRepository(filePath string) *JsonRepository {
 }
 
 func (repo *JsonRepository) Save(character *domain.Character) error {
-	//service.ComputeDerivedStats(character)
-
 	characters, _ := repo.List()
 
 	updated := false
@@ -83,7 +81,6 @@ func (repo *JsonRepository) Load(name string) (*domain.Character, error) {
 
 	for _, c := range characters {
 		if c.Name == name {
-			//service.ComputeDerivedStats(c)
 			return c, nil
 		}
 	}

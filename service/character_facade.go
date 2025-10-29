@@ -7,11 +7,11 @@ import (
 )
 
 type CharacterFacade struct {
-	repo domain.CharacterRepository
+	repo domain.Repository
 	svc  *CharacterService
 }
 
-func NewCharacterFacade(repo domain.CharacterRepository) *CharacterFacade {
+func NewCharacterFacade(repo domain.Repository) *CharacterFacade {
 	return &CharacterFacade{
 		repo: repo,
 		svc:  NewCharacterService(),

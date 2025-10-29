@@ -76,7 +76,7 @@ func main() {
 		}
 
 		if *name == "" || *race == "" || *class == "" || *level <= 0 {
-			fmt.Println("Usage: create -name <name> -race <race> -class <class> -level <n>")
+			fmt.Println("name is required")
 			os.Exit(2)
 		}
 
