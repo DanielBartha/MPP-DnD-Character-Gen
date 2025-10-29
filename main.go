@@ -73,28 +73,14 @@ func main() {
 			os.Exit(2)
 		}
 
-		if *name == "" || *race == "" || *className == "" || *level <= 0 {
-			fmt.Println("name is required")
-			os.Exit(2)
+		stats := domain.Stats{
+			Str: *str, Dex: *dex, Con: *con, Intel: *intel, Wis: *wis, Cha: *cha,
 		}
 
-		char := &domain.Character{
-			Name:       *name,
-			Race:       *race,
-			Background: *background,
-			Class:      *className,
-			Level:      *level,
-			Stats: domain.Stats{
-				Str:   *str,
-				Dex:   *dex,
-				Con:   *con,
-				Intel: *intel,
-				Wis:   *wis,
-				Cha:   *cha,
-			},
-			Equipment: domain.Equipment{
-				Weapon: map[string]string{"main hand": "", "off hand": ""},
-			},
+		char, err := domain.NewCharacter(*name, *race, *background, *className, *level, stats)
+		if err != nil {
+			fmt.Println("Error creating character:", err)
+			os.Exit(2)
 		}
 
 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))

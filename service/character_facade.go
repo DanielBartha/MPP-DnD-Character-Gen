@@ -8,16 +8,14 @@ import (
 )
 
 type CharacterFacade struct {
-	repo      domain.Repository
-	svc       *CharacterService
-	classRepo *class.ClassRepository
+	repo domain.Repository
+	svc  *CharacterService
 }
 
 func NewCharacterFacade(repo domain.Repository, classRepo *class.ClassRepository) *CharacterFacade {
 	return &CharacterFacade{
-		repo:      repo,
-		svc:       NewCharacterService(classRepo),
-		classRepo: classRepo,
+		repo: repo,
+		svc:  NewCharacterService(classRepo),
 	}
 }
 

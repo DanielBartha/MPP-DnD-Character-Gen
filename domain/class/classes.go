@@ -7,10 +7,11 @@ import (
 )
 
 type ClassRepository struct {
-	AllWeapons     []domain.WeaponInfo
-	SimpleWeapons  []domain.WeaponInfo
-	MartialWeapons []domain.WeaponInfo
-	Classes        map[string]ClassSkills
+	all     []domain.WeaponInfo
+	simple  []domain.WeaponInfo
+	martial []domain.WeaponInfo
+
+	classes map[string]ClassSkills
 }
 
 type ClassSkills struct {
@@ -25,24 +26,31 @@ type ClassSkills struct {
 
 func NewClassRepository(all, simple, martial []domain.WeaponInfo) *ClassRepository {
 	cr := &ClassRepository{
-		AllWeapons:     append([]domain.WeaponInfo{}, all...),
-		SimpleWeapons:  append([]domain.WeaponInfo{}, simple...),
-		MartialWeapons: append([]domain.WeaponInfo{}, martial...),
+		all:     append([]domain.WeaponInfo{}, all...),
+		simple:  append([]domain.WeaponInfo{}, simple...),
+		martial: append([]domain.WeaponInfo{}, martial...),
 	}
-	cr.Classes = cr.buildClasses()
+	cr.classes = cr.buildClasses()
 	return cr
 }
 
-func (cr *ClassRepository) findWeaponByName(name string) domain.WeaponInfo {
-	for _, w := range cr.AllWeapons {
-		if strings.EqualFold(w.Name, name) {
-			return w
-		}
-	}
-	return domain.WeaponInfo{Name: name}
+func (r *ClassRepository) Get(className string) (ClassSkills, bool) {
+	key := strings.ToLower(strings.TrimSpace(className))
+	cs, ok := r.classes[key]
+	return cs, ok
 }
 
-func (cr *ClassRepository) CombineWeaponSets(sets ...[]domain.WeaponInfo) []domain.WeaponInfo {
+func (r *ClassRepository) findByName(name string) (domain.WeaponInfo, bool) {
+	lo := strings.ToLower(strings.TrimSpace(name))
+	for _, w := range r.all {
+		if strings.EqualFold(strings.TrimSpace(w.Name), lo) {
+			return w, true
+		}
+	}
+	return domain.WeaponInfo{Name: name}, false
+}
+
+func (r *ClassRepository) CombineWeaponSets(sets ...[]domain.WeaponInfo) []domain.WeaponInfo {
 	out := make([]domain.WeaponInfo, 0)
 	for _, s := range sets {
 		out = append(out, s...)
@@ -50,23 +58,38 @@ func (cr *ClassRepository) CombineWeaponSets(sets ...[]domain.WeaponInfo) []doma
 	return out
 }
 
-func (cr *ClassRepository) WithExtraWeapons(base []domain.WeaponInfo, names ...string) []domain.WeaponInfo {
+func (r *ClassRepository) withExtra(base []domain.WeaponInfo, names ...string) []domain.WeaponInfo {
 	out := append([]domain.WeaponInfo{}, base...)
 	for _, n := range names {
-		out = append(out, cr.findWeaponByName(n))
+		if w, ok := r.findByName(n); ok {
+			out = append(out, w)
+		} else {
+			out = append(out, domain.WeaponInfo{Name: n})
+		}
 	}
 	return out
 }
 
-func (cr *ClassRepository) WeaponsByName(names ...string) []domain.WeaponInfo {
+func (r *ClassRepository) WeaponsByName(names ...string) []domain.WeaponInfo {
 	out := make([]domain.WeaponInfo, 0, len(names))
 	for _, n := range names {
-		out = append(out, cr.findWeaponByName(n))
+		if w, ok := r.findByName(n); ok {
+			out = append(out, w)
+		} else {
+			out = append(out, domain.WeaponInfo{Name: n})
+		}
 	}
 	return out
 }
 
-func (cr *ClassRepository) buildClasses() map[string]ClassSkills {
+func (r *ClassRepository) weaponOrFallback(name string) domain.WeaponInfo {
+	if w, ok := r.findByName(name); ok {
+		return w
+	}
+	return domain.WeaponInfo{Name: name}
+}
+
+func (r *ClassRepository) buildClasses() map[string]ClassSkills {
 	return map[string]ClassSkills{
 		"barbarian": {
 			MaxAllowed: 2,
@@ -77,7 +100,7 @@ func (cr *ClassRepository) buildClasses() map[string]ClassSkills {
 				"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate",
 			},
 			Shields:  "shield",
-			Weapons:  cr.AllWeapons,
+			Weapons:  r.all,
 			MainHand: "main hand",
 			OffHand:  "off hand",
 		},
@@ -91,8 +114,8 @@ func (cr *ClassRepository) buildClasses() map[string]ClassSkills {
 			Armor: []string{
 				"padded", "leather", "studded leather",
 			},
-			Weapons: cr.WithExtraWeapons(
-				cr.SimpleWeapons,
+			Weapons: r.withExtra(
+				r.simple,
 				"hand crossbow", "longsword", "rapier", "shortsword",
 			),
 			MainHand: "main hand",
@@ -107,7 +130,7 @@ func (cr *ClassRepository) buildClasses() map[string]ClassSkills {
 				"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate",
 			},
 			Shields:  "shield",
-			Weapons:  cr.SimpleWeapons,
+			Weapons:  r.simple,
 			MainHand: "main hand",
 			OffHand:  "off hand",
 		},
@@ -121,18 +144,18 @@ func (cr *ClassRepository) buildClasses() map[string]ClassSkills {
 				"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate",
 			},
 			Shields: "shield",
-			Weapons: append(cr.SimpleWeapons,
-				cr.findWeaponByName("club"),
-				cr.findWeaponByName("greatclub"),
-				cr.findWeaponByName("dagger"),
-				cr.findWeaponByName("dart"),
-				cr.findWeaponByName("javelins"),
-				cr.findWeaponByName("maces"),
-				cr.findWeaponByName("quarterstaff"),
-				cr.findWeaponByName("scimitar"),
-				cr.findWeaponByName("sickle"),
-				cr.findWeaponByName("sling"),
-				cr.findWeaponByName("spear"),
+			Weapons: append(r.simple,
+				r.weaponOrFallback("club"),
+				r.weaponOrFallback("greatclub"),
+				r.weaponOrFallback("dagger"),
+				r.weaponOrFallback("dart"),
+				r.weaponOrFallback("javelins"),
+				r.weaponOrFallback("maces"),
+				r.weaponOrFallback("quarterstaff"),
+				r.weaponOrFallback("scimitar"),
+				r.weaponOrFallback("sickle"),
+				r.weaponOrFallback("sling"),
+				r.weaponOrFallback("spear"),
 			),
 			MainHand: "main hand",
 			OffHand:  "off hand",
@@ -146,7 +169,7 @@ func (cr *ClassRepository) buildClasses() map[string]ClassSkills {
 				"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate", "ring mail", "chain mail", "splint", "plate",
 			},
 			Shields:  "shield",
-			Weapons:  cr.AllWeapons,
+			Weapons:  r.simple,
 			MainHand: "main hand",
 			OffHand:  "off hand",
 		},
@@ -156,8 +179,8 @@ func (cr *ClassRepository) buildClasses() map[string]ClassSkills {
 				"acrobatics", "athletics", "history", "insight", "religion", "stealth",
 			},
 			// NO ARMOR
-			Weapons: append(cr.SimpleWeapons,
-				cr.findWeaponByName("shortsword"),
+			Weapons: append(r.simple,
+				r.weaponOrFallback("shortsword"),
 			),
 			MainHand: "main hand",
 			OffHand:  "off hand",
@@ -171,7 +194,7 @@ func (cr *ClassRepository) buildClasses() map[string]ClassSkills {
 				"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate", "ring mail", "chain mail", "splint", "plate",
 			},
 			Shields:  "shield",
-			Weapons:  cr.AllWeapons,
+			Weapons:  r.all,
 			MainHand: "main hand",
 			OffHand:  "off hand",
 		},
@@ -184,7 +207,7 @@ func (cr *ClassRepository) buildClasses() map[string]ClassSkills {
 				"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate",
 			},
 			Shields:  "shield",
-			Weapons:  cr.AllWeapons,
+			Weapons:  r.all,
 			MainHand: "main hand",
 			OffHand:  "off hand",
 		},
@@ -196,8 +219,8 @@ func (cr *ClassRepository) buildClasses() map[string]ClassSkills {
 			Armor: []string{
 				"padded", "leather", "studded leather",
 			},
-			Weapons: cr.WithExtraWeapons(
-				cr.SimpleWeapons,
+			Weapons: r.withExtra(
+				r.simple,
 				"hand crossbow", "longsword", "rapier", "shortsword",
 			),
 			MainHand: "main hand",
@@ -209,7 +232,7 @@ func (cr *ClassRepository) buildClasses() map[string]ClassSkills {
 				"arcana", "deception", "insight", "intimidation", "persuasion", "religion",
 			},
 			// NO ARMOR
-			Weapons: cr.WeaponsByName(
+			Weapons: r.WeaponsByName(
 				"dagger", "dart", "sling", "quarterstaff", "light crossbow",
 			),
 			MainHand: "main hand",
@@ -223,7 +246,7 @@ func (cr *ClassRepository) buildClasses() map[string]ClassSkills {
 			Armor: []string{
 				"padded", "leather", "studded leather",
 			},
-			Weapons:  cr.SimpleWeapons,
+			Weapons:  r.simple,
 			MainHand: "main hand",
 			OffHand:  "off hand",
 		},
@@ -233,7 +256,7 @@ func (cr *ClassRepository) buildClasses() map[string]ClassSkills {
 				"arcana", "history", "insight", "investigation", "medicine", "religion",
 			},
 			// NO ARMOR
-			Weapons: cr.WeaponsByName(
+			Weapons: r.WeaponsByName(
 				"dagger", "dart", "sling", "quarterstaff", "light crossbow",
 			),
 			MainHand: "main hand",

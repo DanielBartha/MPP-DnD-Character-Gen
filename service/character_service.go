@@ -1,8 +1,6 @@
 package service
 
 import (
-	"strings"
-
 	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
 	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain/class"
 )
@@ -18,8 +16,7 @@ func NewCharacterService(classRepo *class.ClassRepository) *CharacterService {
 }
 
 func (s *CharacterService) GetClassSkills(c *domain.Character) domain.ClassLoadout {
-	classKey := strings.ToLower(strings.TrimSpace(c.Class))
-	cs, ok := s.classRepo.Classes[classKey]
+	cs, ok := s.classRepo.Get(c.Class)
 
 	if !ok {
 		return domain.ClassLoadout{
@@ -33,17 +30,14 @@ func (s *CharacterService) GetClassSkills(c *domain.Character) domain.ClassLoado
 		}
 	}
 
-	src := cs.Skills
-	localSkills := make([]string, len(src))
-	copy(localSkills, src)
-
+	src := append([]string{}, cs.Skills...)
 	selected := []string{}
-	if cs.MaxAllowed > 0 && len(localSkills) > 0 {
+	if cs.MaxAllowed > 0 && len(src) > 0 {
 		limit := cs.MaxAllowed
-		if limit > len(localSkills) {
-			limit = len(localSkills)
+		if limit > len(src) {
+			limit = len(src)
 		}
-		selected = localSkills[:limit]
+		selected = src[:limit]
 	}
 
 	selected = append(selected, "insight", "religion")
