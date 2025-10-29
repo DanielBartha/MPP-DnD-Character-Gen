@@ -139,7 +139,6 @@ func (r *ClassRepository) buildClasses() map[string]ClassSkills {
 			Skills: []string{
 				"arcana", "animal handling", "insight", "medicine", "nature", "perception", "religion", "survival",
 			},
-			// druids don't wear armor or shields made of metal, fucking animals
 			Armor: []string{
 				"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate",
 			},

@@ -1287,5 +1287,80 @@
     "ArmorClass": 9,
     "InitiativeBonus": -1,
     "PassivePerception": 13
+  },
+  {
+    "Name": "Test Char",
+    "Race": "dwarf",
+    "Background": "acolyte",
+    "Class": "fighter",
+    "Level": 3,
+    "Proficiency": 2,
+    "Stats": {
+      "Str": 16,
+      "StrMod": 3,
+      "Dex": 10,
+      "DexMod": 0,
+      "Con": 17,
+      "ConMod": 3,
+      "Intel": 8,
+      "IntelMod": -1,
+      "Wis": 12,
+      "WisMod": 1,
+      "Cha": 14,
+      "ChaMod": 2
+    },
+    "Skills": {
+      "MaxAllowed": 2,
+      "Skills": [
+        "acrobatics",
+        "animal handling",
+        "insight",
+        "religion"
+      ],
+      "Armor": [
+        "padded",
+        "leather",
+        "studded leather",
+        "hide",
+        "chain shirt",
+        "scale mail",
+        "breast plate",
+        "half plate",
+        "ring mail",
+        "chain mail",
+        "splint",
+        "plate"
+      ],
+      "Shields": "shield",
+      "Weapons": [],
+      "MainHand": "main hand",
+      "OffHand": "off hand"
+    },
+    "Equipment": {
+      "Weapon": {
+        "main hand": "",
+        "off hand": ""
+      },
+      "Armor": "",
+      "Shield": ""
+    },
+    "Spellcasting": {
+      "CantripsKnown": 0,
+      "SpellsKnown": 0,
+      "CanCast": false,
+      "CasterType": "",
+      "learned_spells": [],
+      "prepared_spells": [],
+      "slots": {},
+      "maxslots": {},
+      "PreparedMode": false,
+      "LearnedMode": false,
+      "Ability": "",
+      "SpellSaveDC": 0,
+      "SpellAttackBonus": 0
+    },
+    "ArmorClass": 10,
+    "InitiativeBonus": 0,
+    "PassivePerception": 11
   }
 ]

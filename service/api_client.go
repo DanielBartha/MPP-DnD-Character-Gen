@@ -135,7 +135,6 @@ func FetchArmor(index string) (*apiArmorResp, error) {
 	return &r, nil
 }
 
-// many many moons ago, many many spells were created which is why this batching is needed
 func FetchSpellsBatch(indexes []string) map[string]*apiSpellResp {
 	results := make(map[string]*apiSpellResp)
 

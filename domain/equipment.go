@@ -120,7 +120,7 @@ func (c *Character) CalculateArmorClass() int {
 				}
 				ac += dex
 			case "none":
-				// no bolus
+				// no bonus
 			}
 		}
 
