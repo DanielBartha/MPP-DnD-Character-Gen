@@ -3,22 +3,23 @@ package service
 import (
 	"strings"
 
-	"github.com/DanielBartha/MPP-DnD-Character-Gen/characterClasses"
 	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
+	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain/class"
 )
 
 type CharacterService struct {
-	// CharacterSkillProvider in the future for loading data from db
-	// c'est possible
+	classRepo *class.ClassRepository
 }
 
-func NewCharacterService() *CharacterService {
-	return &CharacterService{}
+func NewCharacterService(classRepo *class.ClassRepository) *CharacterService {
+	return &CharacterService{
+		classRepo: classRepo,
+	}
 }
 
 func (s *CharacterService) GetClassSkills(c *domain.Character) domain.ClassLoadout {
 	classKey := strings.ToLower(strings.TrimSpace(c.Class))
-	cs, ok := characterClasses.Classes[classKey]
+	cs, ok := s.classRepo.Classes[classKey]
 
 	if !ok {
 		return domain.ClassLoadout{

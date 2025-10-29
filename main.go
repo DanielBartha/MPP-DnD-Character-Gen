@@ -9,8 +9,8 @@ import (
 
 	"path/filepath"
 
-	"github.com/DanielBartha/MPP-DnD-Character-Gen/characterClasses"
 	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
+	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain/class"
 	"github.com/DanielBartha/MPP-DnD-Character-Gen/repository"
 	"github.com/DanielBartha/MPP-DnD-Character-Gen/service"
 )
@@ -50,8 +50,6 @@ func main() {
 	simple := service.SimpleWeapons(allWeps)
 	martial := service.MartialWeapons(allWeps)
 
-	characterClasses.InitWeapons(allWeps, simple, martial)
-
 	switch cmd {
 	case "create":
 		createCmd := flag.NewFlagSet("create", flag.ExitOnError)
@@ -60,7 +58,7 @@ func main() {
 		race := createCmd.String("race", "", "character race (required)")
 		// "acolyte" default
 		background := createCmd.String("background", "acolyte", "character background (required)")
-		class := createCmd.String("class", "", "character class (required)")
+		className := createCmd.String("class", "", "character class (required)")
 		level := createCmd.Int("level", 1, "character level (required)")
 
 		str := createCmd.Int("str", 10, "strength is required")
@@ -75,7 +73,7 @@ func main() {
 			os.Exit(2)
 		}
 
-		if *name == "" || *race == "" || *class == "" || *level <= 0 {
+		if *name == "" || *race == "" || *className == "" || *level <= 0 {
 			fmt.Println("name is required")
 			os.Exit(2)
 		}
@@ -84,7 +82,7 @@ func main() {
 			Name:       *name,
 			Race:       *race,
 			Background: *background,
-			Class:      *class,
+			Class:      *className,
 			Level:      *level,
 			Stats: domain.Stats{
 				Str:   *str,
@@ -100,7 +98,8 @@ func main() {
 		}
 
 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
-		facade := service.NewCharacterFacade(repo)
+		classRepo := class.NewClassRepository(allWeps, simple, martial)
+		facade := service.NewCharacterFacade(repo, classRepo)
 
 		if err := facade.CreateCharacter(char); err != nil {
 			fmt.Println("Error creating character: ", err)
@@ -120,7 +119,7 @@ func main() {
 		}
 
 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
-		facade := service.NewCharacterFacade(repo)
+		facade := service.NewCharacterFacade(repo, nil)
 
 		char, err := facade.ViewCharacter(*name)
 		if err != nil {
@@ -132,7 +131,7 @@ func main() {
 
 	case "list":
 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
-		facade := service.NewCharacterFacade(repo)
+		facade := service.NewCharacterFacade(repo, nil)
 
 		chars, err := facade.ListCharacters()
 		if err != nil {
@@ -160,7 +159,7 @@ func main() {
 		}
 
 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
-		facade := service.NewCharacterFacade(repo)
+		facade := service.NewCharacterFacade(repo, nil)
 
 		if err := facade.DeleteCharacter(*name); err != nil {
 			fmt.Println("error deleting character: ", err)
@@ -184,7 +183,8 @@ func main() {
 		}
 
 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
-		facade := service.NewCharacterFacade(repo)
+		classRepo := class.NewClassRepository(allWeps, simple, martial)
+		facade := service.NewCharacterFacade(repo, classRepo)
 
 		err := facade.EquipItem(*name, *weapon, *slot, *armor, *shield)
 		if err != nil {
@@ -226,7 +226,7 @@ func main() {
 		}
 
 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
-		facade := service.NewCharacterFacade(repo)
+		facade := service.NewCharacterFacade(repo, nil)
 
 		message, err := facade.LearnSpell(*name, *spell)
 		if err != nil {
@@ -248,7 +248,7 @@ func main() {
 		}
 
 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
-		facade := service.NewCharacterFacade(repo)
+		facade := service.NewCharacterFacade(repo, nil)
 
 		message, err := facade.PrepareSpell(*name, *spell)
 		if err != nil {

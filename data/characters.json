@@ -199,7 +199,7 @@
     },
     "Equipment": {
       "Weapon": {
-        "main hand": "",
+        "main hand": "shortsword",
         "off hand": ""
       },
       "Armor": "",
@@ -714,7 +714,7 @@
     },
     "Equipment": {
       "Weapon": {
-        "main hand": "",
+        "main hand": "battleaxe",
         "off hand": ""
       },
       "Armor": "plate armor",
@@ -1169,7 +1169,9 @@
       "SpellsKnown": 0,
       "CanCast": true,
       "CasterType": "full",
-      "learned_spells": [],
+      "learned_spells": [
+        "fireball"
+      ],
       "prepared_spells": [],
       "slots": {
         "1": 4,
@@ -1194,7 +1196,7 @@
         "9": 1
       },
       "PreparedMode": false,
-      "LearnedMode": false,
+      "LearnedMode": true,
       "Ability": "intelligence",
       "SpellSaveDC": 16,
       "SpellAttackBonus": 8
