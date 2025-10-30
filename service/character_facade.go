@@ -21,8 +21,12 @@ func NewCharacterFacade(repo domain.Repository, classRepo *class.ClassRepository
 
 func (f *CharacterFacade) CreateCharacter(c *domain.Character) error {
 	c.Skills = f.svc.GetClassSkills(c)
+	c.ApplyRacialBonuses()
+	c.UpdateProficiency()
+	c.ApplyRacialSkillProficiencies()
 	f.svc.InitSpellcasting(c)
 	ComputeDerivedStats(c)
+
 	return f.repo.Save(c)
 }
 
@@ -113,8 +117,3 @@ func (f *CharacterFacade) PrepareSpell(name, spell string) (string, error) {
 
 	return message, nil
 }
-
-// hook up for racial bonuses assignment for later
-// if fn := f.svc.ApplyRacialBonusesSkillProficiencies; fn != nil {
-// 	fn(c)
-// }
