@@ -217,7 +217,7 @@ func main() {
 		message, err := facade.LearnSpell(*name, *spell)
 		if err != nil {
 			fmt.Println(err)
-			os.Exit(2)
+			return
 		}
 
 		fmt.Println(message)
@@ -239,7 +239,7 @@ func main() {
 		message, err := facade.PrepareSpell(*name, *spell)
 		if err != nil {
 			fmt.Println(err)
-			os.Exit(2)
+			return
 		}
 
 		fmt.Println(message)
