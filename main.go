@@ -92,7 +92,7 @@ func main() {
 			os.Exit(2)
 		}
 
-		fmt.Printf("Saved character %s\n", char.Name)
+		fmt.Printf("saved character %s\n", char.Name)
 
 	case "view":
 		viewCmd := flag.NewFlagSet("view", flag.ExitOnError)
@@ -109,7 +109,7 @@ func main() {
 
 		char, err := facade.ViewCharacter(*name)
 		if err != nil {
-			fmt.Printf("Character %q not found\n", *name)
+			fmt.Printf("character %q not found\n", *name)
 			return
 		}
 
