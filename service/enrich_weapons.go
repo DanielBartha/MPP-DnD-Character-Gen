@@ -56,7 +56,7 @@ func EnrichWeapons(inputPath, outputPath string) error {
 	}
 
 	fmt.Printf("Fetching weapon data for %d weapons...\n", len(indexes))
-	weaponMap := FetchWeaponsBatch(indexes)
+	weaponMap := fetchWeaponsBatchFn(indexes)
 
 	if err := ensureDir(filepath.Dir(outputPath)); err != nil {
 		return err

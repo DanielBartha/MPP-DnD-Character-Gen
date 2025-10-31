@@ -57,7 +57,7 @@ func EnrichArmor(inputPath, outputPath string) error {
 		records = append(records, record)
 	}
 
-	results := FetchArmorBatch(armorIndexes)
+	results := fetchArmorBatchFn(armorIndexes)
 
 	var processed, missing int
 

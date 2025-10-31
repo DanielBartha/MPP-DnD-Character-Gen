@@ -43,6 +43,10 @@ type apiArmorResp struct {
 	} `json:"armor_class"`
 }
 
+var fetchSpellFunc = FetchSpell
+var fetchWeaponFunc = FetchWeapon
+var fetchArmorFunc = FetchArmor
+
 var requestsPerSecond = 6
 
 var requestTimeout = 8 * time.Second
@@ -135,6 +139,8 @@ func FetchArmor(index string) (*apiArmorResp, error) {
 	return &r, nil
 }
 
+var fetchSpellsBatchFn = FetchSpellsBatch
+
 func FetchSpellsBatch(indexes []string) map[string]*apiSpellResp {
 	results := make(map[string]*apiSpellResp)
 
@@ -148,7 +154,7 @@ func FetchSpellsBatch(indexes []string) map[string]*apiSpellResp {
 
 	worker := func() {
 		for idx := range chIn {
-			r, err := FetchSpell(idx)
+			r, err := fetchSpellFunc(idx)
 			chOut <- result{idx: idx, res: r, err: err}
 		}
 	}
@@ -206,6 +212,8 @@ func FetchSpellsBatch(indexes []string) map[string]*apiSpellResp {
 	return results
 }
 
+var fetchWeaponsBatchFn = FetchWeaponsBatch
+
 func FetchWeaponsBatch(indexes []string) map[string]*apiWeaponResp {
 	results := make(map[string]*apiWeaponResp)
 
@@ -220,7 +228,7 @@ func FetchWeaponsBatch(indexes []string) map[string]*apiWeaponResp {
 
 	worker := func() {
 		for idx := range chIn {
-			r, err := FetchWeapon(idx)
+			r, err := fetchWeaponFunc(idx)
 			chOut <- result{idx: idx, res: r, err: err}
 		}
 	}
@@ -276,6 +284,8 @@ func FetchWeaponsBatch(indexes []string) map[string]*apiWeaponResp {
 	return results
 }
 
+var fetchArmorBatchFn = FetchArmorBatch
+
 func FetchArmorBatch(indexes []string) map[string]*apiArmorResp {
 	results := make(map[string]*apiArmorResp)
 
@@ -290,7 +300,7 @@ func FetchArmorBatch(indexes []string) map[string]*apiArmorResp {
 
 	worker := func() {
 		for idx := range chIn {
-			r, err := FetchArmor(idx)
+			r, err := fetchArmorFunc(idx)
 			chOut <- result{idx: idx, res: r, err: err}
 		}
 	}
