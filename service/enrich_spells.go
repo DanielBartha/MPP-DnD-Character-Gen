@@ -50,7 +50,7 @@ func EnrichSpells(inputPath, outputPath string) error {
 	}
 
 	fmt.Printf("Fetching data for %d spells...\n", len(indexes))
-	spellMap := FetchSpellsBatch(indexes)
+	spellMap := fetchSpellsBatchFn(indexes)
 
 	var processed, missing int
 

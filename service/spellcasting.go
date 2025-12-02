@@ -79,8 +79,8 @@ var pactCasterSlots = map[int]map[int]int{
 
 func GetSlotsForClassLevel(class string, level int) (map[int]int, string, error) {
 	classKey := strings.ToLower(strings.TrimSpace(class))
-	casterType, ok := domain.SpellcastingType[classKey]
-	if !ok {
+	casterType := domain.GetSpellcastingType(classKey)
+	if casterType == "" {
 		return nil, "", fmt.Errorf("class %s is not a spellcaster", class)
 	}
 
@@ -97,7 +97,6 @@ func GetSlotsForClassLevel(class string, level int) (map[int]int, string, error)
 		if m, ok := pactCasterSlots[level]; ok {
 			return copyIntMap(m), "pact", nil
 		}
-	//default aka not spellcaster
 	default:
 		return nil, "", fmt.Errorf("no slot table for class %s", class)
 	}

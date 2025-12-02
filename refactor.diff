@@ -1,0 +1,2935 @@
+diff --git a/characterClasses/classes.go b/characterClasses/classes.go
+deleted file mode 100644
+index 06f65cf..0000000
+--- a/characterClasses/classes.go
++++ /dev/null
+@@ -1,236 +0,0 @@
+-package characterClasses
+-
+-import (
+-	"strings"
+-
+-	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
+-)
+-
+-var (
+-	AllWeapons     []domain.WeaponInfo
+-	SimpleWeapons  []domain.WeaponInfo
+-	MartialWeapons []domain.WeaponInfo
+-)
+-
+-type ClassSkills struct {
+-	MaxAllowed int
+-	Skills     []string
+-	Armor      []string
+-	Shields    string
+-	Weapons    []domain.WeaponInfo
+-	MainHand   string
+-	OffHand    string
+-}
+-
+-func InitWeapons(all, simple, martial []domain.WeaponInfo) {
+-	AllWeapons = append([]domain.WeaponInfo{}, all...)
+-	SimpleWeapons = append([]domain.WeaponInfo{}, simple...)
+-	MartialWeapons = append([]domain.WeaponInfo{}, martial...)
+-}
+-
+-func findWeaponByName(name string) domain.WeaponInfo {
+-	for _, w := range AllWeapons {
+-		if strings.EqualFold(w.Name, name) {
+-			return w
+-		}
+-	}
+-	return domain.WeaponInfo{Name: name}
+-}
+-
+-func CombineWeaponSets(sets ...[]domain.WeaponInfo) []domain.WeaponInfo {
+-	out := make([]domain.WeaponInfo, 0)
+-	for _, s := range sets {
+-		out = append(out, s...)
+-	}
+-	return out
+-}
+-
+-func WithExtraWeapons(base []domain.WeaponInfo, names ...string) []domain.WeaponInfo {
+-	out := append([]domain.WeaponInfo{}, base...)
+-	for _, n := range names {
+-		out = append(out, findWeaponByName(n))
+-	}
+-	return out
+-}
+-
+-func WeaponsByName(names ...string) []domain.WeaponInfo {
+-	out := make([]domain.WeaponInfo, 0, len(names))
+-	for _, n := range names {
+-		out = append(out, findWeaponByName(n))
+-	}
+-	return out
+-}
+-
+-var Classes = map[string]ClassSkills{
+-	"barbarian": {
+-		MaxAllowed: 2,
+-		Skills: []string{
+-			"animal handling", "athletics", "intimidation", "nature", "perception", "survival",
+-		},
+-		Armor: []string{
+-			"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate",
+-		},
+-		Shields:  "shield",
+-		Weapons:  AllWeapons,
+-		MainHand: "main hand",
+-		OffHand:  "off hand",
+-	},
+-	"bard": {
+-		MaxAllowed: 3,
+-		Skills: []string{
+-			"acrobatics", "animal handling", "arcana", "athletics", "deception",
+-			"history", "insight", "intimidation", "investigation", "medicine", "nature",
+-			"perception", "performance", "persuasion", "religion", "sleight of hand", "stealth", "survival",
+-		},
+-		Armor: []string{
+-			"padded", "leather", "studded leather",
+-		},
+-		Weapons: WithExtraWeapons(
+-			SimpleWeapons,
+-			"hand crossbow", "longsword", "rapier", "shortsword",
+-		),
+-		MainHand: "main hand",
+-		OffHand:  "off hand",
+-	},
+-	"cleric": {
+-		MaxAllowed: 2,
+-		Skills: []string{
+-			"history", "insight", "medicine", "persuasion", "religion",
+-		},
+-		Armor: []string{
+-			"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate",
+-		},
+-		Shields:  "shield",
+-		Weapons:  SimpleWeapons,
+-		MainHand: "main hand",
+-		OffHand:  "off hand",
+-	},
+-	"druid": {
+-		MaxAllowed: 2,
+-		Skills: []string{
+-			"arcana", "animal handling", "insight", "medicine", "nature", "perception", "religion", "survival",
+-		},
+-		// druids don't wear armor or shields made of metal, fucking animals
+-		Armor: []string{
+-			"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate",
+-		},
+-		Shields: "shield",
+-		Weapons: append(SimpleWeapons,
+-			findWeaponByName("club"),
+-			findWeaponByName("greatclub"),
+-			findWeaponByName("dagger"),
+-			findWeaponByName("dart"),
+-			findWeaponByName("javelins"),
+-			findWeaponByName("maces"),
+-			findWeaponByName("quarterstaff"),
+-			findWeaponByName("scimitar"),
+-			findWeaponByName("sickle"),
+-			findWeaponByName("sling"),
+-			findWeaponByName("spear"),
+-		),
+-		MainHand: "main hand",
+-		OffHand:  "off hand",
+-	},
+-	"fighter": {
+-		MaxAllowed: 2,
+-		Skills: []string{
+-			"acrobatics", "animal handling", "athletics", "history", "insight", "intimidation", "perception", "survival",
+-		},
+-		Armor: []string{
+-			"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate", "ring mail", "chain mail", "splint", "plate",
+-		},
+-		Shields:  "shield",
+-		Weapons:  AllWeapons,
+-		MainHand: "main hand",
+-		OffHand:  "off hand",
+-	},
+-	"monk": {
+-		MaxAllowed: 2,
+-		Skills: []string{
+-			"acrobatics", "athletics", "history", "insight", "religion", "stealth",
+-		},
+-		// NO ARMOR
+-		Weapons: append(SimpleWeapons,
+-			findWeaponByName("shortsword"),
+-		),
+-		MainHand: "main hand",
+-		OffHand:  "off hand",
+-	},
+-	"paladin": {
+-		MaxAllowed: 2,
+-		Skills: []string{
+-			"athletics", "insight", "intimidation", "medicine", "persuasion", "religion",
+-		},
+-		Armor: []string{
+-			"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate", "ring mail", "chain mail", "splint", "plate",
+-		},
+-		Shields:  "shield",
+-		Weapons:  AllWeapons,
+-		MainHand: "main hand",
+-		OffHand:  "off hand",
+-	},
+-	"ranger": {
+-		MaxAllowed: 3,
+-		Skills: []string{
+-			"animal handling", "athletics", "insight", "investigation", "nature", "perception", "stealth", "survival",
+-		},
+-		Armor: []string{
+-			"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate",
+-		},
+-		Shields:  "shield",
+-		Weapons:  AllWeapons,
+-		MainHand: "main hand",
+-		OffHand:  "off hand",
+-	},
+-	"rogue": {
+-		MaxAllowed: 4,
+-		Skills: []string{
+-			"acrobatics", "athletics", "deception", "insight", "intimidation", "investigation", "perception", "performance", "persuasion", "sleight of hand", "stealth",
+-		},
+-		Armor: []string{
+-			"padded", "leather", "studded leather",
+-		},
+-		Weapons: WithExtraWeapons(
+-			SimpleWeapons,
+-			"hand crossbow", "longsword", "rapier", "shortsword",
+-		),
+-		MainHand: "main hand",
+-		OffHand:  "off hand",
+-	},
+-	"sorcerer": {
+-		MaxAllowed: 2,
+-		Skills: []string{
+-			"arcana", "deception", "insight", "intimidation", "persuasion", "religion",
+-		},
+-		// NO ARMOR
+-		Weapons: WeaponsByName(
+-			"dagger", "dart", "sling", "quarterstaff", "light crossbow",
+-		),
+-		MainHand: "main hand",
+-		OffHand:  "off hand",
+-	},
+-	"warlock": {
+-		MaxAllowed: 2,
+-		Skills: []string{
+-			"arcana", "deception", "history", "intimidation", "investigation", "nature", "religion",
+-		},
+-		Armor: []string{
+-			"padded", "leather", "studded leather",
+-		},
+-		Weapons:  SimpleWeapons,
+-		MainHand: "main hand",
+-		OffHand:  "off hand",
+-	},
+-	"wizard": {
+-		MaxAllowed: 2,
+-		Skills: []string{
+-			"arcana", "history", "insight", "investigation", "medicine", "religion",
+-		},
+-		// NO ARMOR
+-		Weapons: WeaponsByName(
+-			"dagger", "dart", "sling", "quarterstaff", "light crossbow",
+-		),
+-		MainHand: "main hand",
+-		OffHand:  "off hand",
+-	},
+-}
+diff --git a/data/characters.json b/data/characters.json
+deleted file mode 100644
+index a801f76..0000000
+--- a/data/characters.json
++++ /dev/null
+@@ -1,841 +0,0 @@
+-[
+-  {
+-    "Name": "Gandalf",
+-    "Race": "human",
+-    "Background": "acolyte",
+-    "Class": "wizard",
+-    "Level": 20,
+-    "Proficiency": 6,
+-    "Stats": {
+-      "Str": 9,
+-      "StrMod": -1,
+-      "Dex": 11,
+-      "DexMod": 0,
+-      "Con": 13,
+-      "ConMod": 1,
+-      "Intel": 15,
+-      "IntelMod": 2,
+-      "Wis": 16,
+-      "WisMod": 3,
+-      "Cha": 14,
+-      "ChaMod": 2
+-    },
+-    "Skills": {
+-      "MaxAllowed": 2,
+-      "Skills": [
+-        "arcana",
+-        "history",
+-        "insight",
+-        "religion"
+-      ],
+-      "Armor": null,
+-      "Shields": "",
+-      "Weapons": [
+-        {
+-          "Name": "dagger",
+-          "Category": "",
+-          "Range": 0,
+-          "TwoHanded": false
+-        },
+-        {
+-          "Name": "dart",
+-          "Category": "",
+-          "Range": 0,
+-          "TwoHanded": false
+-        },
+-        {
+-          "Name": "sling",
+-          "Category": "",
+-          "Range": 0,
+-          "TwoHanded": false
+-        },
+-        {
+-          "Name": "quarterstaff",
+-          "Category": "",
+-          "Range": 0,
+-          "TwoHanded": false
+-        },
+-        {
+-          "Name": "light crossbow",
+-          "Category": "",
+-          "Range": 0,
+-          "TwoHanded": false
+-        }
+-      ],
+-      "MainHand": "main hand",
+-      "OffHand": "off hand"
+-    },
+-    "Equipment": {
+-      "Weapon": {
+-        "main hand": "",
+-        "off hand": ""
+-      },
+-      "Armor": "",
+-      "Shield": ""
+-    },
+-    "Spellcasting": {
+-      "CantripsKnown": 5,
+-      "SpellsKnown": 0,
+-      "CanCast": true,
+-      "CasterType": "full",
+-      "learned_spells": [],
+-      "prepared_spells": [
+-        "burning hands"
+-      ],
+-      "slots": {
+-        "1": 4,
+-        "2": 3,
+-        "3": 3,
+-        "4": 3,
+-        "5": 3,
+-        "6": 2,
+-        "7": 2,
+-        "8": 1,
+-        "9": 1
+-      },
+-      "maxslots": {
+-        "1": 4,
+-        "2": 3,
+-        "3": 3,
+-        "4": 3,
+-        "5": 3,
+-        "6": 2,
+-        "7": 2,
+-        "8": 1,
+-        "9": 1
+-      },
+-      "PreparedMode": true,
+-      "LearnedMode": false,
+-      "Ability": "intelligence",
+-      "SpellSaveDC": 16,
+-      "SpellAttackBonus": 8
+-    },
+-    "ArmorClass": 10,
+-    "InitiativeBonus": 0,
+-    "PassivePerception": 13
+-  },
+-  {
+-    "Name": "Galadriel",
+-    "Race": "high elf",
+-    "Background": "acolyte",
+-    "Class": "sorcerer",
+-    "Level": 20,
+-    "Proficiency": 6,
+-    "Stats": {
+-      "Str": 8,
+-      "StrMod": -1,
+-      "Dex": 10,
+-      "DexMod": 0,
+-      "Con": 12,
+-      "ConMod": 1,
+-      "Intel": 15,
+-      "IntelMod": 2,
+-      "Wis": 14,
+-      "WisMod": 2,
+-      "Cha": 13,
+-      "ChaMod": 1
+-    },
+-    "Skills": {
+-      "MaxAllowed": 2,
+-      "Skills": [
+-        "arcana",
+-        "deception",
+-        "insight",
+-        "religion"
+-      ],
+-      "Armor": null,
+-      "Shields": "",
+-      "Weapons": [
+-        {
+-          "Name": "dagger",
+-          "Category": "",
+-          "Range": 0,
+-          "TwoHanded": false
+-        },
+-        {
+-          "Name": "dart",
+-          "Category": "",
+-          "Range": 0,
+-          "TwoHanded": false
+-        },
+-        {
+-          "Name": "sling",
+-          "Category": "",
+-          "Range": 0,
+-          "TwoHanded": false
+-        },
+-        {
+-          "Name": "quarterstaff",
+-          "Category": "",
+-          "Range": 0,
+-          "TwoHanded": false
+-        },
+-        {
+-          "Name": "light crossbow",
+-          "Category": "",
+-          "Range": 0,
+-          "TwoHanded": false
+-        }
+-      ],
+-      "MainHand": "main hand",
+-      "OffHand": "off hand"
+-    },
+-    "Equipment": {
+-      "Weapon": {
+-        "main hand": "",
+-        "off hand": ""
+-      },
+-      "Armor": "",
+-      "Shield": ""
+-    },
+-    "Spellcasting": {
+-      "CantripsKnown": 5,
+-      "SpellsKnown": 0,
+-      "CanCast": true,
+-      "CasterType": "full",
+-      "learned_spells": [
+-        "false life"
+-      ],
+-      "prepared_spells": [],
+-      "slots": {
+-        "1": 4,
+-        "2": 3,
+-        "3": 3,
+-        "4": 3,
+-        "5": 3,
+-        "6": 2,
+-        "7": 2,
+-        "8": 1,
+-        "9": 1
+-      },
+-      "maxslots": {
+-        "1": 4,
+-        "2": 3,
+-        "3": 3,
+-        "4": 3,
+-        "5": 3,
+-        "6": 2,
+-        "7": 2,
+-        "8": 1,
+-        "9": 1
+-      },
+-      "PreparedMode": false,
+-      "LearnedMode": true,
+-      "Ability": "charisma",
+-      "SpellSaveDC": 15,
+-      "SpellAttackBonus": 7
+-    },
+-    "ArmorClass": 10,
+-    "InitiativeBonus": 0,
+-    "PassivePerception": 12
+-  },
+-  {
+-    "Name": "Anakin Skywalker",
+-    "Race": "human",
+-    "Background": "acolyte",
+-    "Class": "warlock",
+-    "Level": 20,
+-    "Proficiency": 6,
+-    "Stats": {
+-      "Str": 13,
+-      "StrMod": 1,
+-      "Dex": 9,
+-      "DexMod": -1,
+-      "Con": 15,
+-      "ConMod": 2,
+-      "Intel": 14,
+-      "IntelMod": 2,
+-      "Wis": 11,
+-      "WisMod": 0,
+-      "Cha": 16,
+-      "ChaMod": 3
+-    },
+-    "Skills": {
+-      "MaxAllowed": 2,
+-      "Skills": [
+-        "arcana",
+-        "deception",
+-        "insight",
+-        "religion"
+-      ],
+-      "Armor": [
+-        "padded",
+-        "leather",
+-        "studded leather"
+-      ],
+-      "Shields": "",
+-      "Weapons": null,
+-      "MainHand": "main hand",
+-      "OffHand": "off hand"
+-    },
+-    "Equipment": {
+-      "Weapon": {
+-        "main hand": "",
+-        "off hand": "dagger"
+-      },
+-      "Armor": "",
+-      "Shield": ""
+-    },
+-    "Spellcasting": {
+-      "CantripsKnown": 4,
+-      "SpellsKnown": 0,
+-      "CanCast": true,
+-      "CasterType": "pact",
+-      "learned_spells": [],
+-      "prepared_spells": [],
+-      "slots": {
+-        "5": 4
+-      },
+-      "maxslots": {
+-        "5": 4
+-      },
+-      "PreparedMode": false,
+-      "LearnedMode": false,
+-      "Ability": "charisma",
+-      "SpellSaveDC": 17,
+-      "SpellAttackBonus": 9
+-    },
+-    "ArmorClass": 9,
+-    "InitiativeBonus": -1,
+-    "PassivePerception": 10
+-  },
+-  {
+-    "Name": "Kaelen Swiftstep",
+-    "Race": "human",
+-    "Background": "acolyte",
+-    "Class": "rogue",
+-    "Level": 1,
+-    "Proficiency": 2,
+-    "Stats": {
+-      "Str": 11,
+-      "StrMod": 0,
+-      "Dex": 16,
+-      "DexMod": 3,
+-      "Con": 15,
+-      "ConMod": 2,
+-      "Intel": 13,
+-      "IntelMod": 1,
+-      "Wis": 14,
+-      "WisMod": 2,
+-      "Cha": 9,
+-      "ChaMod": -1
+-    },
+-    "Skills": {
+-      "MaxAllowed": 4,
+-      "Skills": [
+-        "acrobatics",
+-        "athletics",
+-        "deception",
+-        "insight",
+-        "insight",
+-        "religion"
+-      ],
+-      "Armor": [
+-        "padded",
+-        "leather",
+-        "studded leather"
+-      ],
+-      "Shields": "",
+-      "Weapons": [
+-        {
+-          "Name": "hand crossbow",
+-          "Category": "",
+-          "Range": 0,
+-          "TwoHanded": false
+-        },
+-        {
+-          "Name": "longsword",
+-          "Category": "",
+-          "Range": 0,
+-          "TwoHanded": false
+-        },
+-        {
+-          "Name": "rapier",
+-          "Category": "",
+-          "Range": 0,
+-          "TwoHanded": false
+-        },
+-        {
+-          "Name": "shortsword",
+-          "Category": "",
+-          "Range": 0,
+-          "TwoHanded": false
+-        }
+-      ],
+-      "MainHand": "main hand",
+-      "OffHand": "off hand"
+-    },
+-    "Equipment": {
+-      "Weapon": {
+-        "main hand": "",
+-        "off hand": ""
+-      },
+-      "Armor": "leather armor",
+-      "Shield": ""
+-    },
+-    "Spellcasting": {
+-      "CantripsKnown": 0,
+-      "SpellsKnown": 0,
+-      "CanCast": false,
+-      "CasterType": "",
+-      "learned_spells": [],
+-      "prepared_spells": [],
+-      "slots": {},
+-      "maxslots": {},
+-      "PreparedMode": false,
+-      "LearnedMode": false,
+-      "Ability": "",
+-      "SpellSaveDC": 0,
+-      "SpellAttackBonus": 0
+-    },
+-    "ArmorClass": 14,
+-    "InitiativeBonus": 3,
+-    "PassivePerception": 12
+-  },
+-  {
+-    "Name": "Thorga Stonehand",
+-    "Race": "hill dwarf",
+-    "Background": "acolyte",
+-    "Class": "fighter",
+-    "Level": 1,
+-    "Proficiency": 2,
+-    "Stats": {
+-      "Str": 15,
+-      "StrMod": 2,
+-      "Dex": 12,
+-      "DexMod": 1,
+-      "Con": 16,
+-      "ConMod": 3,
+-      "Intel": 8,
+-      "IntelMod": -1,
+-      "Wis": 14,
+-      "WisMod": 2,
+-      "Cha": 10,
+-      "ChaMod": 0
+-    },
+-    "Skills": {
+-      "MaxAllowed": 2,
+-      "Skills": [
+-        "acrobatics",
+-        "animal handling",
+-        "insight",
+-        "religion"
+-      ],
+-      "Armor": [
+-        "padded",
+-        "leather",
+-        "studded leather",
+-        "hide",
+-        "chain shirt",
+-        "scale mail",
+-        "breast plate",
+-        "half plate",
+-        "ring mail",
+-        "chain mail",
+-        "splint",
+-        "plate"
+-      ],
+-      "Shields": "shield",
+-      "Weapons": null,
+-      "MainHand": "main hand",
+-      "OffHand": "off hand"
+-    },
+-    "Equipment": {
+-      "Weapon": {
+-        "main hand": "",
+-        "off hand": ""
+-      },
+-      "Armor": "scale mail",
+-      "Shield": "shield"
+-    },
+-    "Spellcasting": {
+-      "CantripsKnown": 0,
+-      "SpellsKnown": 0,
+-      "CanCast": false,
+-      "CasterType": "",
+-      "learned_spells": [],
+-      "prepared_spells": [],
+-      "slots": {},
+-      "maxslots": {},
+-      "PreparedMode": false,
+-      "LearnedMode": false,
+-      "Ability": "",
+-      "SpellSaveDC": 0,
+-      "SpellAttackBonus": 0
+-    },
+-    "ArmorClass": 17,
+-    "InitiativeBonus": 1,
+-    "PassivePerception": 12
+-  },
+-  {
+-    "Name": "Ragna Wolfblood",
+-    "Race": "half orc",
+-    "Background": "acolyte",
+-    "Class": "barbarian",
+-    "Level": 1,
+-    "Proficiency": 2,
+-    "Stats": {
+-      "Str": 17,
+-      "StrMod": 3,
+-      "Dex": 14,
+-      "DexMod": 2,
+-      "Con": 14,
+-      "ConMod": 2,
+-      "Intel": 8,
+-      "IntelMod": -1,
+-      "Wis": 12,
+-      "WisMod": 1,
+-      "Cha": 10,
+-      "ChaMod": 0
+-    },
+-    "Skills": {
+-      "MaxAllowed": 2,
+-      "Skills": [
+-        "animal handling",
+-        "athletics",
+-        "insight",
+-        "religion"
+-      ],
+-      "Armor": [
+-        "padded",
+-        "leather",
+-        "studded leather",
+-        "hide",
+-        "chain shirt",
+-        "scale mail",
+-        "breast plate",
+-        "half plate"
+-      ],
+-      "Shields": "shield",
+-      "Weapons": null,
+-      "MainHand": "main hand",
+-      "OffHand": "off hand"
+-    },
+-    "Equipment": {
+-      "Weapon": {
+-        "main hand": "",
+-        "off hand": ""
+-      },
+-      "Armor": "",
+-      "Shield": ""
+-    },
+-    "Spellcasting": {
+-      "CantripsKnown": 0,
+-      "SpellsKnown": 0,
+-      "CanCast": false,
+-      "CasterType": "",
+-      "learned_spells": [],
+-      "prepared_spells": [],
+-      "slots": {},
+-      "maxslots": {},
+-      "PreparedMode": false,
+-      "LearnedMode": false,
+-      "Ability": "",
+-      "SpellSaveDC": 0,
+-      "SpellAttackBonus": 0
+-    },
+-    "ArmorClass": 14,
+-    "InitiativeBonus": 2,
+-    "PassivePerception": 11
+-  },
+-  {
+-    "Name": "Gorrak Bearhide",
+-    "Race": "human",
+-    "Background": "acolyte",
+-    "Class": "barbarian",
+-    "Level": 1,
+-    "Proficiency": 2,
+-    "Stats": {
+-      "Str": 16,
+-      "StrMod": 3,
+-      "Dex": 14,
+-      "DexMod": 2,
+-      "Con": 15,
+-      "ConMod": 2,
+-      "Intel": 9,
+-      "IntelMod": -1,
+-      "Wis": 13,
+-      "WisMod": 1,
+-      "Cha": 11,
+-      "ChaMod": 0
+-    },
+-    "Skills": {
+-      "MaxAllowed": 2,
+-      "Skills": [
+-        "animal handling",
+-        "athletics",
+-        "insight",
+-        "religion"
+-      ],
+-      "Armor": [
+-        "padded",
+-        "leather",
+-        "studded leather",
+-        "hide",
+-        "chain shirt",
+-        "scale mail",
+-        "breast plate",
+-        "half plate"
+-      ],
+-      "Shields": "shield",
+-      "Weapons": null,
+-      "MainHand": "main hand",
+-      "OffHand": "off hand"
+-    },
+-    "Equipment": {
+-      "Weapon": {
+-        "main hand": "",
+-        "off hand": ""
+-      },
+-      "Armor": "",
+-      "Shield": "shield"
+-    },
+-    "Spellcasting": {
+-      "CantripsKnown": 0,
+-      "SpellsKnown": 0,
+-      "CanCast": false,
+-      "CasterType": "",
+-      "learned_spells": [],
+-      "prepared_spells": [],
+-      "slots": {},
+-      "maxslots": {},
+-      "PreparedMode": false,
+-      "LearnedMode": false,
+-      "Ability": "",
+-      "SpellSaveDC": 0,
+-      "SpellAttackBonus": 0
+-    },
+-    "ArmorClass": 16,
+-    "InitiativeBonus": 2,
+-    "PassivePerception": 11
+-  },
+-  {
+-    "Name": "Brynja Axebreaker",
+-    "Race": "human",
+-    "Background": "acolyte",
+-    "Class": "barbarian",
+-    "Level": 1,
+-    "Proficiency": 2,
+-    "Stats": {
+-      "Str": 16,
+-      "StrMod": 3,
+-      "Dex": 14,
+-      "DexMod": 2,
+-      "Con": 15,
+-      "ConMod": 2,
+-      "Intel": 9,
+-      "IntelMod": -1,
+-      "Wis": 13,
+-      "WisMod": 1,
+-      "Cha": 11,
+-      "ChaMod": 0
+-    },
+-    "Skills": {
+-      "MaxAllowed": 2,
+-      "Skills": [
+-        "animal handling",
+-        "athletics",
+-        "insight",
+-        "religion"
+-      ],
+-      "Armor": [
+-        "padded",
+-        "leather",
+-        "studded leather",
+-        "hide",
+-        "chain shirt",
+-        "scale mail",
+-        "breast plate",
+-        "half plate"
+-      ],
+-      "Shields": "shield",
+-      "Weapons": null,
+-      "MainHand": "main hand",
+-      "OffHand": "off hand"
+-    },
+-    "Equipment": {
+-      "Weapon": {
+-        "main hand": "",
+-        "off hand": ""
+-      },
+-      "Armor": "",
+-      "Shield": "shield"
+-    },
+-    "Spellcasting": {
+-      "CantripsKnown": 0,
+-      "SpellsKnown": 0,
+-      "CanCast": false,
+-      "CasterType": "",
+-      "learned_spells": [],
+-      "prepared_spells": [],
+-      "slots": {},
+-      "maxslots": {},
+-      "PreparedMode": false,
+-      "LearnedMode": false,
+-      "Ability": "",
+-      "SpellSaveDC": 0,
+-      "SpellAttackBonus": 0
+-    },
+-    "ArmorClass": 16,
+-    "InitiativeBonus": 2,
+-    "PassivePerception": 11
+-  },
+-  {
+-    "Name": "Qui-Gon Jinn",
+-    "Race": "human",
+-    "Background": "acolyte",
+-    "Class": "cleric",
+-    "Level": 10,
+-    "Proficiency": 4,
+-    "Stats": {
+-      "Str": 15,
+-      "StrMod": 2,
+-      "Dex": 9,
+-      "DexMod": -1,
+-      "Con": 11,
+-      "ConMod": 0,
+-      "Intel": 14,
+-      "IntelMod": 2,
+-      "Wis": 16,
+-      "WisMod": 3,
+-      "Cha": 13,
+-      "ChaMod": 1
+-    },
+-    "Skills": {
+-      "MaxAllowed": 2,
+-      "Skills": [
+-        "history",
+-        "insight",
+-        "insight",
+-        "religion"
+-      ],
+-      "Armor": [
+-        "padded",
+-        "leather",
+-        "studded leather",
+-        "hide",
+-        "chain shirt",
+-        "scale mail",
+-        "breast plate",
+-        "half plate"
+-      ],
+-      "Shields": "shield",
+-      "Weapons": null,
+-      "MainHand": "main hand",
+-      "OffHand": "off hand"
+-    },
+-    "Equipment": {
+-      "Weapon": {
+-        "main hand": "",
+-        "off hand": ""
+-      },
+-      "Armor": "",
+-      "Shield": ""
+-    },
+-    "Spellcasting": {
+-      "CantripsKnown": 5,
+-      "SpellsKnown": 0,
+-      "CanCast": true,
+-      "CasterType": "full",
+-      "learned_spells": [],
+-      "prepared_spells": [],
+-      "slots": {
+-        "1": 4,
+-        "2": 3,
+-        "3": 3,
+-        "4": 3,
+-        "5": 2
+-      },
+-      "maxslots": {
+-        "1": 4,
+-        "2": 3,
+-        "3": 3,
+-        "4": 3,
+-        "5": 2
+-      },
+-      "PreparedMode": false,
+-      "LearnedMode": false,
+-      "Ability": "wisdom",
+-      "SpellSaveDC": 15,
+-      "SpellAttackBonus": 7
+-    },
+-    "ArmorClass": 9,
+-    "InitiativeBonus": -1,
+-    "PassivePerception": 13
+-  },
+-  {
+-    "Name": "Branric Ironwall",
+-    "Race": "human",
+-    "Background": "acolyte",
+-    "Class": "paladin",
+-    "Level": 1,
+-    "Proficiency": 2,
+-    "Stats": {
+-      "Str": 16,
+-      "StrMod": 3,
+-      "Dex": 9,
+-      "DexMod": -1,
+-      "Con": 15,
+-      "ConMod": 2,
+-      "Intel": 11,
+-      "IntelMod": 0,
+-      "Wis": 13,
+-      "WisMod": 1,
+-      "Cha": 14,
+-      "ChaMod": 2
+-    },
+-    "Skills": {
+-      "MaxAllowed": 2,
+-      "Skills": [
+-        "athletics",
+-        "insight",
+-        "insight",
+-        "religion"
+-      ],
+-      "Armor": [
+-        "padded",
+-        "leather",
+-        "studded leather",
+-        "hide",
+-        "chain shirt",
+-        "scale mail",
+-        "breast plate",
+-        "half plate",
+-        "ring mail",
+-        "chain mail",
+-        "splint",
+-        "plate"
+-      ],
+-      "Shields": "shield",
+-      "Weapons": null,
+-      "MainHand": "main hand",
+-      "OffHand": "off hand"
+-    },
+-    "Equipment": {
+-      "Weapon": {
+-        "main hand": "",
+-        "off hand": ""
+-      },
+-      "Armor": "plate armor",
+-      "Shield": "shield"
+-    },
+-    "Spellcasting": {
+-      "CantripsKnown": 0,
+-      "SpellsKnown": 0,
+-      "CanCast": false,
+-      "CasterType": "half",
+-      "learned_spells": [],
+-      "prepared_spells": [],
+-      "slots": {},
+-      "maxslots": {},
+-      "PreparedMode": false,
+-      "LearnedMode": false,
+-      "Ability": "",
+-      "SpellSaveDC": 0,
+-      "SpellAttackBonus": 0
+-    },
+-    "ArmorClass": 20,
+-    "InitiativeBonus": -1,
+-    "PassivePerception": 11
+-  }
+-]
+\ No newline at end of file
+diff --git a/domain/character.go b/domain/character.go
+index ab8e217..b5b6564 100644
+--- a/domain/character.go
++++ b/domain/character.go
+@@ -1,17 +1,6 @@
+ package domain
+ 
+-var SpellcastingType = map[string]string{
+-	"bard":     "full",
+-	"cleric":   "full",
+-	"druid":    "full",
+-	"sorcerer": "full",
+-	"wizard":   "full",
+-
+-	"paladin": "half",
+-	"ranger":  "half",
+-
+-	"warlock": "pact",
+-}
++import "strings"
+ 
+ type Character struct {
+ 	Name              string
+@@ -29,75 +18,95 @@ type Character struct {
+ 	PassivePerception int
+ }
+ 
+-type ClassLoadout struct {
+-	MaxAllowed int
+-	Skills     []string
+-	Armor      []string
+-	Shields    string
+-	Weapons    []WeaponInfo
+-	MainHand   string
+-	OffHand    string
+-}
+-
+-type Stats struct {
+-	Str    int
+-	StrMod int
+-
+-	Dex    int
+-	DexMod int
+-
+-	Con    int
+-	ConMod int
+-
+-	Intel    int
+-	IntelMod int
+-
+-	Wis    int
+-	WisMod int
+-
+-	Cha    int
+-	ChaMod int
+-}
+-
+-type Equipment struct {
+-	Weapon map[string]string
+-	Armor  string
+-	Shield string
+-}
+-
+-type Spellcasting struct {
+-	CantripsKnown    int
+-	SpellsKnown      int
+-	CanCast          bool
+-	CasterType       string
+-	LearnedSpells    []string    `json:"learned_spells"`
+-	PreparedSpells   []string    `json:"prepared_spells"`
+-	Slots            map[int]int `json:"slots"`
+-	MaxSlots         map[int]int `json:"maxslots"`
+-	PreparedMode     bool
+-	LearnedMode      bool
+-	Ability          string
+-	SpellSaveDC      int
+-	SpellAttackBonus int
+-}
+-
+-type SpellInfo struct {
+-	Name   string `json:"name"`
+-	Level  int    `json:"level"`
+-	School string `json:"school"`
+-	Range  string `json:"range"`
++func (c *Character) UpdateProficiency() {
++	switch {
++	case c.Level >= 17:
++		c.Proficiency = 6
++	case c.Level >= 13:
++		c.Proficiency = 5
++	case c.Level >= 9:
++		c.Proficiency = 4
++	case c.Level >= 5:
++		c.Proficiency = 3
++	default:
++		c.Proficiency = 2
++	}
++
++	c.Stats.StrMod = abilityModifier(c.Stats.Str)
++	c.Stats.DexMod = abilityModifier(c.Stats.Dex)
++	c.Stats.ConMod = abilityModifier(c.Stats.Con)
++	c.Stats.IntelMod = abilityModifier(c.Stats.Intel)
++	c.Stats.WisMod = abilityModifier(c.Stats.Wis)
++	c.Stats.ChaMod = abilityModifier(c.Stats.Cha)
+ }
+ 
+-type WeaponInfo struct {
+-	Name      string
+-	Category  string
+-	Range     int
+-	TwoHanded bool
++func (c *Character) ApplyRacialBonuses() {
++	race := strings.ToLower(strings.ReplaceAll(c.Race, " ", "-"))
++	switch race {
++	case "dwarf":
++		c.Stats.Con += 2
++
++	case "hill-dwarf":
++		c.Stats.Con += 2
++		c.Stats.Wis += 1
++
++	case "elf":
++		c.Stats.Dex += 2
++
++	case "halfling", "stout-halfling":
++		c.Stats.Dex += 2
++
++	case "lightfoot-halfling":
++		c.Stats.Dex += 2
++		c.Stats.Cha++
++
++	case "human":
++		c.Stats.Str++
++		c.Stats.Dex++
++		c.Stats.Con++
++		c.Stats.Intel++
++		c.Stats.Wis++
++		c.Stats.Cha++
++
++	case "dragonborn":
++		c.Stats.Str += 2
++		c.Stats.Cha++
++
++	case "gnome":
++		c.Stats.Intel += 2
++
++	// TODO: half-eelves get to choose which stats to increase besides the rizz, for now dex and wis as defaults
++	case "half-elf":
++		c.Stats.Cha += 2
++		c.Stats.Dex++
++		c.Stats.Wis++
++
++	case "half-orc":
++		c.Stats.Str += 2
++		c.Stats.Con++
++
++	case "tiefling":
++		c.Stats.Cha += 2
++		c.Stats.Intel++
++	}
++
++	c.UpdateProficiency()
+ }
+ 
+-type ArmorInfo struct {
+-	Name     string
+-	BaseAC   int
+-	DexBonus bool
+-	MaxBonus int
++func SanitizeLocalKey(name string) string {
++	key := strings.ToLower(name)
++	key = strings.ReplaceAll(key, "'", "")
++	key = strings.ReplaceAll(key, "’", "")
++	key = strings.ReplaceAll(key, "(", "")
++	key = strings.ReplaceAll(key, ")", "")
++	key = strings.ReplaceAll(key, ",", "")
++	key = strings.ReplaceAll(key, "/", "-")
++	key = strings.ReplaceAll(key, ":", "")
++	key = strings.ReplaceAll(key, ".", "")
++	key = strings.ReplaceAll(key, " ", "-")
++	key = strings.ReplaceAll(key, " ", "-")
++	key = strings.TrimSuffix(key, "-armor")
++	key = strings.TrimSuffix(key, " armor")
++	key = strings.TrimSpace(key)
++	return key
+ }
+diff --git a/domain/character_new.go b/domain/character_new.go
+new file mode 100644
+index 0000000..fb645d5
+--- /dev/null
++++ b/domain/character_new.go
+@@ -0,0 +1,36 @@
++package domain
++
++import "fmt"
++
++func NewCharacter(name, race, background, class string, level int, stats Stats) (*Character, error) {
++	if name == "" {
++		return nil, fmt.Errorf("character name is required")
++	}
++	if race == "" {
++		return nil, fmt.Errorf("character race is required")
++	}
++	if class == "" {
++		return nil, fmt.Errorf("character class is required")
++	}
++	if level <= 0 {
++		return nil, fmt.Errorf("character level must be > 0")
++	}
++
++	c := &Character{
++		Name:       name,
++		Race:       race,
++		Background: background,
++		Class:      class,
++		Level:      level,
++		Stats:      stats,
++		Equipment: Equipment{
++			Weapon: map[string]string{"main hand": "", "off hand": ""},
++			Armor:  "",
++			Shield: "",
++		},
++	}
++
++	c.ApplyRacialBonuses()
++
++	return c, nil
++}
+diff --git a/domain/class/classes.go b/domain/class/classes.go
+new file mode 100644
+index 0000000..23c6347
+--- /dev/null
++++ b/domain/class/classes.go
+@@ -0,0 +1,265 @@
++package class
++
++import (
++	"strings"
++
++	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
++)
++
++type ClassRepository struct {
++	all     []domain.WeaponInfo
++	simple  []domain.WeaponInfo
++	martial []domain.WeaponInfo
++
++	classes map[string]ClassSkills
++}
++
++type ClassSkills struct {
++	MaxAllowed int
++	Skills     []string
++	Armor      []string
++	Shields    string
++	Weapons    []domain.WeaponInfo
++	MainHand   string
++	OffHand    string
++}
++
++func NewClassRepository(all, simple, martial []domain.WeaponInfo) *ClassRepository {
++	cr := &ClassRepository{
++		all:     append([]domain.WeaponInfo{}, all...),
++		simple:  append([]domain.WeaponInfo{}, simple...),
++		martial: append([]domain.WeaponInfo{}, martial...),
++	}
++	cr.classes = cr.buildClasses()
++	return cr
++}
++
++func (r *ClassRepository) Get(className string) (ClassSkills, bool) {
++	key := strings.ToLower(strings.TrimSpace(className))
++	cs, ok := r.classes[key]
++	return cs, ok
++}
++
++func (r *ClassRepository) findByName(name string) (domain.WeaponInfo, bool) {
++	lo := strings.ToLower(strings.TrimSpace(name))
++	for _, w := range r.all {
++		if strings.EqualFold(strings.TrimSpace(w.Name), lo) {
++			return w, true
++		}
++	}
++	return domain.WeaponInfo{Name: name}, false
++}
++
++func (r *ClassRepository) CombineWeaponSets(sets ...[]domain.WeaponInfo) []domain.WeaponInfo {
++	out := make([]domain.WeaponInfo, 0)
++	for _, s := range sets {
++		out = append(out, s...)
++	}
++	return out
++}
++
++func (r *ClassRepository) withExtra(base []domain.WeaponInfo, names ...string) []domain.WeaponInfo {
++	out := append([]domain.WeaponInfo{}, base...)
++	for _, n := range names {
++		if w, ok := r.findByName(n); ok {
++			out = append(out, w)
++		} else {
++			out = append(out, domain.WeaponInfo{Name: n})
++		}
++	}
++	return out
++}
++
++func (r *ClassRepository) WeaponsByName(names ...string) []domain.WeaponInfo {
++	out := make([]domain.WeaponInfo, 0, len(names))
++	for _, n := range names {
++		if w, ok := r.findByName(n); ok {
++			out = append(out, w)
++		} else {
++			out = append(out, domain.WeaponInfo{Name: n})
++		}
++	}
++	return out
++}
++
++func (r *ClassRepository) weaponOrFallback(name string) domain.WeaponInfo {
++	if w, ok := r.findByName(name); ok {
++		return w
++	}
++	return domain.WeaponInfo{Name: name}
++}
++
++func (r *ClassRepository) buildClasses() map[string]ClassSkills {
++	return map[string]ClassSkills{
++		"barbarian": {
++			MaxAllowed: 2,
++			Skills: []string{
++				"animal handling", "athletics", "intimidation", "nature", "perception", "survival",
++			},
++			Armor: []string{
++				"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate",
++			},
++			Shields:  "shield",
++			Weapons:  r.all,
++			MainHand: "main hand",
++			OffHand:  "off hand",
++		},
++		"bard": {
++			MaxAllowed: 3,
++			Skills: []string{
++				"acrobatics", "animal handling", "arcana", "athletics", "deception",
++				"history", "insight", "intimidation", "investigation", "medicine", "nature",
++				"perception", "performance", "persuasion", "religion", "sleight of hand", "stealth", "survival",
++			},
++			Armor: []string{
++				"padded", "leather", "studded leather",
++			},
++			Weapons: r.withExtra(
++				r.simple,
++				"hand crossbow", "longsword", "rapier", "shortsword",
++			),
++			MainHand: "main hand",
++			OffHand:  "off hand",
++		},
++		"cleric": {
++			MaxAllowed: 2,
++			Skills: []string{
++				"history", "insight", "medicine", "persuasion", "religion",
++			},
++			Armor: []string{
++				"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate",
++			},
++			Shields:  "shield",
++			Weapons:  r.simple,
++			MainHand: "main hand",
++			OffHand:  "off hand",
++		},
++		"druid": {
++			MaxAllowed: 2,
++			Skills: []string{
++				"arcana", "animal handling", "insight", "medicine", "nature", "perception", "religion", "survival",
++			},
++			Armor: []string{
++				"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate",
++			},
++			Shields: "shield",
++			Weapons: append(r.simple,
++				r.weaponOrFallback("club"),
++				r.weaponOrFallback("greatclub"),
++				r.weaponOrFallback("dagger"),
++				r.weaponOrFallback("dart"),
++				r.weaponOrFallback("javelins"),
++				r.weaponOrFallback("maces"),
++				r.weaponOrFallback("quarterstaff"),
++				r.weaponOrFallback("scimitar"),
++				r.weaponOrFallback("sickle"),
++				r.weaponOrFallback("sling"),
++				r.weaponOrFallback("spear"),
++			),
++			MainHand: "main hand",
++			OffHand:  "off hand",
++		},
++		"fighter": {
++			MaxAllowed: 2,
++			Skills: []string{
++				"acrobatics", "animal handling", "athletics", "history", "insight", "intimidation", "perception", "survival",
++			},
++			Armor: []string{
++				"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate", "ring mail", "chain mail", "splint", "plate",
++			},
++			Shields:  "shield",
++			Weapons:  r.simple,
++			MainHand: "main hand",
++			OffHand:  "off hand",
++		},
++		"monk": {
++			MaxAllowed: 2,
++			Skills: []string{
++				"acrobatics", "athletics", "history", "insight", "religion", "stealth",
++			},
++			// NO ARMOR
++			Weapons: append(r.simple,
++				r.weaponOrFallback("shortsword"),
++			),
++			MainHand: "main hand",
++			OffHand:  "off hand",
++		},
++		"paladin": {
++			MaxAllowed: 2,
++			Skills: []string{
++				"athletics", "insight", "intimidation", "medicine", "persuasion", "religion",
++			},
++			Armor: []string{
++				"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate", "ring mail", "chain mail", "splint", "plate",
++			},
++			Shields:  "shield",
++			Weapons:  r.all,
++			MainHand: "main hand",
++			OffHand:  "off hand",
++		},
++		"ranger": {
++			MaxAllowed: 3,
++			Skills: []string{
++				"animal handling", "athletics", "insight", "investigation", "nature", "perception", "stealth", "survival",
++			},
++			Armor: []string{
++				"padded", "leather", "studded leather", "hide", "chain shirt", "scale mail", "breast plate", "half plate",
++			},
++			Shields:  "shield",
++			Weapons:  r.all,
++			MainHand: "main hand",
++			OffHand:  "off hand",
++		},
++		"rogue": {
++			MaxAllowed: 4,
++			Skills: []string{
++				"acrobatics", "athletics", "deception", "insight", "intimidation", "investigation", "perception", "performance", "persuasion", "sleight of hand", "stealth",
++			},
++			Armor: []string{
++				"padded", "leather", "studded leather",
++			},
++			Weapons: r.withExtra(
++				r.simple,
++				"hand crossbow", "longsword", "rapier", "shortsword",
++			),
++			MainHand: "main hand",
++			OffHand:  "off hand",
++		},
++		"sorcerer": {
++			MaxAllowed: 2,
++			Skills: []string{
++				"arcana", "deception", "insight", "intimidation", "persuasion", "religion",
++			},
++			// NO ARMOR
++			Weapons: r.WeaponsByName(
++				"dagger", "dart", "sling", "quarterstaff", "light crossbow",
++			),
++			MainHand: "main hand",
++			OffHand:  "off hand",
++		},
++		"warlock": {
++			MaxAllowed: 2,
++			Skills: []string{
++				"arcana", "deception", "history", "intimidation", "investigation", "nature", "religion",
++			},
++			Armor: []string{
++				"padded", "leather", "studded leather",
++			},
++			Weapons:  r.simple,
++			MainHand: "main hand",
++			OffHand:  "off hand",
++		},
++		"wizard": {
++			MaxAllowed: 2,
++			Skills: []string{
++				"arcana", "history", "insight", "investigation", "medicine", "religion",
++			},
++			// NO ARMOR
++			Weapons: r.WeaponsByName(
++				"dagger", "dart", "sling", "quarterstaff", "light crossbow",
++			),
++			MainHand: "main hand",
++			OffHand:  "off hand",
++		},
++	}
++}
+diff --git a/domain/class_loadout.go b/domain/class_loadout.go
+new file mode 100644
+index 0000000..f51027e
+--- /dev/null
++++ b/domain/class_loadout.go
+@@ -0,0 +1,11 @@
++package domain
++
++type ClassLoadout struct {
++	MaxAllowed int
++	Skills     []string
++	Armor      []string
++	Shields    string
++	Weapons    []WeaponInfo
++	MainHand   string
++	OffHand    string
++}
+diff --git a/service/combat_stats.go b/domain/equipment.go
+similarity index 53%
+rename from service/combat_stats.go
+rename to domain/equipment.go
+index 5ce01b8..dbb85e0 100644
+--- a/service/combat_stats.go
++++ b/domain/equipment.go
+@@ -1,11 +1,16 @@
+-package service
++package domain
+ 
+ import (
++	"errors"
+ 	"strings"
+-
+-	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
+ )
+ 
++type Equipment struct {
++	Weapon map[string]string
++	Armor  string
++	Shield string
++}
++
+ type ArmorInfo struct {
+ 	BaseAC   int
+ 	DexBonus string
+@@ -29,11 +34,71 @@ var ArmorData = map[string]ArmorInfo{
+ 	"plate":      {BaseAC: 18, DexBonus: "none", Category: "heavy"},
+ }
+ 
+-func CalculateInitiative(s *domain.Stats) int {
+-	return s.DexMod
++var (
++	ErrSlotOccupied = errors.New("slot already occupied")
++	ErrInvalidSlot  = errors.New("invalid slot")
++	ErrNoWeaponName = errors.New("weapon name cannot be empty")
++	ErrNoArmorName  = errors.New("armor name cannot be empty")
++	ErrNoShieldName = errors.New("shield name cannot be empty")
++)
++
++func (c *Character) EquipWeapon(slot, weapon string) error {
++	slot = strings.ToLower(strings.TrimSpace(slot))
++	if weapon == "" {
++		return ErrNoWeaponName
++	}
++
++	if slot != "main hand" && slot != "off hand" {
++		return ErrInvalidSlot
++	}
++
++	if c.Equipment.Weapon == nil {
++		c.Equipment.Weapon = make(map[string]string)
++	}
++
++	if existing, ok := c.Equipment.Weapon[slot]; ok && existing != "" {
++		return ErrSlotOccupied
++	}
++
++	c.Equipment.Weapon[slot] = weapon
++	return nil
++}
++
++func (c *Character) EquipArmor(armor string) error {
++	if armor == "" {
++		return ErrNoArmorName
++	}
++
++	c.Equipment.Armor = armor
++	return nil
++}
++
++func (c *Character) EquipShield(shield string) error {
++	if shield == "" {
++		return ErrNoShieldName
++	}
++
++	c.Equipment.Shield = shield
++	return nil
++}
++
++func (c *Character) CalculateInitiative() int {
++	return c.Stats.DexMod
++}
++
++func (c *Character) CalculatePassivePerception() int {
++	base := 10 + c.Stats.WisMod
++
++	for _, skill := range c.Skills.Skills {
++		if skill == "perception" {
++			base += c.Proficiency
++			break
++		}
++	}
++	return base
+ }
+ 
+-func CalculateArmorClass(c *domain.Character) int {
++func (c *Character) CalculateArmorClass() int {
+ 	s := &c.Stats
+ 	e := &c.Equipment
+ 	class := strings.ToLower(c.Class)
+@@ -55,7 +120,7 @@ func CalculateArmorClass(c *domain.Character) int {
+ 				}
+ 				ac += dex
+ 			case "none":
+-				// no bolus
++				// no bonus
+ 			}
+ 		}
+ 
+diff --git a/domain/repository.go b/domain/repository.go
+new file mode 100644
+index 0000000..578039e
+--- /dev/null
++++ b/domain/repository.go
+@@ -0,0 +1,8 @@
++package domain
++
++type Repository interface {
++	Save(character *Character) error
++	Load(name string) (*Character, error)
++	List() ([]*Character, error)
++	Delete(name string) error
++}
+diff --git a/domain/spellcast.go b/domain/spellcast.go
+new file mode 100644
+index 0000000..3628ca1
+--- /dev/null
++++ b/domain/spellcast.go
+@@ -0,0 +1,39 @@
++package domain
++
++import "strings"
++
++type Spellcasting struct {
++	CantripsKnown    int
++	SpellsKnown      int
++	CanCast          bool
++	CasterType       string
++	LearnedSpells    []string    `json:"learned_spells"`
++	PreparedSpells   []string    `json:"prepared_spells"`
++	Slots            map[int]int `json:"slots"`
++	MaxSlots         map[int]int `json:"maxslots"`
++	PreparedMode     bool
++	LearnedMode      bool
++	Ability          string
++	SpellSaveDC      int
++	SpellAttackBonus int
++}
++
++type SpellInfo struct {
++	Name   string `json:"name"`
++	Level  int    `json:"level"`
++	School string `json:"school"`
++	Range  string `json:"range"`
++}
++
++func GetSpellcastingType(class string) string {
++	switch strings.ToLower(class) {
++	case "bard", "cleric", "druid", "sorcerer", "wizard":
++		return "full"
++	case "paladin", "ranger":
++		return "half"
++	case "warlock":
++		return "pact"
++	default:
++		return ""
++	}
++}
+diff --git a/domain/stats.go b/domain/stats.go
+new file mode 100644
+index 0000000..76f2ce7
+--- /dev/null
++++ b/domain/stats.go
+@@ -0,0 +1,29 @@
++package domain
++
++type Stats struct {
++	Str    int
++	StrMod int
++
++	Dex    int
++	DexMod int
++
++	Con    int
++	ConMod int
++
++	Intel    int
++	IntelMod int
++
++	Wis    int
++	WisMod int
++
++	Cha    int
++	ChaMod int
++}
++
++func abilityModifier(score int) int {
++	result := (score - 10) / 2
++	if (score-10)%2 < 0 {
++		result--
++	}
++	return result
++}
+diff --git a/domain/weapon_info.go b/domain/weapon_info.go
+new file mode 100644
+index 0000000..30d555b
+--- /dev/null
++++ b/domain/weapon_info.go
+@@ -0,0 +1,8 @@
++package domain
++
++type WeaponInfo struct {
++	Name      string
++	Category  string
++	Range     int
++	TwoHanded bool
++}
+diff --git a/main.go b/main.go
+index 0b986b0..cf52e1a 100755
+--- a/main.go
++++ b/main.go
+@@ -6,12 +6,11 @@ import (
+ 	"log"
+ 	"net/http"
+ 	"os"
+-	"strings"
+ 
+ 	"path/filepath"
+ 
+-	"github.com/DanielBartha/MPP-DnD-Character-Gen/characterClasses"
+ 	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
++	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain/class"
+ 	"github.com/DanielBartha/MPP-DnD-Character-Gen/repository"
+ 	"github.com/DanielBartha/MPP-DnD-Character-Gen/service"
+ )
+@@ -51,8 +50,6 @@ func main() {
+ 	simple := service.SimpleWeapons(allWeps)
+ 	martial := service.MartialWeapons(allWeps)
+ 
+-	characterClasses.InitWeapons(allWeps, simple, martial)
+-
+ 	switch cmd {
+ 	case "create":
+ 		createCmd := flag.NewFlagSet("create", flag.ExitOnError)
+@@ -61,7 +58,7 @@ func main() {
+ 		race := createCmd.String("race", "", "character race (required)")
+ 		// "acolyte" default
+ 		background := createCmd.String("background", "acolyte", "character background (required)")
+-		class := createCmd.String("class", "", "character class (required)")
++		className := createCmd.String("class", "", "character class (required)")
+ 		level := createCmd.Int("level", 1, "character level (required)")
+ 
+ 		str := createCmd.Int("str", 10, "strength is required")
+@@ -71,69 +68,31 @@ func main() {
+ 		wis := createCmd.Int("wis", 10, "wisdom is required")
+ 		cha := createCmd.Int("cha", 10, "charisma is required")
+ 
+-		err := createCmd.Parse(os.Args[2:])
+-		if err != nil {
+-			fmt.Println("error parsing flags")
+-			createCmd.Usage()
+-			os.Exit(2)
+-		}
+-
+-		if *name == "" {
+-			fmt.Println("name is required")
+-			os.Exit(2)
+-		}
+-		if *race == "" {
+-			fmt.Println("race is required")
+-			os.Exit(2)
+-		}
+-		if *class == "" {
+-			fmt.Println("class is required")
+-			os.Exit(2)
+-		}
+-		if *level <= 0 {
+-			fmt.Println("level is required")
++		if err := createCmd.Parse(os.Args[2:]); err != nil {
++			fmt.Println("error parsing flags:", err)
+ 			os.Exit(2)
+ 		}
+ 
+-		characterCreate := domain.Character{
+-			Name:       *name,
+-			Race:       *race,
+-			Background: *background,
+-			Class:      *class,
+-			Level:      *level,
+-			Stats: domain.Stats{
+-				Str:   *str,
+-				Dex:   *dex,
+-				Con:   *con,
+-				Intel: *intel,
+-				Wis:   *wis,
+-				Cha:   *cha,
+-			},
++		stats := domain.Stats{
++			Str: *str, Dex: *dex, Con: *con, Intel: *intel, Wis: *wis, Cha: *cha,
+ 		}
+ 
+-		svc := service.NewCharacterService()
+-
+-		characterCreate.Skills = svc.GetClassSkills(&characterCreate)
+-		svc.ApplyRacialBonuses(&characterCreate)
+-		svc.UpdateProficiency(&characterCreate)
+-		svc.InitSpellcasting(&characterCreate)
+-
+-		characterCreate.Equipment = domain.Equipment{
+-			Weapon: map[string]string{
+-				"main hand": "",
+-				"off hand":  "",
+-			},
+-			Armor:  "",
+-			Shield: "",
++		char, err := domain.NewCharacter(*name, *race, *background, *className, *level, stats)
++		if err != nil {
++			fmt.Println("Error creating character:", err)
++			os.Exit(2)
+ 		}
+ 
+ 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
+-		if err := repo.Save(&characterCreate); err != nil {
+-			fmt.Println("error saving character:", err)
++		classRepo := class.NewClassRepository(allWeps, simple, martial)
++		facade := service.NewCharacterFacade(repo, classRepo)
++
++		if err := facade.CreateCharacter(char); err != nil {
++			fmt.Println("Error creating character: ", err)
+ 			os.Exit(2)
+ 		}
+ 
+-		fmt.Printf("saved character %+v\n", characterCreate.Name)
++		fmt.Printf("saved character %s\n", char.Name)
+ 
+ 	case "view":
+ 		viewCmd := flag.NewFlagSet("view", flag.ExitOnError)
+@@ -146,93 +105,32 @@ func main() {
+ 		}
+ 
+ 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
+-		character, err := repo.Load(*name)
++		facade := service.NewCharacterFacade(repo, nil)
++
++		char, err := facade.ViewCharacter(*name)
+ 		if err != nil {
+ 			fmt.Printf("character %q not found\n", *name)
+ 			return
+ 		}
+ 
+-		fmt.Printf(
+-			"Name: %s\n"+
+-				"Class: %s\n"+
+-				"Race: %s\n"+
+-				"Background: %s\n"+
+-				"Level: %d\n"+
+-				"Ability scores:\n"+
+-				"  STR: %d (%+d)\n"+
+-				"  DEX: %d (%+d)\n"+
+-				"  CON: %d (%+d)\n"+
+-				"  INT: %d (%+d)\n"+
+-				"  WIS: %d (%+d)\n"+
+-				"  CHA: %d (%+d)\n"+
+-				"Proficiency bonus: +%d\n"+
+-				"Skill proficiencies: %s\n",
+-			character.Name,
+-			strings.ToLower(character.Class),
+-			strings.ToLower(character.Race),
+-			character.Background,
+-			character.Level,
+-			character.Stats.Str, character.Stats.StrMod,
+-			character.Stats.Dex, character.Stats.DexMod,
+-			character.Stats.Con, character.Stats.ConMod,
+-			character.Stats.Intel, character.Stats.IntelMod,
+-			character.Stats.Wis, character.Stats.WisMod,
+-			character.Stats.Cha, character.Stats.ChaMod,
+-			character.Proficiency,
+-			strings.Join(character.Skills.Skills, ", "),
+-		)
+-
+-		if character.Spellcasting != nil && character.Spellcasting.CanCast {
+-			fmt.Println("Spell slots:")
+-
+-			if character.Spellcasting.CantripsKnown > 0 {
+-				fmt.Printf("  Level 0: %d\n", character.Spellcasting.CantripsKnown)
+-			}
+-
+-			for lvl := 1; lvl <= 9; lvl++ {
+-				if count, ok := character.Spellcasting.MaxSlots[lvl]; ok && count > 0 {
+-					fmt.Printf("  Level %d: %d\n", lvl, count)
+-				}
+-			}
+-
+-			if character.Spellcasting.Ability != "" {
+-				fmt.Printf("Spellcasting ability: %s\n", strings.ToLower(character.Spellcasting.Ability))
+-				fmt.Printf("Spell save DC: %d\n", character.Spellcasting.SpellSaveDC)
+-				fmt.Printf("Spell attack bonus: +%d\n", character.Spellcasting.SpellAttackBonus)
+-			}
+-		}
+-
+-		if weapon, ok := character.Equipment.Weapon["main hand"]; ok && weapon != "" {
+-			fmt.Printf("Main hand: %s\n", weapon)
+-		}
+-
+-		if weapon, ok := character.Equipment.Weapon["off hand"]; ok && weapon != "" {
+-			fmt.Printf("Off hand: %s\n", weapon)
+-		}
+-		if character.Equipment.Armor != "" {
+-			fmt.Printf("Armor: %s\n", character.Equipment.Armor)
+-		}
+-
+-		if character.Equipment.Shield != "" {
+-			fmt.Printf("Shield: %s\n", character.Equipment.Shield)
+-		}
+-
+-		fmt.Printf("Armor class: %d\n", service.CalculateArmorClass(character))
+-		fmt.Printf("Initiative bonus: %d\n", service.CalculateInitiative(&character.Stats))
+-		fmt.Printf("Passive perception: %d\n", service.CalculatePassivePerception(character))
++		fmt.Print(service.FormatCharacterView(char))
+ 
+ 	case "list":
+ 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
+-		characters, err := repo.List()
++		facade := service.NewCharacterFacade(repo, nil)
++
++		chars, err := facade.ListCharacters()
+ 		if err != nil {
+-			fmt.Println("error listing characters:", err)
++			fmt.Println("error listing characters: ", err)
+ 			os.Exit(2)
+ 		}
+-		if len(characters) == 0 {
++
++		if len(chars) == 0 {
+ 			fmt.Println("no characters found")
+ 			return
+ 		}
+-		for _, c := range characters {
++
++		for _, c := range chars {
+ 			fmt.Printf("- %s (%s %s)\n", c.Name, c.Race, c.Class)
+ 		}
+ 
+@@ -247,10 +145,13 @@ func main() {
+ 		}
+ 
+ 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
+-		if err := repo.Delete(*name); err != nil {
+-			fmt.Println("error deleting character:", err)
++		facade := service.NewCharacterFacade(repo, nil)
++
++		if err := facade.DeleteCharacter(*name); err != nil {
++			fmt.Println("error deleting character: ", err)
+ 			os.Exit(2)
+ 		}
++
+ 		fmt.Printf("deleted %s\n", *name)
+ 
+ 	case "equip":
+@@ -268,47 +169,31 @@ func main() {
+ 		}
+ 
+ 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
+-		character, err := repo.Load(*name)
+-		if err != nil {
+-			fmt.Printf("character %q not found\n", *name)
+-			return
+-		}
++		classRepo := class.NewClassRepository(allWeps, simple, martial)
++		facade := service.NewCharacterFacade(repo, classRepo)
+ 
+-		if *weapon != "" && *slot != "" {
+-			if character.Equipment.Weapon == nil {
+-				character.Equipment.Weapon = make(map[string]string)
+-			}
+-
+-			if existing, ok := character.Equipment.Weapon[*slot]; ok && existing != "" {
++		err := facade.EquipItem(*name, *weapon, *slot, *armor, *shield)
++		if err != nil {
++			switch err {
++			case domain.ErrSlotOccupied:
+ 				fmt.Printf("%s already occupied\n", *slot)
+ 				return
+-			}
+ 
+-			character.Equipment.Weapon[*slot] = *weapon
+-			if err := repo.Save(character); err != nil {
+-				fmt.Printf("error saving character: %v\n", err)
++			default:
++				fmt.Println("error equipping:", err)
+ 				os.Exit(2)
+ 			}
++		}
++
++		if *weapon != "" && *slot != "" {
+ 			fmt.Printf("Equipped weapon %s to %s\n", *weapon, *slot)
+ 			return
+ 		}
+-
+ 		if *armor != "" {
+-			character.Equipment.Armor = *armor
+-			if err := repo.Save(character); err != nil {
+-				fmt.Println("error saving character:", *armor)
+-				os.Exit(2)
+-			}
+ 			fmt.Printf("Equipped armor %s\n", *armor)
+ 			return
+ 		}
+-
+ 		if *shield != "" {
+-			character.Equipment.Shield = *shield
+-			if err := repo.Save(character); err != nil {
+-				fmt.Println("error saving character:", err)
+-				os.Exit(2)
+-			}
+ 			fmt.Printf("Equipped shield %s\n", *shield)
+ 			return
+ 		}
+@@ -327,57 +212,15 @@ func main() {
+ 		}
+ 
+ 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
+-		character, err := repo.Load(*name)
+-		if err != nil {
+-			fmt.Printf("character %q not found\n", *name)
+-			return
+-		}
+-
+-		if character.Spellcasting == nil || !character.Spellcasting.CanCast {
+-			fmt.Printf("this class can't cast spells\n")
+-			return
+-		}
+-
+-		for _, s := range character.Spellcasting.LearnedSpells {
+-			if strings.EqualFold(s, *spell) {
+-				fmt.Printf("%s already learned\n", *spell)
+-				return
+-			}
+-		}
++		facade := service.NewCharacterFacade(repo, nil)
+ 
+-		if character.Spellcasting.PreparedMode {
+-			fmt.Printf("this class prepares spells and can't learn them\n")
+-			return
+-		}
+-
+-		// checks for non-existing spells (csv)
+-		level, err := service.GetSpellLevel(*spell)
++		message, err := facade.LearnSpell(*name, *spell)
+ 		if err != nil {
+ 			fmt.Println(err)
+ 			return
+ 		}
+ 
+-		if !service.IsSpellForClass(*spell, character.Class) {
+-			fmt.Printf("%s cannot learn %s\n", character.Class, *spell)
+-			return
+-		}
+-
+-		if level > 0 {
+-			if slots, ok := character.Spellcasting.Slots[level]; !ok || slots == 0 {
+-				fmt.Printf("the spell has higher level than the available spell slots\n")
+-				return
+-			}
+-		}
+-
+-		character.Spellcasting.LearnedMode = true
+-		character.Spellcasting.LearnedSpells = append(character.Spellcasting.LearnedSpells, *spell)
+-
+-		if err := repo.Save(character); err != nil {
+-			fmt.Println("error saving character:", err)
+-			os.Exit(2)
+-		}
+-
+-		fmt.Printf("Learned spell %s\n", *spell)
++		fmt.Println(message)
+ 
+ 	case "prepare-spell":
+ 		prepareCmd := flag.NewFlagSet("prepare-spell", flag.ExitOnError)
+@@ -391,57 +234,15 @@ func main() {
+ 		}
+ 
+ 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
+-		character, err := repo.Load(*name)
+-		if err != nil {
+-			fmt.Printf("character %q not found\n", *name)
+-			return
+-		}
+-
+-		if character.Spellcasting == nil || !character.Spellcasting.CanCast {
+-			fmt.Printf("this class can't cast spells\n")
+-			return
+-		}
+-
+-		for _, s := range character.Spellcasting.PreparedSpells {
+-			if strings.EqualFold(s, *spell) {
+-				fmt.Printf("%s already prepared\n", *spell)
+-				return
+-			}
+-		}
+-
+-		if character.Spellcasting.LearnedMode {
+-			fmt.Printf("this class learns spells and can't prepare them\n")
+-			return
+-		}
++		facade := service.NewCharacterFacade(repo, nil)
+ 
+-		// checks for non-existing spells (csv)
+-		level, err := service.GetSpellLevel(*spell)
++		message, err := facade.PrepareSpell(*name, *spell)
+ 		if err != nil {
+ 			fmt.Println(err)
+ 			return
+ 		}
+ 
+-		if !service.IsSpellForClass(*spell, character.Class) {
+-			fmt.Printf("%s cannot prepare %s\n", character.Class, *spell)
+-			return
+-		}
+-
+-		if level > 0 {
+-			if slots, ok := character.Spellcasting.Slots[level]; !ok || slots == 0 {
+-				fmt.Printf("the spell has higher level than the available spell slots\n")
+-				return
+-			}
+-		}
+-
+-		character.Spellcasting.PreparedMode = true
+-		character.Spellcasting.PreparedSpells = append(character.Spellcasting.PreparedSpells, *spell)
+-
+-		if err := repo.Save(character); err != nil {
+-			fmt.Println("error saving character:", err)
+-			os.Exit(2)
+-		}
+-
+-		fmt.Printf("Prepared spell %s\n", *spell)
++		fmt.Println(message)
+ 
+ 	case "enrich-spells":
+ 		input := "5e-SRD-Spells.csv"
+diff --git a/repository/json_repository.go b/repository/json_repository.go
+index abc79f8..a6bc24c 100644
+--- a/repository/json_repository.go
++++ b/repository/json_repository.go
+@@ -7,7 +7,6 @@ import (
+ 	"path/filepath"
+ 
+ 	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
+-	"github.com/DanielBartha/MPP-DnD-Character-Gen/service"
+ )
+ 
+ /*
+@@ -36,14 +35,14 @@ import (
+ ⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⢐⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀
+ ⣿⣿⣿⣿⠿⠛⠉⠉⠁⠀⢻⣿⡇⠀⠀⠀⠀⠀⠀⢀⠈⣿⣿⡿⠉⠛⠛⠛⠉⠉⠀
+ ⣿⡿⠋⠁⠀⠀⢀⣀⣠⡴⣸⣿⣇⡄⠀⠀⠀⠀⢀⡿⠄⠙⠛⠀⣀⣠⣤⣤⠄⠀⠀
+-
+-Accurate representation of me coding this
+ */
+ 
+ type JsonRepository struct {
+ 	filePath string
+ }
+ 
++var _ domain.Repository = (*JsonRepository)(nil)
++
+ func NewJsonRepository(filePath string) *JsonRepository {
+ 	dir := filepath.Dir(filePath)
+ 	_ = os.MkdirAll(dir, 0755)
+@@ -51,8 +50,6 @@ func NewJsonRepository(filePath string) *JsonRepository {
+ }
+ 
+ func (repo *JsonRepository) Save(character *domain.Character) error {
+-	service.ComputeDerivedStats(character)
+-
+ 	characters, _ := repo.List()
+ 
+ 	updated := false
+@@ -82,7 +79,6 @@ func (repo *JsonRepository) Load(name string) (*domain.Character, error) {
+ 
+ 	for _, c := range characters {
+ 		if c.Name == name {
+-			service.ComputeDerivedStats(c)
+ 			return c, nil
+ 		}
+ 	}
+diff --git a/repository/repository.go b/repository/repository.go
+deleted file mode 100644
+index 02f453a..0000000
+--- a/repository/repository.go
++++ /dev/null
+@@ -1,10 +0,0 @@
+-package repository
+-
+-import "github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
+-
+-type CharacterRepository interface {
+-	Save(character *domain.Character) error
+-	Load(name string) (*domain.Character, error)
+-	List() ([]*domain.Character, error)
+-	Delete(name string) error
+-}
+diff --git a/service/api_client.go b/service/api_client.go
+index bdbe85c..b781a48 100644
+--- a/service/api_client.go
++++ b/service/api_client.go
+@@ -135,7 +135,6 @@ func FetchArmor(index string) (*apiArmorResp, error) {
+ 	return &r, nil
+ }
+ 
+-// many many moons ago, many many spells were created which is why this batching is needed
+ func FetchSpellsBatch(indexes []string) map[string]*apiSpellResp {
+ 	results := make(map[string]*apiSpellResp)
+ 
+diff --git a/service/api_fetcher.go b/service/api_fetcher.go
+index faa92c1..9a77574 100644
+--- a/service/api_fetcher.go
++++ b/service/api_fetcher.go
+@@ -2,6 +2,13 @@ package service
+ 
+ import "github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
+ 
++type apiArmorDomain struct {
++	Name     string
++	BaseAC   int
++	DexBonus bool
++	MaxBonus int
++}
++
+ func ToDomainSpell(r *apiSpellResp) *domain.SpellInfo {
+ 	return &domain.SpellInfo{
+ 		Name:   r.Name,
+@@ -19,8 +26,8 @@ func ToDomainWeapon(r *apiWeaponResp) *domain.WeaponInfo {
+ 	}
+ }
+ 
+-func ToDomainArmor(r *apiArmorResp) *domain.ArmorInfo {
+-	return &domain.ArmorInfo{
++func ToDomainArmor(r *apiArmorResp) *apiArmorDomain {
++	return &apiArmorDomain{
+ 		Name:     r.Name,
+ 		BaseAC:   r.ArmorClass.Base,
+ 		DexBonus: r.ArmorClass.DexBonus,
+diff --git a/service/character_facade.go b/service/character_facade.go
+new file mode 100644
+index 0000000..4084582
+--- /dev/null
++++ b/service/character_facade.go
+@@ -0,0 +1,120 @@
++package service
++
++import (
++	"fmt"
++
++	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
++	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain/class"
++)
++
++type CharacterFacade struct {
++	repo domain.Repository
++	svc  *CharacterService
++}
++
++func NewCharacterFacade(repo domain.Repository, classRepo *class.ClassRepository) *CharacterFacade {
++	return &CharacterFacade{
++		repo: repo,
++		svc:  NewCharacterService(classRepo),
++	}
++}
++
++func (f *CharacterFacade) CreateCharacter(c *domain.Character) error {
++	c.Skills = f.svc.GetClassSkills(c)
++	f.svc.InitSpellcasting(c)
++	ComputeDerivedStats(c)
++	return f.repo.Save(c)
++}
++
++func (f *CharacterFacade) ViewCharacter(name string) (*domain.Character, error) {
++	char, err := f.repo.Load(name)
++	if err != nil {
++		return nil, err
++	}
++
++	ComputeDerivedStats(char)
++	return char, nil
++}
++
++func (f *CharacterFacade) ListCharacters() ([]*domain.Character, error) {
++	chars, err := f.repo.List()
++	if err != nil {
++		return nil, err
++	}
++
++	return chars, nil
++}
++
++func (f *CharacterFacade) DeleteCharacter(name string) error {
++	return f.repo.Delete(name)
++}
++
++func (f *CharacterFacade) EquipItem(name, weapon, slot, armor, shield string) error {
++	character, err := f.repo.Load(name)
++	if err != nil {
++		return err
++	}
++
++	if weapon != "" && slot != "" {
++		if err := character.EquipWeapon(slot, weapon); err != nil {
++			return err
++		}
++	}
++
++	if armor != "" {
++		if err := character.EquipArmor(armor); err != nil {
++			return err
++		}
++	}
++
++	if shield != "" {
++		if err := character.EquipShield(shield); err != nil {
++			return err
++		}
++	}
++
++	return f.repo.Save(character)
++}
++
++func (f *CharacterFacade) LearnSpell(name, spell string) (string, error) {
++	char, err := f.repo.Load(name)
++	if err != nil {
++		return "", fmt.Errorf("character %q not found", name)
++	}
++
++	spellService := NewSpellService()
++	message, err := spellService.LearnSpell(char, spell)
++	if err != nil {
++		return "", err
++	}
++
++	if err := f.repo.Save(char); err != nil {
++		return "", fmt.Errorf("error saving character: %v", err)
++	}
++
++	return message, nil
++}
++
++func (f *CharacterFacade) PrepareSpell(name, spell string) (string, error) {
++	char, err := f.repo.Load(name)
++	if err != nil {
++		return "", fmt.Errorf("character %q not found", name)
++	}
++
++	spellService := NewSpellService()
++	message, err := spellService.PrepareSpell(char, spell)
++	if err != nil {
++		return "", err
++	}
++
++	if err := f.repo.Save(char); err != nil {
++		return "", fmt.Errorf("error saving character: %v", err)
++	}
++
++	return message, nil
++}
++
++// hook up for racial bonuses assignment for later
++// if fn := f.svc.ApplyRacialBonusesSkillProficiencies; fn != nil {
++// 	fn(c)
++// }
+diff --git a/service/character_formatter.go b/service/character_formatter.go
+new file mode 100644
+index 0000000..ea11637
+--- /dev/null
++++ b/service/character_formatter.go
+@@ -0,0 +1,88 @@
++package service
++
++import (
++	"fmt"
++	"strings"
++
++	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
++)
++
++func FormatCharacterView(c *domain.Character) string {
++	var sb strings.Builder
++
++	fmt.Fprintf(&sb,
++		"Name: %s\n"+
++			"Class: %s\n"+
++			"Race: %s\n"+
++			"Background: %s\n"+
++			"Level: %d\n"+
++			"Ability scores:\n"+
++			"  STR: %d (%+d)\n"+
++			"  DEX: %d (%+d)\n"+
++			"  CON: %d (%+d)\n"+
++			"  INT: %d (%+d)\n"+
++			"  WIS: %d (%+d)\n"+
++			"  CHA: %d (%+d)\n"+
++			"Proficiency bonus: +%d\n"+
++			"Skill proficiencies: %s\n",
++		c.Name,
++		strings.ToLower(c.Class),
++		strings.ToLower(c.Race),
++		c.Background,
++		c.Level,
++		c.Stats.Str, c.Stats.StrMod,
++		c.Stats.Dex, c.Stats.DexMod,
++		c.Stats.Con, c.Stats.ConMod,
++		c.Stats.Intel, c.Stats.IntelMod,
++		c.Stats.Wis, c.Stats.WisMod,
++		c.Stats.Cha, c.Stats.ChaMod,
++		c.Proficiency,
++		strings.Join(c.Skills.Skills, ", "),
++	)
++
++	if c.Spellcasting != nil && c.Spellcasting.CanCast {
++		fmt.Fprintln(&sb, "Spell slots:")
++
++		if c.Spellcasting.CantripsKnown > 0 {
++			fmt.Fprintf(&sb, "  Level 0: %d\n", c.Spellcasting.CantripsKnown)
++		}
++
++		for lvl := 1; lvl <= 9; lvl++ {
++			if count, ok := c.Spellcasting.MaxSlots[lvl]; ok && count > 0 {
++				fmt.Fprintf(&sb, "  Level %d: %d\n", lvl, count)
++			}
++		}
++
++		if c.Spellcasting.Ability != "" {
++			fmt.Fprintf(&sb, "Spellcasting ability: %s\n", strings.ToLower(c.Spellcasting.Ability))
++			fmt.Fprintf(&sb, "Spell save DC: %d\n", c.Spellcasting.SpellSaveDC)
++			fmt.Fprintf(&sb, "Spell attack bonus: +%d\n", c.Spellcasting.SpellAttackBonus)
++		}
++	}
++
++	if weapon, ok := c.Equipment.Weapon["main hand"]; ok && weapon != "" {
++		fmt.Fprintf(&sb, "Main hand: %s\n", weapon)
++	}
++
++	if weapon, ok := c.Equipment.Weapon["off hand"]; ok && weapon != "" {
++		fmt.Fprintf(&sb, "Off hand: %s\n", weapon)
++	}
++	if c.Equipment.Armor != "" {
++		fmt.Fprintf(&sb, "Armor: %s\n", c.Equipment.Armor)
++	}
++
++	if c.Equipment.Shield != "" {
++		fmt.Fprintf(&sb, "Shield: %s\n", c.Equipment.Shield)
++	}
++
++	fmt.Fprintf(&sb,
++		"Armor class: %d\n"+
++			"Initiative bonus: %d\n"+
++			"Passive perception: %d\n",
++		c.ArmorClass,
++		c.InitiativeBonus,
++		c.PassivePerception,
++	)
++
++	return sb.String()
++}
+diff --git a/service/character_service.go b/service/character_service.go
+index 406098c..472fa24 100644
+--- a/service/character_service.go
++++ b/service/character_service.go
+@@ -1,54 +1,22 @@
+ package service
+ 
+ import (
+-	"strings"
+-
+-	"github.com/DanielBartha/MPP-DnD-Character-Gen/characterClasses"
+ 	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
++	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain/class"
+ )
+ 
+ type CharacterService struct {
+-	// CharacterSkillProvider in the future for loading data from db
+-	// c'est possible
+-}
+-
+-func NewCharacterService() *CharacterService {
+-	return &CharacterService{}
++	classRepo *class.ClassRepository
+ }
+ 
+-func abilityModifier(score int) int {
+-	result := (score - 10) / 2
+-	if (score-10)%2 < 0 {
+-		result--
++func NewCharacterService(classRepo *class.ClassRepository) *CharacterService {
++	return &CharacterService{
++		classRepo: classRepo,
+ 	}
+-	return result
+-}
+-
+-func (s *CharacterService) UpdateProficiency(character *domain.Character) {
+-	switch {
+-	case character.Level >= 17:
+-		character.Proficiency = 6
+-	case character.Level >= 13:
+-		character.Proficiency = 5
+-	case character.Level >= 9:
+-		character.Proficiency = 4
+-	case character.Level >= 5:
+-		character.Proficiency = 3
+-	default:
+-		character.Proficiency = 2
+-	}
+-
+-	character.Stats.StrMod = abilityModifier(character.Stats.Str)
+-	character.Stats.DexMod = abilityModifier(character.Stats.Dex)
+-	character.Stats.ConMod = abilityModifier(character.Stats.Con)
+-	character.Stats.IntelMod = abilityModifier(character.Stats.Intel)
+-	character.Stats.WisMod = abilityModifier(character.Stats.Wis)
+-	character.Stats.ChaMod = abilityModifier(character.Stats.Cha)
+ }
+ 
+ func (s *CharacterService) GetClassSkills(c *domain.Character) domain.ClassLoadout {
+-	classKey := strings.ToLower(strings.TrimSpace(c.Class))
+-	cs, ok := characterClasses.Classes[classKey]
++	cs, ok := s.classRepo.Get(c.Class)
+ 
+ 	if !ok {
+ 		return domain.ClassLoadout{
+@@ -62,17 +30,14 @@ func (s *CharacterService) GetClassSkills(c *domain.Character) domain.ClassLoado
+ 		}
+ 	}
+ 
+-	src := cs.Skills
+-	localSkills := make([]string, len(src))
+-	copy(localSkills, src)
+-
++	src := append([]string{}, cs.Skills...)
+ 	selected := []string{}
+-	if cs.MaxAllowed > 0 && len(localSkills) > 0 {
++	if cs.MaxAllowed > 0 && len(src) > 0 {
+ 		limit := cs.MaxAllowed
+-		if limit > len(localSkills) {
+-			limit = len(localSkills)
++		if limit > len(src) {
++			limit = len(src)
+ 		}
+-		selected = localSkills[:limit]
++		selected = src[:limit]
+ 	}
+ 
+ 	selected = append(selected, "insight", "religion")
+@@ -87,61 +52,3 @@ func (s *CharacterService) GetClassSkills(c *domain.Character) domain.ClassLoado
+ 		OffHand:    cs.OffHand,
+ 	}
+ }
+-
+-func (s *CharacterService) ApplyRacialBonuses(character *domain.Character) {
+-	race := strings.ToLower(strings.ReplaceAll(character.Race, " ", "-"))
+-	switch race {
+-	case "dwarf":
+-		character.Stats.Con += 2
+-
+-	case "hill-dwarf":
+-		character.Stats.Con += 2
+-		character.Stats.Wis += 1
+-
+-	case "elf":
+-		character.Stats.Dex += 2
+-
+-	case "halfling", "stout-halfling":
+-		character.Stats.Dex += 2
+-
+-	case "lightfoot-halfling":
+-		character.Stats.Dex += 2
+-		character.Stats.Cha++
+-
+-	case "human":
+-		character.Stats.Str++
+-		character.Stats.Dex++
+-		character.Stats.Con++
+-		character.Stats.Intel++
+-		character.Stats.Wis++
+-		character.Stats.Cha++
+-
+-	case "dragonborn":
+-		character.Stats.Str += 2
+-		character.Stats.Cha++
+-
+-	case "gnome":
+-		character.Stats.Intel += 2
+-
+-	// TODO: half-eelves get to choose which stats to increase besides the rizz, for now dex and wis as defaults
+-	case "half-elf":
+-		character.Stats.Cha += 2
+-		character.Stats.Dex++
+-		character.Stats.Wis++
+-
+-	case "half-orc":
+-		character.Stats.Str += 2
+-		character.Stats.Con++
+-
+-	case "tiefling":
+-		character.Stats.Cha += 2
+-		character.Stats.Intel++
+-	}
+-
+-	character.Stats.StrMod = (character.Stats.Str - 10) / 2
+-	character.Stats.DexMod = (character.Stats.Dex - 10) / 2
+-	character.Stats.ConMod = (character.Stats.Con - 10) / 2
+-	character.Stats.IntelMod = (character.Stats.Intel - 10) / 2
+-	character.Stats.WisMod = (character.Stats.Wis - 10) / 2
+-	character.Stats.ChaMod = (character.Stats.Cha - 10) / 2
+-}
+diff --git a/service/derived_stats.go b/service/derived_stats.go
+index c214f73..94be2ec 100644
+--- a/service/derived_stats.go
++++ b/service/derived_stats.go
+@@ -5,7 +5,7 @@ import (
+ )
+ 
+ func ComputeDerivedStats(c *domain.Character) {
+-	c.ArmorClass = CalculateArmorClass(c)
+-	c.InitiativeBonus = CalculateInitiative(&c.Stats)
+-	c.PassivePerception = CalculatePassivePerception(c)
++	c.ArmorClass = c.CalculateArmorClass()
++	c.InitiativeBonus = c.CalculateInitiative()
++	c.PassivePerception = c.CalculatePassivePerception()
+ }
+diff --git a/service/equipment_service.go b/service/equipment_service.go
+new file mode 100644
+index 0000000..554539a
+--- /dev/null
++++ b/service/equipment_service.go
+@@ -0,0 +1,39 @@
++package service
++
++import (
++	"fmt"
++
++	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
++)
++
++type EquipmentService struct{}
++
++func NewEquipmentService() *EquipmentService {
++	return &EquipmentService{}
++}
++
++func (s *EquipmentService) Equip(character *domain.Character, weapon, slot, armor, shield string) (string, error) {
++	if character.Equipment.Weapon == nil {
++		character.Equipment.Weapon = make(map[string]string)
++	}
++
++	switch {
++	case weapon != "" && slot != "":
++		if existing, ok := character.Equipment.Weapon[slot]; ok && existing != "" {
++			return "", fmt.Errorf("%s already occupied", slot)
++		}
++		character.Equipment.Weapon[slot] = weapon
++		return fmt.Sprintf("Equipped weapon %s to %s", weapon, slot), nil
++
++	case armor != "":
++		character.Equipment.Armor = armor
++		return fmt.Sprintf("Equipped armor %s", armor), nil
++
++	case shield != "":
++		character.Equipment.Shield = shield
++		return fmt.Sprintf("Equipped shield %s", shield), nil
++
++	default:
++		return "", fmt.Errorf("no equipment provided")
++	}
++}
+diff --git a/service/passive_perception.go b/service/passive_perception.go
+deleted file mode 100644
+index b440cd3..0000000
+--- a/service/passive_perception.go
++++ /dev/null
+@@ -1,15 +0,0 @@
+-package service
+-
+-import "github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
+-
+-func CalculatePassivePerception(c *domain.Character) int {
+-	base := 10 + c.Stats.WisMod
+-
+-	for _, skill := range c.Skills.Skills {
+-		if skill == "perception" {
+-			base += c.Proficiency
+-			break
+-		}
+-	}
+-	return base
+-}
+diff --git a/service/sanitize_keys.go b/service/sanitize_keys.go
+index 4e6ad74..be289b6 100644
+--- a/service/sanitize_keys.go
++++ b/service/sanitize_keys.go
+@@ -17,21 +17,3 @@ func SanitizeApiKey(name string) string {
+ 	key = strings.TrimSpace(key)
+ 	return key
+ }
+-
+-func SanitizeLocalKey(name string) string {
+-	key := strings.ToLower(name)
+-	key = strings.ReplaceAll(key, "'", "")
+-	key = strings.ReplaceAll(key, "’", "")
+-	key = strings.ReplaceAll(key, "(", "")
+-	key = strings.ReplaceAll(key, ")", "")
+-	key = strings.ReplaceAll(key, ",", "")
+-	key = strings.ReplaceAll(key, "/", "-")
+-	key = strings.ReplaceAll(key, ":", "")
+-	key = strings.ReplaceAll(key, ".", "")
+-	key = strings.ReplaceAll(key, " ", "-")
+-	key = strings.ReplaceAll(key, " ", "-")
+-	key = strings.TrimSuffix(key, "-armor")
+-	key = strings.TrimSuffix(key, " armor")
+-	key = strings.TrimSpace(key)
+-	return key
+-}
+diff --git a/service/spell_service.go b/service/spell_service.go
+new file mode 100644
+index 0000000..76f8eae
+--- /dev/null
++++ b/service/spell_service.go
+@@ -0,0 +1,86 @@
++package service
++
++import (
++	"fmt"
++	"strings"
++
++	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
++)
++
++type SpellService struct{}
++
++func NewSpellService() *SpellService {
++	return &SpellService{}
++}
++
++func (s *SpellService) LearnSpell(c *domain.Character, spellName string) (string, error) {
++	if c.Spellcasting == nil || !c.Spellcasting.CanCast {
++		return "", fmt.Errorf("this class can't cast spells")
++	}
++
++	for _, s := range c.Spellcasting.LearnedSpells {
++		if strings.EqualFold(s, spellName) {
++			return "", fmt.Errorf("%s already learned", spellName)
++		}
++	}
++
++	if c.Spellcasting.PreparedMode {
++		return "", fmt.Errorf("this class prepares spells and can't learn them")
++	}
++
++	level, err := GetSpellLevel(spellName)
++	if err != nil {
++		return "", err
++	}
++
++	if !IsSpellForClass(spellName, c.Class) {
++		return "", fmt.Errorf("%s cannot learn %s", c.Class, spellName)
++	}
++
++	if level > 0 {
++		if slots, ok := c.Spellcasting.Slots[level]; !ok || slots == 0 {
++			return "", fmt.Errorf("the spell has higher level than the available spell slots")
++		}
++	}
++
++	c.Spellcasting.LearnedMode = true
++	c.Spellcasting.LearnedSpells = append(c.Spellcasting.LearnedSpells, spellName)
++
++	return fmt.Sprintf("Learned spell %s", spellName), nil
++}
++
++func (s *SpellService) PrepareSpell(c *domain.Character, spellName string) (string, error) {
++	if c.Spellcasting == nil || !c.Spellcasting.CanCast {
++		return "", fmt.Errorf("this class can't cast spells")
++	}
++
++	for _, s := range c.Spellcasting.PreparedSpells {
++		if strings.EqualFold(s, spellName) {
++			return "", fmt.Errorf("%s already prepared", spellName)
++		}
++	}
++
++	if c.Spellcasting.LearnedMode {
++		return "", fmt.Errorf("this class learns spells and can't prepare them")
++	}
++
++	level, err := GetSpellLevel(spellName)
++	if err != nil {
++		return "", err
++	}
++
++	if !IsSpellForClass(spellName, c.Class) {
++		return "", fmt.Errorf("%s cannot prepare %s", c.Class, spellName)
++	}
++
++	if level > 0 {
++		if slots, ok := c.Spellcasting.Slots[level]; !ok || slots == 0 {
++			return "", fmt.Errorf("the spell has higher level than the available spell slots")
++		}
++	}
++
++	c.Spellcasting.PreparedMode = true
++	c.Spellcasting.PreparedSpells = append(c.Spellcasting.PreparedSpells, spellName)
++
++	return fmt.Sprintf("Prepared spell %s", spellName), nil
++}
+diff --git a/service/spellcasting.go b/service/spellcasting.go
+index cc12acc..bd11db2 100644
+--- a/service/spellcasting.go
++++ b/service/spellcasting.go
+@@ -79,8 +79,8 @@ var pactCasterSlots = map[int]map[int]int{
+ 
+ func GetSlotsForClassLevel(class string, level int) (map[int]int, string, error) {
+ 	classKey := strings.ToLower(strings.TrimSpace(class))
+-	casterType, ok := domain.SpellcastingType[classKey]
+-	if !ok {
++	casterType := domain.GetSpellcastingType(classKey)
++	if casterType == "" {
+ 		return nil, "", fmt.Errorf("class %s is not a spellcaster", class)
+ 	}
+ 

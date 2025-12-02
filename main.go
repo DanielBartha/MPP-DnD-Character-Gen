@@ -6,12 +6,11 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
 
 	"path/filepath"
 
-	"github.com/DanielBartha/MPP-DnD-Character-Gen/characterClasses"
 	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
+	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain/class"
 	"github.com/DanielBartha/MPP-DnD-Character-Gen/repository"
 	"github.com/DanielBartha/MPP-DnD-Character-Gen/service"
 )
@@ -51,8 +50,6 @@ func main() {
 	simple := service.SimpleWeapons(allWeps)
 	martial := service.MartialWeapons(allWeps)
 
-	characterClasses.InitWeapons(allWeps, simple, martial)
-
 	switch cmd {
 	case "create":
 		createCmd := flag.NewFlagSet("create", flag.ExitOnError)
@@ -61,7 +58,7 @@ func main() {
 		race := createCmd.String("race", "", "character race (required)")
 		// "acolyte" default
 		background := createCmd.String("background", "acolyte", "character background (required)")
-		class := createCmd.String("class", "", "character class (required)")
+		className := createCmd.String("class", "", "character class (required)")
 		level := createCmd.Int("level", 1, "character level (required)")
 
 		str := createCmd.Int("str", 10, "strength is required")
@@ -71,69 +68,31 @@ func main() {
 		wis := createCmd.Int("wis", 10, "wisdom is required")
 		cha := createCmd.Int("cha", 10, "charisma is required")
 
-		err := createCmd.Parse(os.Args[2:])
+		if err := createCmd.Parse(os.Args[2:]); err != nil {
+			fmt.Println("error parsing flags:", err)
+			os.Exit(2)
+		}
+
+		stats := domain.Stats{
+			Str: *str, Dex: *dex, Con: *con, Intel: *intel, Wis: *wis, Cha: *cha,
+		}
+
+		char, err := domain.NewCharacter(*name, *race, *background, *className, *level, stats)
 		if err != nil {
-			fmt.Println("error parsing flags")
-			createCmd.Usage()
+			fmt.Println("Error creating character:", err)
 			os.Exit(2)
-		}
-
-		if *name == "" {
-			fmt.Println("name is required")
-			os.Exit(2)
-		}
-		if *race == "" {
-			fmt.Println("race is required")
-			os.Exit(2)
-		}
-		if *class == "" {
-			fmt.Println("class is required")
-			os.Exit(2)
-		}
-		if *level <= 0 {
-			fmt.Println("level is required")
-			os.Exit(2)
-		}
-
-		characterCreate := domain.Character{
-			Name:       *name,
-			Race:       *race,
-			Background: *background,
-			Class:      *class,
-			Level:      *level,
-			Stats: domain.Stats{
-				Str:   *str,
-				Dex:   *dex,
-				Con:   *con,
-				Intel: *intel,
-				Wis:   *wis,
-				Cha:   *cha,
-			},
-		}
-
-		svc := service.NewCharacterService()
-
-		characterCreate.Skills = svc.GetClassSkills(&characterCreate)
-		svc.ApplyRacialBonuses(&characterCreate)
-		svc.UpdateProficiency(&characterCreate)
-		svc.InitSpellcasting(&characterCreate)
-
-		characterCreate.Equipment = domain.Equipment{
-			Weapon: map[string]string{
-				"main hand": "",
-				"off hand":  "",
-			},
-			Armor:  "",
-			Shield: "",
 		}
 
 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
-		if err := repo.Save(&characterCreate); err != nil {
-			fmt.Println("error saving character:", err)
+		classRepo := class.NewClassRepository(allWeps, simple, martial)
+		facade := service.NewCharacterFacade(repo, classRepo)
+
+		if err := facade.CreateCharacter(char); err != nil {
+			fmt.Println("Error creating character: ", err)
 			os.Exit(2)
 		}
 
-		fmt.Printf("saved character %+v\n", characterCreate.Name)
+		fmt.Printf("saved character %s\n", char.Name)
 
 	case "view":
 		viewCmd := flag.NewFlagSet("view", flag.ExitOnError)
@@ -146,93 +105,32 @@ func main() {
 		}
 
 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
-		character, err := repo.Load(*name)
+		facade := service.NewCharacterFacade(repo, nil)
+
+		char, err := facade.ViewCharacter(*name)
 		if err != nil {
 			fmt.Printf("character %q not found\n", *name)
 			return
 		}
 
-		fmt.Printf(
-			"Name: %s\n"+
-				"Class: %s\n"+
-				"Race: %s\n"+
-				"Background: %s\n"+
-				"Level: %d\n"+
-				"Ability scores:\n"+
-				"  STR: %d (%+d)\n"+
-				"  DEX: %d (%+d)\n"+
-				"  CON: %d (%+d)\n"+
-				"  INT: %d (%+d)\n"+
-				"  WIS: %d (%+d)\n"+
-				"  CHA: %d (%+d)\n"+
-				"Proficiency bonus: +%d\n"+
-				"Skill proficiencies: %s\n",
-			character.Name,
-			strings.ToLower(character.Class),
-			strings.ToLower(character.Race),
-			character.Background,
-			character.Level,
-			character.Stats.Str, character.Stats.StrMod,
-			character.Stats.Dex, character.Stats.DexMod,
-			character.Stats.Con, character.Stats.ConMod,
-			character.Stats.Intel, character.Stats.IntelMod,
-			character.Stats.Wis, character.Stats.WisMod,
-			character.Stats.Cha, character.Stats.ChaMod,
-			character.Proficiency,
-			strings.Join(character.Skills.Skills, ", "),
-		)
-
-		if character.Spellcasting != nil && character.Spellcasting.CanCast {
-			fmt.Println("Spell slots:")
-
-			if character.Spellcasting.CantripsKnown > 0 {
-				fmt.Printf("  Level 0: %d\n", character.Spellcasting.CantripsKnown)
-			}
-
-			for lvl := 1; lvl <= 9; lvl++ {
-				if count, ok := character.Spellcasting.MaxSlots[lvl]; ok && count > 0 {
-					fmt.Printf("  Level %d: %d\n", lvl, count)
-				}
-			}
-
-			if character.Spellcasting.Ability != "" {
-				fmt.Printf("Spellcasting ability: %s\n", strings.ToLower(character.Spellcasting.Ability))
-				fmt.Printf("Spell save DC: %d\n", character.Spellcasting.SpellSaveDC)
-				fmt.Printf("Spell attack bonus: +%d\n", character.Spellcasting.SpellAttackBonus)
-			}
-		}
-
-		if weapon, ok := character.Equipment.Weapon["main hand"]; ok && weapon != "" {
-			fmt.Printf("Main hand: %s\n", weapon)
-		}
-
-		if weapon, ok := character.Equipment.Weapon["off hand"]; ok && weapon != "" {
-			fmt.Printf("Off hand: %s\n", weapon)
-		}
-		if character.Equipment.Armor != "" {
-			fmt.Printf("Armor: %s\n", character.Equipment.Armor)
-		}
-
-		if character.Equipment.Shield != "" {
-			fmt.Printf("Shield: %s\n", character.Equipment.Shield)
-		}
-
-		fmt.Printf("Armor class: %d\n", service.CalculateArmorClass(character))
-		fmt.Printf("Initiative bonus: %d\n", service.CalculateInitiative(&character.Stats))
-		fmt.Printf("Passive perception: %d\n", service.CalculatePassivePerception(character))
+		fmt.Print(service.FormatCharacterView(char))
 
 	case "list":
 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
-		characters, err := repo.List()
+		facade := service.NewCharacterFacade(repo, nil)
+
+		chars, err := facade.ListCharacters()
 		if err != nil {
-			fmt.Println("error listing characters:", err)
+			fmt.Println("error listing characters: ", err)
 			os.Exit(2)
 		}
-		if len(characters) == 0 {
+
+		if len(chars) == 0 {
 			fmt.Println("no characters found")
 			return
 		}
-		for _, c := range characters {
+
+		for _, c := range chars {
 			fmt.Printf("- %s (%s %s)\n", c.Name, c.Race, c.Class)
 		}
 
@@ -247,10 +145,13 @@ func main() {
 		}
 
 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
-		if err := repo.Delete(*name); err != nil {
-			fmt.Println("error deleting character:", err)
+		facade := service.NewCharacterFacade(repo, nil)
+
+		if err := facade.DeleteCharacter(*name); err != nil {
+			fmt.Println("error deleting character: ", err)
 			os.Exit(2)
 		}
+
 		fmt.Printf("deleted %s\n", *name)
 
 	case "equip":
@@ -268,47 +169,31 @@ func main() {
 		}
 
 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
-		character, err := repo.Load(*name)
+		classRepo := class.NewClassRepository(allWeps, simple, martial)
+		facade := service.NewCharacterFacade(repo, classRepo)
+
+		err := facade.EquipItem(*name, *weapon, *slot, *armor, *shield)
 		if err != nil {
-			fmt.Printf("character %q not found\n", *name)
-			return
+			switch err {
+			case domain.ErrSlotOccupied:
+				fmt.Printf("%s already occupied\n", *slot)
+				return
+
+			default:
+				fmt.Println("error equipping:", err)
+				os.Exit(2)
+			}
 		}
 
 		if *weapon != "" && *slot != "" {
-			if character.Equipment.Weapon == nil {
-				character.Equipment.Weapon = make(map[string]string)
-			}
-
-			if existing, ok := character.Equipment.Weapon[*slot]; ok && existing != "" {
-				fmt.Printf("%s already occupied\n", *slot)
-				return
-			}
-
-			character.Equipment.Weapon[*slot] = *weapon
-			if err := repo.Save(character); err != nil {
-				fmt.Printf("error saving character: %v\n", err)
-				os.Exit(2)
-			}
 			fmt.Printf("Equipped weapon %s to %s\n", *weapon, *slot)
 			return
 		}
-
 		if *armor != "" {
-			character.Equipment.Armor = *armor
-			if err := repo.Save(character); err != nil {
-				fmt.Println("error saving character:", *armor)
-				os.Exit(2)
-			}
 			fmt.Printf("Equipped armor %s\n", *armor)
 			return
 		}
-
 		if *shield != "" {
-			character.Equipment.Shield = *shield
-			if err := repo.Save(character); err != nil {
-				fmt.Println("error saving character:", err)
-				os.Exit(2)
-			}
 			fmt.Printf("Equipped shield %s\n", *shield)
 			return
 		}
@@ -327,57 +212,15 @@ func main() {
 		}
 
 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
-		character, err := repo.Load(*name)
-		if err != nil {
-			fmt.Printf("character %q not found\n", *name)
-			return
-		}
+		facade := service.NewCharacterFacade(repo, nil)
 
-		if character.Spellcasting == nil || !character.Spellcasting.CanCast {
-			fmt.Printf("this class can't cast spells\n")
-			return
-		}
-
-		for _, s := range character.Spellcasting.LearnedSpells {
-			if strings.EqualFold(s, *spell) {
-				fmt.Printf("%s already learned\n", *spell)
-				return
-			}
-		}
-
-		if character.Spellcasting.PreparedMode {
-			fmt.Printf("this class prepares spells and can't learn them\n")
-			return
-		}
-
-		// checks for non-existing spells (csv)
-		level, err := service.GetSpellLevel(*spell)
+		message, err := facade.LearnSpell(*name, *spell)
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
 
-		if !service.IsSpellForClass(*spell, character.Class) {
-			fmt.Printf("%s cannot learn %s\n", character.Class, *spell)
-			return
-		}
-
-		if level > 0 {
-			if slots, ok := character.Spellcasting.Slots[level]; !ok || slots == 0 {
-				fmt.Printf("the spell has higher level than the available spell slots\n")
-				return
-			}
-		}
-
-		character.Spellcasting.LearnedMode = true
-		character.Spellcasting.LearnedSpells = append(character.Spellcasting.LearnedSpells, *spell)
-
-		if err := repo.Save(character); err != nil {
-			fmt.Println("error saving character:", err)
-			os.Exit(2)
-		}
-
-		fmt.Printf("Learned spell %s\n", *spell)
+		fmt.Println(message)
 
 	case "prepare-spell":
 		prepareCmd := flag.NewFlagSet("prepare-spell", flag.ExitOnError)
@@ -391,57 +234,15 @@ func main() {
 		}
 
 		repo := repository.NewJsonRepository(filepath.Join("data", "characters.json"))
-		character, err := repo.Load(*name)
-		if err != nil {
-			fmt.Printf("character %q not found\n", *name)
-			return
-		}
+		facade := service.NewCharacterFacade(repo, nil)
 
-		if character.Spellcasting == nil || !character.Spellcasting.CanCast {
-			fmt.Printf("this class can't cast spells\n")
-			return
-		}
-
-		for _, s := range character.Spellcasting.PreparedSpells {
-			if strings.EqualFold(s, *spell) {
-				fmt.Printf("%s already prepared\n", *spell)
-				return
-			}
-		}
-
-		if character.Spellcasting.LearnedMode {
-			fmt.Printf("this class learns spells and can't prepare them\n")
-			return
-		}
-
-		// checks for non-existing spells (csv)
-		level, err := service.GetSpellLevel(*spell)
+		message, err := facade.PrepareSpell(*name, *spell)
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
 
-		if !service.IsSpellForClass(*spell, character.Class) {
-			fmt.Printf("%s cannot prepare %s\n", character.Class, *spell)
-			return
-		}
-
-		if level > 0 {
-			if slots, ok := character.Spellcasting.Slots[level]; !ok || slots == 0 {
-				fmt.Printf("the spell has higher level than the available spell slots\n")
-				return
-			}
-		}
-
-		character.Spellcasting.PreparedMode = true
-		character.Spellcasting.PreparedSpells = append(character.Spellcasting.PreparedSpells, *spell)
-
-		if err := repo.Save(character); err != nil {
-			fmt.Println("error saving character:", err)
-			os.Exit(2)
-		}
-
-		fmt.Printf("Prepared spell %s\n", *spell)
+		fmt.Println(message)
 
 	case "enrich-spells":
 		input := "5e-SRD-Spells.csv"

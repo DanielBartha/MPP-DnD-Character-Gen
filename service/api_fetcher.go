@@ -2,6 +2,13 @@ package service
 
 import "github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
 
+type apiArmorDomain struct {
+	Name     string
+	BaseAC   int
+	DexBonus bool
+	MaxBonus int
+}
+
 func ToDomainSpell(r *apiSpellResp) *domain.SpellInfo {
 	return &domain.SpellInfo{
 		Name:   r.Name,
@@ -19,8 +26,8 @@ func ToDomainWeapon(r *apiWeaponResp) *domain.WeaponInfo {
 	}
 }
 
-func ToDomainArmor(r *apiArmorResp) *domain.ArmorInfo {
-	return &domain.ArmorInfo{
+func ToDomainArmor(r *apiArmorResp) *apiArmorDomain {
+	return &apiArmorDomain{
 		Name:     r.Name,
 		BaseAC:   r.ArmorClass.Base,
 		DexBonus: r.ArmorClass.DexBonus,

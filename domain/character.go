@@ -1,17 +1,6 @@
 package domain
 
-var SpellcastingType = map[string]string{
-	"bard":     "full",
-	"cleric":   "full",
-	"druid":    "full",
-	"sorcerer": "full",
-	"wizard":   "full",
-
-	"paladin": "half",
-	"ranger":  "half",
-
-	"warlock": "pact",
-}
+import "strings"
 
 type Character struct {
 	Name              string
@@ -29,75 +18,95 @@ type Character struct {
 	PassivePerception int
 }
 
-type ClassLoadout struct {
-	MaxAllowed int
-	Skills     []string
-	Armor      []string
-	Shields    string
-	Weapons    []WeaponInfo
-	MainHand   string
-	OffHand    string
+func (c *Character) UpdateProficiency() {
+	switch {
+	case c.Level >= 17:
+		c.Proficiency = 6
+	case c.Level >= 13:
+		c.Proficiency = 5
+	case c.Level >= 9:
+		c.Proficiency = 4
+	case c.Level >= 5:
+		c.Proficiency = 3
+	default:
+		c.Proficiency = 2
+	}
+
+	c.Stats.StrMod = abilityModifier(c.Stats.Str)
+	c.Stats.DexMod = abilityModifier(c.Stats.Dex)
+	c.Stats.ConMod = abilityModifier(c.Stats.Con)
+	c.Stats.IntelMod = abilityModifier(c.Stats.Intel)
+	c.Stats.WisMod = abilityModifier(c.Stats.Wis)
+	c.Stats.ChaMod = abilityModifier(c.Stats.Cha)
 }
 
-type Stats struct {
-	Str    int
-	StrMod int
+func (c *Character) ApplyRacialBonuses() {
+	race := strings.ToLower(strings.ReplaceAll(c.Race, " ", "-"))
+	switch race {
+	case "dwarf":
+		c.Stats.Con += 2
 
-	Dex    int
-	DexMod int
+	case "hill-dwarf":
+		c.Stats.Con += 2
+		c.Stats.Wis += 1
 
-	Con    int
-	ConMod int
+	case "elf":
+		c.Stats.Dex += 2
 
-	Intel    int
-	IntelMod int
+	case "halfling", "stout-halfling":
+		c.Stats.Dex += 2
 
-	Wis    int
-	WisMod int
+	case "lightfoot-halfling":
+		c.Stats.Dex += 2
+		c.Stats.Cha++
 
-	Cha    int
-	ChaMod int
+	case "human":
+		c.Stats.Str++
+		c.Stats.Dex++
+		c.Stats.Con++
+		c.Stats.Intel++
+		c.Stats.Wis++
+		c.Stats.Cha++
+
+	case "dragonborn":
+		c.Stats.Str += 2
+		c.Stats.Cha++
+
+	case "gnome":
+		c.Stats.Intel += 2
+
+	// TODO: half-eelves get to choose which stats to increase besides the charisma, for now dex and wis as defaults
+	case "half-elf":
+		c.Stats.Cha += 2
+		c.Stats.Dex++
+		c.Stats.Wis++
+
+	case "half-orc":
+		c.Stats.Str += 2
+		c.Stats.Con++
+
+	case "tiefling":
+		c.Stats.Cha += 2
+		c.Stats.Intel++
+	}
+
+	c.UpdateProficiency()
 }
 
-type Equipment struct {
-	Weapon map[string]string
-	Armor  string
-	Shield string
-}
-
-type Spellcasting struct {
-	CantripsKnown    int
-	SpellsKnown      int
-	CanCast          bool
-	CasterType       string
-	LearnedSpells    []string    `json:"learned_spells"`
-	PreparedSpells   []string    `json:"prepared_spells"`
-	Slots            map[int]int `json:"slots"`
-	MaxSlots         map[int]int `json:"maxslots"`
-	PreparedMode     bool
-	LearnedMode      bool
-	Ability          string
-	SpellSaveDC      int
-	SpellAttackBonus int
-}
-
-type SpellInfo struct {
-	Name   string `json:"name"`
-	Level  int    `json:"level"`
-	School string `json:"school"`
-	Range  string `json:"range"`
-}
-
-type WeaponInfo struct {
-	Name      string
-	Category  string
-	Range     int
-	TwoHanded bool
-}
-
-type ArmorInfo struct {
-	Name     string
-	BaseAC   int
-	DexBonus bool
-	MaxBonus int
+func SanitizeLocalKey(name string) string {
+	key := strings.ToLower(name)
+	key = strings.ReplaceAll(key, "'", "")
+	key = strings.ReplaceAll(key, "’", "")
+	key = strings.ReplaceAll(key, "(", "")
+	key = strings.ReplaceAll(key, ")", "")
+	key = strings.ReplaceAll(key, ",", "")
+	key = strings.ReplaceAll(key, "/", "-")
+	key = strings.ReplaceAll(key, ":", "")
+	key = strings.ReplaceAll(key, ".", "")
+	key = strings.ReplaceAll(key, " ", "-")
+	key = strings.ReplaceAll(key, " ", "-")
+	key = strings.TrimSuffix(key, "-armor")
+	key = strings.TrimSuffix(key, " armor")
+	key = strings.TrimSpace(key)
+	return key
 }

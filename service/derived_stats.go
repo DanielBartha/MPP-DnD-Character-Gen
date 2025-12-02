@@ -5,7 +5,7 @@ import (
 )
 
 func ComputeDerivedStats(c *domain.Character) {
-	c.ArmorClass = CalculateArmorClass(c)
-	c.InitiativeBonus = CalculateInitiative(&c.Stats)
-	c.PassivePerception = CalculatePassivePerception(c)
+	c.ArmorClass = c.CalculateArmorClass()
+	c.InitiativeBonus = c.CalculateInitiative()
+	c.PassivePerception = c.CalculatePassivePerception()
 }

@@ -1,0 +1,119 @@
+package service
+
+import (
+	"fmt"
+
+	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain"
+	"github.com/DanielBartha/MPP-DnD-Character-Gen/domain/class"
+)
+
+type CharacterFacade struct {
+	repo domain.Repository
+	svc  *CharacterService
+}
+
+func NewCharacterFacade(repo domain.Repository, classRepo *class.ClassRepository) *CharacterFacade {
+	return &CharacterFacade{
+		repo: repo,
+		svc:  NewCharacterService(classRepo),
+	}
+}
+
+func (f *CharacterFacade) CreateCharacter(c *domain.Character) error {
+	c.Skills = f.svc.GetClassSkills(c)
+	c.ApplyRacialBonuses()
+	c.UpdateProficiency()
+	c.ApplyRacialSkillProficiencies()
+	f.svc.InitSpellcasting(c)
+	ComputeDerivedStats(c)
+
+	return f.repo.Save(c)
+}
+
+func (f *CharacterFacade) ViewCharacter(name string) (*domain.Character, error) {
+	char, err := f.repo.Load(name)
+	if err != nil {
+		return nil, err
+	}
+
+	ComputeDerivedStats(char)
+	return char, nil
+}
+
+func (f *CharacterFacade) ListCharacters() ([]*domain.Character, error) {
+	chars, err := f.repo.List()
+	if err != nil {
+		return nil, err
+	}
+
+	return chars, nil
+}
+
+func (f *CharacterFacade) DeleteCharacter(name string) error {
+	return f.repo.Delete(name)
+}
+
+func (f *CharacterFacade) EquipItem(name, weapon, slot, armor, shield string) error {
+	character, err := f.repo.Load(name)
+	if err != nil {
+		return err
+	}
+
+	if weapon != "" && slot != "" {
+		if err := character.EquipWeapon(slot, weapon); err != nil {
+			return err
+		}
+	}
+
+	if armor != "" {
+		if err := character.EquipArmor(armor); err != nil {
+			return err
+		}
+	}
+
+	if shield != "" {
+		if err := character.EquipShield(shield); err != nil {
+			return err
+		}
+	}
+
+	return f.repo.Save(character)
+}
+
+func (f *CharacterFacade) LearnSpell(name, spell string) (string, error) {
+	char, err := f.repo.Load(name)
+	if err != nil {
+		return "", fmt.Errorf("character %q not found", name)
+	}
+
+	spellService := NewSpellService()
+	message, err := spellService.LearnSpell(char, spell)
+	if err != nil {
+		return "", err
+	}
+
+	if err := f.repo.Save(char); err != nil {
+		return "", fmt.Errorf("error saving character: %v", err)
+	}
+
+	return message, nil
+}
+
+func (f *CharacterFacade) PrepareSpell(name, spell string) (string, error) {
+	char, err := f.repo.Load(name)
+	if err != nil {
+		return "", fmt.Errorf("character %q not found", name)
+	}
+
+	spellService := NewSpellService()
+	message, err := spellService.PrepareSpell(char, spell)
+	if err != nil {
+		return "", err
+	}
+
+	if err := f.repo.Save(char); err != nil {
+		return "", fmt.Errorf("error saving character: %v", err)
+	}
+
+	return message, nil
+}
