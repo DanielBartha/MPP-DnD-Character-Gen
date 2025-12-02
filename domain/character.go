@@ -75,7 +75,7 @@ func (c *Character) ApplyRacialBonuses() {
 	case "gnome":
 		c.Stats.Intel += 2
 
-	// TODO: half-eelves get to choose which stats to increase besides the rizz, for now dex and wis as defaults
+	// TODO: half-eelves get to choose which stats to increase besides the charisma, for now dex and wis as defaults
 	case "half-elf":
 		c.Stats.Cha += 2
 		c.Stats.Dex++

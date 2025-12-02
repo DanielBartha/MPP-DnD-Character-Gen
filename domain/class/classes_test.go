@@ -28,7 +28,7 @@ func TestClassRepository_Get(t *testing.T) {
 	all, simple, martial := fakeWeapons()
 	repo := NewClassRepository(all, simple, martial)
 
-	cs, ok := repo.Get(" Bard ")
+	cs, ok := repo.GetCS(" Bard ")
 	if !ok {
 		t.Fatalf("expected bard to exist")
 	}

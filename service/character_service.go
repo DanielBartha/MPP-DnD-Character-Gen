@@ -16,7 +16,7 @@ func NewCharacterService(classRepo *class.ClassRepository) *CharacterService {
 }
 
 func (s *CharacterService) GetClassSkills(c *domain.Character) domain.ClassLoadout {
-	cs, ok := s.classRepo.Get(c.Class)
+	cs, ok := s.classRepo.GetCS(c.Class)
 
 	if !ok {
 		return domain.ClassLoadout{

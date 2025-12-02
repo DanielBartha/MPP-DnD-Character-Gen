@@ -34,7 +34,7 @@ func NewClassRepository(all, simple, martial []domain.WeaponInfo) *ClassReposito
 	return cr
 }
 
-func (r *ClassRepository) Get(className string) (ClassSkills, bool) {
+func (r *ClassRepository) GetCS(className string) (ClassSkills, bool) {
 	key := strings.ToLower(strings.TrimSpace(className))
 	cs, ok := r.classes[key]
 	return cs, ok
